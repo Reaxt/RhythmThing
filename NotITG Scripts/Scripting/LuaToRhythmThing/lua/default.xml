@@ -1,0 +1,63 @@
+<ActorFrame
+InitCommand="%function(self)
+
+	nitg_version = FUCK_EXE and tonumber(GAMESTATE:GetVersionDate()) >= 20170313
+	
+	if not nitg_version then
+		SCREENMAN:SystemMessage('Outdated version of NotITG detected, mods will not work');
+	end
+	
+	songName = GAMESTATE:GetCurrentSong():GetSongDir();
+	
+	m_bl = 60/110 --use this to define length of a beat for use in the rest of the song
+	sw = SCREEN_WIDTH
+	sh = SCREEN_HEIGHT --shortcuts
+	
+	function Plr(pn)
+		return _G['P'..pn]
+	end
+	
+	function Proxy(pn)
+		return _G['P'..pn..'c']
+	end
+end"
+><children>
+
+	<Layer
+		Type="Quad"
+		InitCommand="hidden,1"
+		OnCommand="sleep,1000"
+	/>
+	
+	<Layer File="toconvert" />
+	
+	<Layer
+		Type="Quad"
+		OnCommand="hidden,1"
+		InitCommand="%function(self)
+			
+			outputFile = io.open('Songs/Scripting/LuaToRhythmThing/lua/ChartInfo.json', 'w')
+			
+			io.output(outputFile)
+			
+			io.write('\34notes\34: [', '\n')
+			
+			for i,v in pairs(toconvert) do
+				if v[3] ~= 'M' then
+					io.write('{', '\n')
+					io.write('	\34time\34: ' .. v[1] .. ',', '\n')
+					io.write('	\34collumn\34: ' .. v[2] .. ',', '\n')
+					io.write('	\34_type\34: ' .. v[3], '\n')
+					io.write('},', '\n')
+				end
+			end
+			
+			io.write('],', '\n')
+			
+			io.close(outputFile)
+			
+		end"
+		
+	/>
+	
+</children></ActorFrame>

@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using RhythmThing.System_Stuff;
 using RhythmThing.Components;
+using System.Runtime.InteropServices;
+
 namespace RhythmThing.Objects
 {
     public class Arrow : GameObject
@@ -22,6 +24,8 @@ namespace RhythmThing.Objects
         private int parX;
         public Dictionary<string, float> mods;
         private Chart chart;
+        private ConsoleColor noteColor;
+        private ConsoleColor noteBGColor;
         private float jumpAmount;
         private float beatTime;
         //static value thats nice
@@ -57,26 +61,50 @@ namespace RhythmThing.Objects
             visual.x = 30;
             visual.y = 42;
             visual.z = 2;
-            
+
 
             //holy fuck never do that again
             //rumour has it there was once a disgusting block of code here
             //this is still kinda shit...
+
+            // Check the beat timing, set to red for quarter notes, blue for eighth notes, green for sixteenth notes, purple for triplets, yellow for anything else
+            if (noteInfo.time % 1 == 0)
+            {
+                noteColor = ConsoleColor.Red;
+            }
+            else if (noteInfo.time % 1 == 0.5)
+            {
+                noteColor = ConsoleColor.Blue;
+            }
+            else if (noteInfo.time % 1 == 0.25 || noteInfo.time % 1 == 0.75)
+            {
+                noteColor = ConsoleColor.Green;
+            }
+            else if ((float)Math.Round(noteInfo.time % 1, 3) == 0.333f || (float)Math.Round(noteInfo.time % 1, 3) == 0.666f)
+            {
+                noteColor = ConsoleColor.DarkMagenta;
+            }
+            else
+            {
+                noteColor = ConsoleColor.Yellow;
+            }
+
+            noteBGColor = noteColor;
 
             switch (collumn)
             {
                 case Chart.collumn.Left:
                     for (int i = 3; i > -2; i--)
                     {
-                        visual.localPositions.Add(new Coords(i, 0, ' ', ConsoleColor.Green, ConsoleColor.Green));
-                        visual.localPositions.Add(new Coords(i, 1, ' ', ConsoleColor.Green, ConsoleColor.Green));
-                        visual.localPositions.Add(new Coords(i, -1, ' ', ConsoleColor.Green, ConsoleColor.Green));
+                        visual.localPositions.Add(new Coords(i, 0, ' ', noteColor, noteBGColor));
+                        visual.localPositions.Add(new Coords(i, 1, ' ', noteColor, noteBGColor));
+                        visual.localPositions.Add(new Coords(i, -1, ' ', noteColor, noteBGColor));
                     }
                     for (int i = -2; i > -8; i--)
                     {
                         for (int x = -5 + ((-i) - 2); x < 5 - ((-i) - 3); x++)
                         {
-                            visual.localPositions.Add(new Coords(i, x, ' ', ConsoleColor.Green, ConsoleColor.Green));
+                            visual.localPositions.Add(new Coords(i, x, ' ', noteColor, noteBGColor));
                         }
                     }
                     break;
@@ -85,15 +113,15 @@ namespace RhythmThing.Objects
                     visual.y = 44;
                     for (int i = 3; i > -2; i--)
                     {
-                        visual.localPositions.Add(new Coords(0, i, ' ', ConsoleColor.Blue, ConsoleColor.Blue));
-                        visual.localPositions.Add(new Coords(1, i, ' ', ConsoleColor.Blue, ConsoleColor.Blue));
-                        visual.localPositions.Add(new Coords(-1, i, ' ', ConsoleColor.Blue, ConsoleColor.Blue));
+                        visual.localPositions.Add(new Coords(0, i, ' ', noteColor, noteBGColor));
+                        visual.localPositions.Add(new Coords(1, i, ' ', noteColor, noteBGColor));
+                        visual.localPositions.Add(new Coords(-1, i, ' ', noteColor, noteBGColor));
                     }
                     for (int i = -2; i > -8; i--)
                     {
                         for (int x = -5 + ((-i) - 2); x < 5 - ((-i) - 3); x++)
                         {
-                            visual.localPositions.Add(new Coords(x, i, ' ', ConsoleColor.Blue, ConsoleColor.Blue));
+                            visual.localPositions.Add(new Coords(x, i, ' ', noteColor, noteBGColor));
                         }
                     }
                     break;
@@ -102,16 +130,16 @@ namespace RhythmThing.Objects
                     visual.y = 40;
                     for (int i = -3; i < 2; i++)
                     {
-                        visual.localPositions.Add(new Coords(0, i, ' ', ConsoleColor.Red, ConsoleColor.Red));
-                        visual.localPositions.Add(new Coords(1, i, ' ', ConsoleColor.Red, ConsoleColor.Red));
-                        visual.localPositions.Add(new Coords(-1, i, ' ', ConsoleColor.Red, ConsoleColor.Red));
+                        visual.localPositions.Add(new Coords(0, i, ' ', noteColor, noteBGColor));
+                        visual.localPositions.Add(new Coords(1, i, ' ', noteColor, noteBGColor));
+                        visual.localPositions.Add(new Coords(-1, i, ' ', noteColor, noteBGColor));
                     }
                     //visual.localPositions.Add(new Coords(8, 0, 'h', ConsoleColor.DarkGreen, ConsoleColor.DarkCyan));
                     for (int i = 2; i < 8; i++)
                     {
                         for (int x = (-5) + i - 2; x < 5 - (i - 3); x++)
                         {
-                            visual.localPositions.Add(new Coords(x, i, ' ', ConsoleColor.Red, ConsoleColor.Red));
+                            visual.localPositions.Add(new Coords(x, i, ' ', noteColor, noteBGColor));
                         }
                     }
                     break;
@@ -119,16 +147,16 @@ namespace RhythmThing.Objects
                     visual.x = 68;
                     for (int i = -3; i < 2; i++)
                     {
-                        visual.localPositions.Add(new Coords(i, 0, ' ', ConsoleColor.Yellow, ConsoleColor.Yellow));
-                        visual.localPositions.Add(new Coords(i, 1, ' ', ConsoleColor.Yellow, ConsoleColor.Yellow));
-                        visual.localPositions.Add(new Coords(i, -1, ' ', ConsoleColor.Yellow, ConsoleColor.Yellow));
+                        visual.localPositions.Add(new Coords(i, 0, ' ', noteColor, noteBGColor));
+                        visual.localPositions.Add(new Coords(i, 1, ' ', noteColor, noteBGColor));
+                        visual.localPositions.Add(new Coords(i, -1, ' ', noteColor, noteBGColor));
                     }
                     //visual.localPositions.Add(new Coords(8, 0, 'h', ConsoleColor.DarkGreen, ConsoleColor.DarkCyan));
                     for (int i = 2; i < 8; i++)
                     {
                         for (int x = (-5) + i - 2; x < 5 - (i - 3); x++)
                         {
-                            visual.localPositions.Add(new Coords(i, x, ' ', ConsoleColor.Yellow, ConsoleColor.Yellow));
+                            visual.localPositions.Add(new Coords(i, x, ' ', noteColor, noteBGColor));
                         }
                     }
                     break;

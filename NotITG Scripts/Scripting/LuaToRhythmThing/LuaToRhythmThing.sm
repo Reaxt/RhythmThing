@@ -1,0 +1,38 @@
+#TITLE:LuaToRhythmThing;
+#SUBTITLE:;
+#ARTIST:;
+#TITLETRANSLIT:;
+#SUBTITLETRANSLIT:;
+#ARTISTTRANSLIT:;
+#GENRE:;
+#CREDIT:Nytlaz;
+#BANNER:;
+#BACKGROUND:bg.png;
+#LYRICSPATH:;
+#CDTITLE:;
+#MUSIC:Natural.ogg;
+#OFFSET:-0.559;
+#SAMPLESTART:55.084;
+#SAMPLELENGTH:12.000;
+#SELECTABLE:YES;
+#BPMS:0.000=110.000;
+#STOPS:;
+#BGCHANGES:;
+//The majority of simfile scripts and visual effects are stored here.
+#FGCHANGES:0.000=lua=1.000=0=0=1=====,
+;
+
+#KEYSOUNDS:;
+
+//---------------dance-single - Ozuma----------------
+#NOTES:
+     dance-single:
+     Ozuma:
+     Challenge:
+     9:
+     0.656,0.753,0.097,1.000,0.408:
+M000
+0M00
+00M0
+000M
+;
