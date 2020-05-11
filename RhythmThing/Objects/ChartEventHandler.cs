@@ -348,7 +348,7 @@ namespace RhythmThing.Objects
                             easings.Add(tempEaseing);
                             break;
                         case "BPMChange":
-                            chart.changeBPM(float.Parse(eventInfo.data));
+                            chart.changeBPM(float.Parse(eventInfo.data), eventInfo.time);
                             break;
                         default:
                             break;
