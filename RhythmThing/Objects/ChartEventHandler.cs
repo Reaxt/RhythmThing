@@ -23,12 +23,15 @@ namespace RhythmThing.Objects
             public float endValueY;
             public int receiver;
             public easeType objectType;
+            public string modName;
         }
         private enum easeType
         {
             window,
             collumn,
-            rotation
+            rotation,
+            mod,
+            movementAmount
         }
         private Chart chart;
         private Receiver[] receivers;
@@ -44,7 +47,7 @@ namespace RhythmThing.Objects
             this.chart = chart;
             this.receivers = receivers;
             this.events = events;
-            this.mods = new Dictionary<string, float> { };
+
         }
         public override void End()
         {
@@ -145,6 +148,7 @@ namespace RhythmThing.Objects
                             easings.Add(tempEaseing);
                             break;
                         case "moveAllCollumnEase":
+                            //x y targetx targety ease time
                             x = float.Parse(eventInfo.data.Split(' ')[0]);
                             y = float.Parse(eventInfo.data.Split(' ')[1]);
 
@@ -183,10 +187,10 @@ namespace RhythmThing.Objects
                             //collumn, startangle, endangle, ease, time
                             tempEaseing.objectType = easeType.rotation;
                             tempEaseing.receiver = int.Parse(eventInfo.data.Split(' ')[0]);
-                            tempEaseing.startValueX = float.Parse(eventInfo.data.Split(' ')[1]);
-                            tempEaseing.endValueX = float.Parse(eventInfo.data.Split(' ')[2]);
+                            tempEaseing.startValueX = float.Parse(eventInfo.data.Split(' ')[1]) / 360;
+                            tempEaseing.endValueX = float.Parse(eventInfo.data.Split(' ')[2]) / 360; ;
                             tempEaseing.easingType = eventInfo.data.Split(' ')[3];
-                            tempEaseing.endTime = float.Parse(eventInfo.data.Split(' ')[4]);
+                            tempEaseing.endTime = float.Parse(eventInfo.data.Split(' ')[4]) + eventInfo.time ;
                             tempEaseing.startTime = eventInfo.time;
                             easings.Add(tempEaseing);
                             break;
@@ -203,10 +207,10 @@ namespace RhythmThing.Objects
                             {
                                 tempEaseing.objectType = easeType.rotation;
                                 tempEaseing.receiver = i;
-                                tempEaseing.startValueX = float.Parse(eventInfo.data.Split(' ')[0]);
-                                tempEaseing.endValueX = float.Parse(eventInfo.data.Split(' ')[1]);
+                                tempEaseing.startValueX = float.Parse(eventInfo.data.Split(' ')[0]) / 360;
+                                tempEaseing.endValueX = float.Parse(eventInfo.data.Split(' ')[1]) / 360;
                                 tempEaseing.easingType = eventInfo.data.Split(' ')[2];
-                                tempEaseing.endTime = float.Parse(eventInfo.data.Split(' ')[3]);
+                                tempEaseing.endTime = float.Parse(eventInfo.data.Split(' ')[3]) + eventInfo.time;
                                 tempEaseing.startTime = eventInfo.time;
                                 easings.Add(tempEaseing);
                             }
@@ -229,9 +233,9 @@ namespace RhythmThing.Objects
                                 tempEaseing.easingType = eventInfo.data.Split(' ')[2];
                                 tempEaseing.startTime = eventInfo.time;
                                 tempEaseing.startValueX = receivers[i].xOffset;
-                                tempEaseing.endValueX = targetx;
+                                tempEaseing.endValueX = targetx + receivers[i].xOffset;
                                 tempEaseing.startValueY = receivers[i].yOffset;
-                                tempEaseing.endValueY = targety;
+                                tempEaseing.endValueY = targety + receivers[i].yOffset;
                                 tempEaseing.endTime = eventInfo.time + float.Parse(eventInfo.data.Split(' ')[3]);
                                 tempEaseing.receiver = i;
                                 tempEaseing.objectType = easeType.collumn;
@@ -239,7 +243,7 @@ namespace RhythmThing.Objects
 
                             }
                             break;
-                        case "realtiveCollumnEase":
+                        case "relativeCollumnEase":
                             //col, targetx, targety, ease, time
                             //x = float.Parse(eventInfo.data.Split(' ')[1]);
                             //y = float.Parse(eventInfo.data.Split(' ')[2]);
@@ -255,9 +259,9 @@ namespace RhythmThing.Objects
                             tempEaseing.easingType = eventInfo.data.Split(' ')[3];
                             tempEaseing.startTime = eventInfo.time;
                             tempEaseing.startValueX = receivers[int.Parse(eventInfo.data.Split(' ')[0])].xOffset;
-                            tempEaseing.endValueX = targetx;
+                            tempEaseing.endValueX = targetx + receivers[int.Parse(eventInfo.data.Split(' ')[0])].xOffset;
                             tempEaseing.startValueY = receivers[int.Parse(eventInfo.data.Split(' ')[0])].yOffset;
-                            tempEaseing.endValueY = targety;
+                            tempEaseing.endValueY = targety + receivers[int.Parse(eventInfo.data.Split(' ')[0])].yOffset;
                             tempEaseing.endTime = eventInfo.time + float.Parse(eventInfo.data.Split(' ')[4]);
                             tempEaseing.receiver = int.Parse(eventInfo.data.Split(' ')[0]);
                             tempEaseing.objectType = easeType.collumn;
@@ -268,9 +272,9 @@ namespace RhythmThing.Objects
                             tempEaseing.objectType = easeType.rotation;
                             tempEaseing.receiver = int.Parse(eventInfo.data.Split(' ')[0]);
                             tempEaseing.startValueX = receivers[int.Parse(eventInfo.data.Split(' ')[0])].rot;
-                            tempEaseing.endValueX = float.Parse(eventInfo.data.Split(' ')[1]);
+                            tempEaseing.endValueX = receivers[int.Parse(eventInfo.data.Split(' ')[0])].rot+(float.Parse(eventInfo.data.Split(' ')[1]) / 360);
                             tempEaseing.easingType = eventInfo.data.Split(' ')[2];
-                            tempEaseing.endTime = float.Parse(eventInfo.data.Split(' ')[3]);
+                            tempEaseing.endTime = float.Parse(eventInfo.data.Split(' ')[3]) + eventInfo.time;
                             tempEaseing.startTime = eventInfo.time;
                             easings.Add(tempEaseing);
                             break;
@@ -281,15 +285,67 @@ namespace RhythmThing.Objects
                                 tempEaseing.objectType = easeType.rotation;
                                 tempEaseing.receiver = i;
                                 tempEaseing.startValueX = receivers[i].rot;
-                                tempEaseing.endValueX = float.Parse(eventInfo.data.Split(' ')[0]);
+                                tempEaseing.endValueX = (float.Parse(eventInfo.data.Split(' ')[0]) / 360) + receivers[i].rot;
                                 tempEaseing.easingType = eventInfo.data.Split(' ')[1];
-                                tempEaseing.endTime = float.Parse(eventInfo.data.Split(' ')[2]);
+                                tempEaseing.endTime = float.Parse(eventInfo.data.Split(' ')[2]) + eventInfo.time;
                                 tempEaseing.startTime = eventInfo.time;
                                 easings.Add(tempEaseing);
                             }
                             break;
                         case "setMovementAmount":
                             Arrow.movementAmount = float.Parse(eventInfo.data.Split(' ')[0]);
+                            break;
+                        case "setCollumnModPercent":
+                            //col, mod, percent
+                            receivers[int.Parse(eventInfo.data.Split(' ')[0])].mods[eventInfo.data.Split(' ')[1]] = float.Parse(eventInfo.data.Split(' ')[2]);
+                            break;
+                        case "setModPercent":
+                            //mod, percent
+                            for (int i = 0; i < 4; i++)
+                            {
+                                receivers[i].mods[eventInfo.data.Split(' ')[0]] = float.Parse(eventInfo.data.Split(' ')[1]);
+                            }
+                            break;
+                        case "setModPercentEase":
+                            //mod, startpercent, endpercent, ease, time
+                            for (int i = 0; i < 4; i++)
+                            {
+                                tempEaseing.receiver = i;
+                                tempEaseing.modName = eventInfo.data.Split(' ')[0];
+                                tempEaseing.startValueX = float.Parse(eventInfo.data.Split(' ')[1]);
+                                tempEaseing.endValueX = float.Parse(eventInfo.data.Split(' ')[2]);
+                                tempEaseing.easingType = eventInfo.data.Split(' ')[3];
+                                tempEaseing.endTime = float.Parse(eventInfo.data.Split(' ')[4]) + eventInfo.time;
+                                tempEaseing.startTime = eventInfo.time;
+                                tempEaseing.objectType = easeType.mod;
+                                easings.Add(tempEaseing);
+
+                            }
+                            break;
+
+                        case "setCollumnModPercentEase":
+                            //col mod, startpercent, endpercent, ease, time
+                            
+                            tempEaseing.receiver = int.Parse(eventInfo.data.Split(' ')[0]);
+                            tempEaseing.modName = eventInfo.data.Split(' ')[1];
+                            tempEaseing.startValueX = float.Parse(eventInfo.data.Split(' ')[2]);
+                            tempEaseing.endValueX = float.Parse(eventInfo.data.Split(' ')[3]);
+                            tempEaseing.easingType = eventInfo.data.Split(' ')[4];
+                            tempEaseing.endTime = float.Parse(eventInfo.data.Split(' ')[5]) + eventInfo.time;
+                            tempEaseing.startTime = eventInfo.time;
+                            tempEaseing.objectType = easeType.mod;
+                            easings.Add(tempEaseing);
+                                break;
+                        case "setMovementAmountEase":
+                            //start end ease time
+                            tempEaseing.startValueX = float.Parse(eventInfo.data.Split(' ')[0]);
+                            tempEaseing.endValueX = float.Parse(eventInfo.data.Split(' ')[1]);
+                            tempEaseing.easingType = eventInfo.data.Split(' ')[2];
+                            tempEaseing.startTime = eventInfo.time;
+                            tempEaseing.endTime = eventInfo.time + float.Parse(eventInfo.data.Split(' ')[3]);
+                            tempEaseing.objectType = easeType.movementAmount;
+                            
+                            easings.Add(tempEaseing);
                             break;
                         default:
                             break;
@@ -346,9 +402,27 @@ namespace RhythmThing.Objects
                     else
                     {
                         //ease basically takes a percent
-                        receivers[item.receiver].rot = (int)Ease.Lerp(item.startValueX, item.endValueX, Ease.byName[item.easingType]((chart.beat - item.startTime) / (item.endTime - item.startTime)));
+                        receivers[item.receiver].rot = Ease.Lerp(item.startValueX, item.endValueX, Ease.byName[item.easingType]((chart.beat - item.startTime) / (item.endTime - item.startTime)));
                         
                         //windowManager.moveWindow(Ease.Lerp(item.startValueX, item.endValueX, Ease.byName[item.easingType]((chart.beat - item.startTime) / (item.endTime - item.startTime))), Ease.Lerp(item.startValueY, item.endValueY, Ease.byName[item.easingType]((chart.beat - item.startTime) / (item.endTime - item.startTime))));
+                    }
+                } else if(item.objectType == easeType.mod)
+                {
+                    if(chart.beat >= item.endTime)
+                    {
+                        toDie.Add(item);
+                    } else
+                    {
+                        receivers[item.receiver].mods[item.modName] = Ease.Lerp(item.startValueX, item.endValueX, Ease.byName[item.easingType]((chart.beat - item.startTime) / (item.endTime - item.startTime)));
+                    }
+                } else if(item.objectType == easeType.movementAmount)
+                {
+                    if(chart.beat >= item.endTime)
+                    {
+                        toDie.Add(item);
+                    } else
+                    {
+                        Arrow.movementAmount = Ease.Lerp(item.startValueX, item.endValueX, Ease.byName[item.easingType](chart.beat - item.startTime) / (item.endTime - item.startTime));
                     }
                 }
             }

@@ -29,6 +29,7 @@ namespace RhythmThing.Objects
         private List<Arrow> arrows;
         private bool nMiss = false;
         public Arrow.direction direction = Arrow.direction.down;
+        public Dictionary<string, float> mods;
         public override void End()
         {
         }
@@ -40,6 +41,10 @@ namespace RhythmThing.Objects
             spawnedNotes = new List<Chart.NoteInfo>();
             deadNotes = new List<Arrow>();
             arrows = new List<Arrow>();
+            //dictionary representing mods
+            this.mods = new Dictionary<string, float>();
+            mods.Add("bumpy", 0);
+            mods.Add("wave", 0);
 
 
         }
@@ -163,6 +168,7 @@ namespace RhythmThing.Objects
                     Arrow temparrow = new Arrow(collumn, note, this.chart);
                     game.addGameObject(temparrow);
                     arrows.Add(temparrow);
+                    temparrow.mods = this.mods;
                     spawnedNotes.Add(note);
                 }
             }
