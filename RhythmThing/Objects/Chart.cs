@@ -41,6 +41,7 @@ namespace RhythmThing.Objects
             public float time;
             public collumn collumn;
         }
+        //TODO: Make an enum to define event types
         public struct EventInfo
         {
             //these will be dealt with accordingly depending on the event
@@ -83,6 +84,7 @@ namespace RhythmThing.Objects
 
         public override void Start(Game game)
         {
+            Arrow.movementAmount = 75; //static amount
             this.components = new List<Component>();
             type = objType.nonvisual;
 
@@ -140,7 +142,7 @@ namespace RhythmThing.Objects
             song = game.audioManager.addTrack(Path.Combine(chartPath, chartInfo.songPath));
             //debug obj
             game.addGameObject(new ChartDebug(this));
-            float startBeat = 100;
+            float startBeat = 275;
             //song.sampleSource.SetPosition(TimeSpan.FromMilliseconds(startBeat / ((float)(chartInfo.bpm) / 60000)));
 
         }

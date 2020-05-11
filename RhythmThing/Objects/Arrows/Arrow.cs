@@ -20,11 +20,12 @@ namespace RhythmThing.Objects
         private int actualX;
         private int actualY;
         private int parX;
-
+        public Dictionary<string, float> mods;
         private Chart chart;
         private float jumpAmount;
         private float beatTime;
-        public static float movementAmount;
+        //static value thats nice
+        public static float movementAmount = 100;
         
         //this needs to be changed
         public enum direction
@@ -139,7 +140,7 @@ namespace RhythmThing.Objects
 
             //visual.y = visual.y - 100;
             //movementAmount = 100;
-            movementAmount = 100;
+            //movementAmount = 100;
             components.Add(visual);
             aimY = visual.y;
             actualX = visual.x;
@@ -167,10 +168,18 @@ namespace RhythmThing.Objects
             visual.y = actualY + yOffset; */
             
             float percent = noteInfo.time - chart.beat;
+
+            //set x and ymodoffset
+            xModOffset = 0;
+            yModOffset = 0;
+            //bumpy!
+            xModOffset += (int)(mods["bumpy"] * Math.Sin(percent * 2 * Math.PI * 1));
+            yModOffset += (int)(mods["wave"] * 3 * Math.Cos(percent * 2 * Math.PI * 2));
             
             actualY = (int)(aimY - Math.Cos(angle * 2 * Math.PI) * (Math.Round((percent / chart.chartInfo.bpm) * 60 * movementAmount)));
-            visual.x = actualX + xOffset - (int)(Math.Sin(angle * 2 * Math.PI) * (Math.Round((percent / chart.chartInfo.bpm) * 60 * movementAmount)));
-            visual.y = actualY + yOffset;
+            //angle calculation done by Nytlaz because I Can Not Math
+            visual.x = actualX + xOffset - (int)(Math.Sin(angle * 2 * Math.PI) * (Math.Round((percent / chart.chartInfo.bpm) * 60 * movementAmount))) + xModOffset;
+            visual.y = actualY + yOffset + yModOffset;
         }
     }
 }
