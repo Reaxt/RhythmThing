@@ -15,6 +15,8 @@ namespace RhythmThing
         //this was written with massive help from a good friend of mine, ikeiwa. https://github.com/ikeiwa 
         //Lesson to be learned is that interop is hard.
 
+        
+
         IntPtr wHnd;
         int wwidth = 100;
         int wheight = 50;
@@ -127,6 +129,9 @@ namespace RhythmThing
         const int MONITOR_DEFAULTTOPRIMARY = 1;
         [DllImport("user32.dll")]
         static extern bool GetMonitorInfo(IntPtr hMonitor, ref MONITORINFO lpmi);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+        private static extern IntPtr GetForegroundWindow();
 
         [StructLayout(LayoutKind.Sequential)]
         struct MONITORINFO
@@ -252,6 +257,19 @@ namespace RhythmThing
 
             GetWindowRect(new HandleRef(this, hwnd), out existingRect);
             MoveWindow(hwnd, (mi.rcWork.Right / 2) - ((existingRect.Right - existingRect.Left) / 2), (mi.rcWork.Bottom / 2) - ((existingRect.Bottom - existingRect.Top)/2), existingRect.Right - existingRect.Left, existingRect.Bottom - existingRect.Top, false);
+        }
+        public static bool isFocused()
+        {
+            var activatedHandle = GetForegroundWindow();
+            var hwnd = GetConsoleWindow();
+            if(activatedHandle == hwnd)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
