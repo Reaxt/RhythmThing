@@ -25,6 +25,7 @@ namespace RhythmThing.Objects
         {
             public string songPath;
             public float bpm;
+            public float offset;
             public string songName;
             public string songAuthor;
             public string chartAuthor;
@@ -150,7 +151,7 @@ namespace RhythmThing.Objects
         public override void Update(double time, Game game)
         {
             //calculate the current "beat"
-            double tempbeat = ((TimeConverterFactory.Instance.GetTimeConverterForSource(song.sampleSource).ToTimeSpan(song.sampleSource.WaveFormat, song.sampleSource.Position).TotalMilliseconds) * ((float)(chartInfo.bpm) / 60000));
+            double tempbeat = ((TimeConverterFactory.Instance.GetTimeConverterForSource(song.sampleSource).ToTimeSpan(song.sampleSource.WaveFormat, song.sampleSource.Position).TotalMilliseconds + (chartInfo.offset * 1000)) * ((float)(chartInfo.bpm) / 60000));
             beat = (float)Math.Round(tempbeat, 2);
 
             if (song.sampleSource.GetLength().TotalMilliseconds <= song.sampleSource.GetPosition().TotalMilliseconds)
