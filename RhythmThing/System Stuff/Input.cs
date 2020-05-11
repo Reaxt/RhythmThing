@@ -32,11 +32,15 @@ namespace RhythmThing.System_Stuff
             rightKey = buttonState.off;
             enterKey = buttonState.off;
             escKey = buttonState.off;
-        }
 
+        }
+        
         public static void UpdateInput()
         {
-
+            if (!WindowManager.isFocused())
+            {
+                return;
+            }
             if (Keyboard.IsKeyDown(Key.Escape))
             {
                 if (escKey == buttonState.off)

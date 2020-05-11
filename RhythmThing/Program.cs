@@ -12,9 +12,9 @@ namespace RhythmThing
      * Main loop DONE
      * obj and component system DONE
      * Visual class DONE, might need some work
-     * input test X Postponed
+     * input test DONE
      * audio controller DONE
-     * no scene element this time I dont think, maybe, dunno. BLECH
+     * no scene element this time I dont think, maybe, dunno. BLECH (just kidding. DONE )
      * 
      * GAME:
      * make the rest of the fucking game X
