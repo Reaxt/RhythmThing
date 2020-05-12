@@ -45,7 +45,7 @@ namespace RhythmThing.Objects
             this.mods = new Dictionary<string, float>();
             mods.Add("bumpy", 0);
             mods.Add("wave", 0);
-
+            mods.Add("beat", 0);
 
         }
         public override void Start(Game game)
