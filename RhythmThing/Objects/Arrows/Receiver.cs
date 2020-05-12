@@ -45,7 +45,7 @@ namespace RhythmThing.Objects
             this.mods = new Dictionary<string, float>();
             mods.Add("bumpy", 0);
             mods.Add("wave", 0);
-
+            
 
         }
         public override void Start(Game game)
@@ -154,8 +154,14 @@ namespace RhythmThing.Objects
 
         public override void Update(double time, Game game)
         {
-            visual.x = xOffset + actualX;
-            visual.y = yOffset + actualY;
+            xModOffset = 0;
+            yModOffset = 0;
+            //how to do mods!
+            //xModOffset += (int)(mods["bumpy"] * Math.Sin(percent * 2 * Math.PI * 1));
+            //yModOffset += (int)(mods["wave"] * 3 * Math.Cos(percent * 2 * Math.PI * 2));
+
+            visual.x = xOffset + actualX + xModOffset;
+            visual.y = yOffset + actualY + yModOffset;
             pressedVisual.x = visual.x;
             pressedVisual.y = visual.y;
             nMiss = false;

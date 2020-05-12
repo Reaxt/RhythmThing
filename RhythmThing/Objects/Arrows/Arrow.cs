@@ -174,7 +174,7 @@ namespace RhythmThing.Objects
             actualX = visual.x;
             actualY = visual.y;
             float percent = noteInfo.time - chart.beat;
-            visual.y = (int)(aimY - Math.Round((percent / chart.chartInfo.bpm) * 60 * movementAmount));
+            visual.y = (int)(aimY - Math.Round((percent / chart.firstBPM) * 60 * movementAmount));
             actualY = visual.y;
             visual.x = actualX + xOffset;
             visual.y = actualY + yOffset;
@@ -204,9 +204,9 @@ namespace RhythmThing.Objects
             xModOffset += (int)(mods["bumpy"] * Math.Sin(percent * 2 * Math.PI * 1));
             yModOffset += (int)(mods["wave"] * 3 * Math.Cos(percent * 2 * Math.PI * 2));
             
-            actualY = (int)(aimY - Math.Cos(angle * 2 * Math.PI) * (Math.Round((percent / chart.chartInfo.bpm) * 60 * movementAmount)));
+            actualY = (int)(aimY - Math.Cos(angle * 2 * Math.PI) * (Math.Round((percent / chart.firstBPM) * 60 * movementAmount)));
             //angle calculation done by Nytlaz because I Can Not Math
-            visual.x = actualX + xOffset - (int)(Math.Sin(angle * 2 * Math.PI) * (Math.Round((percent / chart.chartInfo.bpm) * 60 * movementAmount))) + xModOffset;
+            visual.x = actualX + xOffset - (int)(Math.Sin(angle * 2 * Math.PI) * (Math.Round((percent / chart.firstBPM) * 60 * movementAmount))) + xModOffset;
             visual.y = actualY + yOffset + yModOffset;
         }
     }

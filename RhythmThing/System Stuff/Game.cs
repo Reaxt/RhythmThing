@@ -10,7 +10,7 @@ namespace RhythmThing.System_Stuff
     public class Game
     {
         //these three variables are for various scoring elements
-        public static float approachSpeed = 1300;
+        public static float approachSpeed = 5300;
         public static float scoringTime = 100;
         public static float missTime = 250;
         //a ref to the game instance JUST in case
