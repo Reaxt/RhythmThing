@@ -249,14 +249,14 @@ namespace RhythmThing.Objects
                     }
 
                     if (beatModEvenBeat)
-                    {   
+                    {
                         // Go the other way on even beats
                         beatModAmount *= -1;
                     }
 
                     // Use the amount to scale a fast sin wave, so things beat 
                     // back and forth differently depending on the kind of note.
-                    float beatModShift = 10.0f * beatModAmount * (float)Math.Sin(percent * 2 * Math.PI + Math.PI);
+                    float beatModShift = 10.0f * beatModAmount * (float)Math.Sin(percent * 2 * Math.PI + Math.PI / 2.0f);
 
                     // We're done!
                     xModOffset += (int)(mods["beat"] * beatModShift);
