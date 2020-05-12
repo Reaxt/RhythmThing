@@ -148,8 +148,8 @@ namespace RhythmThing.Objects
             song = game.audioManager.addTrack(Path.Combine(chartPath, chartInfo.songPath));
             //debug obj
             game.addGameObject(new ChartDebug(this));
-            float startBeat = 150;
-            //song.sampleSource.SetPosition(TimeSpan.FromMilliseconds(startBeat / ((float)(chartInfo.bpm) / 60000)));
+            float startBeat = 250;
+            song.sampleSource.SetPosition(TimeSpan.FromMilliseconds(startBeat / ((float)(chartInfo.bpm) / 60000)));
 
         }
         public void changeBPM(float newBPM, float beatChanged)
