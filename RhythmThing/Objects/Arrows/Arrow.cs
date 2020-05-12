@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using RhythmThing.System_Stuff;
 using RhythmThing.Components;
 using System.Runtime.InteropServices;
+using RhythmThing.Utils;
 
 namespace RhythmThing.Objects
 {
@@ -198,70 +199,11 @@ namespace RhythmThing.Objects
             float percent = noteInfo.time - chart.beat;
 
             //set x and ymodoffset
-            xModOffset = 0;
-            yModOffset = 0;
+            xModOffset = ModEffects.CalculateArrowX(mods, percent);
+            yModOffset = ModEffects.CalculateArrowY(mods, percent);
 
-            //bumpy!
-            xModOffset += (int)(mods["bumpy"] * Math.Sin(percent * 2 * Math.PI * 1));
-            yModOffset += (int)(mods["wave"] * 3 * Math.Cos(percent * 2 * Math.PI * 2));
 
-            //beat! Mod code ported from OpenITG
-            float beatModAccelTime = 0.2f;
-            float beatModTotalTime = 0.5f;
-            // Slow it down if the song is too fast, otherwise things look wrong
-            float beatModDivRate = Math.Max(1.0f, (float)(Math.Truncate(chart.chartInfo.bpm / 150.0f)));
 
-            // Speed up the time the beat occurs over, otherwise it starts to overlap
-            beatModAccelTime /= beatModDivRate;
-            beatModTotalTime /= beatModDivRate;
-
-            float beatModBeat = chart.beat;
-            beatModBeat /= beatModDivRate;
-
-            // False if the beat is even, true if beat is odd
-            bool beatModEvenBeat = ((int)(beatModBeat) % 2) != 0;
-
-            // Only start if we're slightly past the start of the beat
-            if (beatModBeat >= 0)
-            {   
-                // Get the fractional component of the beat, and take absolute value
-                beatModBeat -= (int)Math.Truncate(beatModBeat);
-                beatModBeat += 1;
-                beatModBeat -= (int)Math.Truncate(beatModBeat);
-
-                // Check to make sure we haven't finished the mod calculation for this beat yet
-                if (beatModBeat < beatModTotalTime)
-                {
-                    float beatModAmount;
-
-                    // If we haven't finished the startup acceleration, do that scaling first
-                    if (beatModBeat < beatModAccelTime)
-                    {
-                        // Scale the amount to the time we accelerate outwards
-                        beatModAmount = beatModBeat / beatModAccelTime;
-                        beatModAmount *= beatModAmount;
-                    } else
-                    {
-                        // Scale the amount to the time we accelerate backwards
-                        beatModAmount = ((beatModBeat - beatModAccelTime) * (0.0f - 1.0f) / (beatModTotalTime - beatModAccelTime)) + 1.0f;
-                        // Invert and square beatmodamount
-                        beatModAmount = 1 - (1 - beatModAmount) * (1 - beatModAmount);
-                    }
-
-                    if (beatModEvenBeat)
-                    {
-                        // Go the other way on even beats
-                        beatModAmount *= -1;
-                    }
-
-                    // Use the amount to scale a fast sin wave, so things beat 
-                    // back and forth differently depending on the kind of note.
-                    float beatModShift = 10.0f * beatModAmount * (float)Math.Sin(percent * 2 * Math.PI + Math.PI / 2.0f);
-
-                    // We're done!
-                    xModOffset += (int)(mods["beat"] * beatModShift);
-                }
-            }
             
             actualY = (int)(aimY - Math.Cos(angle * 2 * Math.PI) * (Math.Round((percent / chart.firstBPM) * 60 * movementAmount)));
             //angle calculation done by Nytlaz because I Can Not Math
