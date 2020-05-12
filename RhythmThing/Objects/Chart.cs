@@ -69,6 +69,7 @@ namespace RhythmThing.Objects
         public float approachBeat;
         public float scoreTime;
         public float missTime;
+        public float firstBPM;
         private float lastBPMChangeBeat = 0;
         private double mstoSUB = 0;
         private float beatstoADD = 0;
@@ -143,10 +144,11 @@ namespace RhythmThing.Objects
             scoreHandler = new ScoreHandler(this, chartInfo.notes.Length);
             game.addGameObject(scoreHandler);
             game.addGameObject(chartEventHandler);
+            firstBPM = chartInfo.bpm;
             song = game.audioManager.addTrack(Path.Combine(chartPath, chartInfo.songPath));
             //debug obj
             game.addGameObject(new ChartDebug(this));
-            float startBeat = 100;
+            float startBeat = 150;
             //song.sampleSource.SetPosition(TimeSpan.FromMilliseconds(startBeat / ((float)(chartInfo.bpm) / 60000)));
 
         }
