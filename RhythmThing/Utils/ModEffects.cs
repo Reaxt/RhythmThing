@@ -17,7 +17,9 @@ namespace RhythmThing.Utils
         private static float cordieSub = 3.5f;
         //bumpy
         private static float bumpyFreq = 2.0f;
-
+        //afterimage
+        private static float afterimageFreq = 40;
+        private static float afterimageExpo = 75;
         //beat
         private static float beatModAccelTime = 0.2f;
         private static float beatModTotalTime = 0.5f;
@@ -55,12 +57,13 @@ namespace RhythmThing.Utils
             int modOffset = 0;
             //simpler mods 
             modOffset += (int)(mods["bumpy"] * Math.Sin(percent * bumpyFreq * Math.PI * 1));
-            //Dave is scary. A visual of daves function can be seen here: https://owo.sh/82R54Vv.png
+            //Dave is scary. A visual of daves function can be seen here: https://owo.sh/82R54Vv.png . I do not understand why dave exists. Dave scares me. There are no constants for dave because I dont fucking understand it. It is capitalised weirdly to discourage people using it in charts.
+            //I will not remove dave.
             modOffset += (int)(mods["dAVE"] * Math.Sin((Math.Pow((-2), (int)(percent * 10)))));
             //Cordie is less scary. Still pretty illegal https://owo.sh/31wUcsL.png
             modOffset += (int)(mods["cordie"] * Math.Pow(Math.Sin(percent * Math.Tan((Math.Tanh(percent-cordieSub) + 0.5) * 100)), 3));
             //afterimage kinda makes a glitchy like effect. Originally tried to make a mountain, but led to this instead https://owo.sh/4FqJgsr.png
-            modOffset += (int)(mods["afterimageX"] * Math.Pow(Math.Sin(percent * 40), 75));
+            modOffset += (int)(mods["afterimageX"] * Math.Pow(Math.Sin(percent * afterimageFreq), afterimageExpo));
 
 
             //(smh Nytlaz your comments make my comments look bad >:c) -Reaxt
