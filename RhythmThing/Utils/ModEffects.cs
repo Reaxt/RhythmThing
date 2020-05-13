@@ -38,7 +38,8 @@ namespace RhythmThing.Utils
             mods.Add("tan", 0);
             mods.Add("dAVE", 0);
             mods.Add("cordie", 0);
-            mods.Add("afterimage", 0);
+            mods.Add("afterimageX", 0);
+            mods.Add("afterimageY", 0);
             return mods;
         }
         //this class is used to calculate all the mod effects on receivers and arrows.
@@ -59,9 +60,9 @@ namespace RhythmThing.Utils
             //Cordie is less scary. Still pretty illegal https://owo.sh/31wUcsL.png
             modOffset += (int)(mods["cordie"] * Math.Pow(Math.Sin(percent * Math.Tan((Math.Tanh(percent-cordieSub) + 0.5) * 100)), 3));
             //afterimage kinda makes a glitchy like effect. Originally tried to make a mountain, but led to this instead https://owo.sh/4FqJgsr.png
-            modOffset += (int)(mods["afterimage"] * Math.Pow(Math.Sin(percent * 40), 75));
-            
-            
+            modOffset += (int)(mods["afterimageX"] * Math.Pow(Math.Sin(percent * 40), 75));
+
+
             //(smh Nytlaz your comments make my comments look bad >:c) -Reaxt
             //beat! Mod code ported from OpenITG
             float beatModAccelTime = 0.2f;
@@ -137,6 +138,7 @@ namespace RhythmThing.Utils
             //calculate wave!
             modOffset += (int)(mods["wave"] * 3 * Math.Cos(percent * 2 * Math.PI * 2));
             modOffset += (int)(mods["tan"] * Math.Tan(percent * tanFreq * Math.PI * 1));
+            modOffset += (int)(mods["afterimageY"] * Math.Pow(Math.Sin(percent * 40), 75));
 
             return modOffset;
         }
