@@ -204,16 +204,17 @@ namespace RhythmThing.Objects.Menu
                         if (songs.Count > drawAmount)
                         {
                             selector.y = 45 + ((drawAmount - 1) * -5);
+                            currentLowestSelect = (count - (drawAmount - 1));
 
                         }
                         else
                         {
                             selector.y = 45 + ((count) * -5);
+                            currentLowestSelect = 0;
                         }
                         selected = count;
                         DrawFromPoint(count - (drawAmount - 1));
                         currentHighestSelect = count;
-                        currentLowestSelect = (count - (drawAmount - 1));
                     }
                     chartInfoVisual.UpdateChart(songs[selected].chart.chartInfo);
                 }
