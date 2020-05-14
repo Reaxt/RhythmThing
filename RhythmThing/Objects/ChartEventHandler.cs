@@ -115,12 +115,22 @@ namespace RhythmThing.Objects
                             easings.Add(tempEaseing);
                             break;
                         case "moveCollumn":
-                            //collumn, offsetX, offsetY (both based off current loc)
+                            //collumn, offsetX, offsetY (both based off ~~current loc~~ starting loc)
                             collumn = float.Parse((eventInfo).data.Split(' ')[0]);
                             targetx = float.Parse((eventInfo).data.Split(' ')[1]);
                             targety = float.Parse((eventInfo).data.Split(' ')[2]);
                             receivers[(int)collumn].xOffset = (int)targetx;
                             receivers[(int)collumn].yOffset = (int)targety;
+                            break;
+                        case "moveAllCollumn":
+                            //offsetX, offsetY
+                            targetx = float.Parse((eventInfo.data.Split(' ')[0]));
+                            targety = float.Parse((eventInfo).data.Split(' ')[1]);
+                            for (int i = 0; i < 4; i++)
+                            {
+                                receivers[i].xOffset = (int)targetx;
+                                receivers[i].yOffset = (int)targety;
+                            }
                             break;
                         case "moveCollumnEase":
                             //collumn, startX, startY, endX, endY, type, duration
@@ -380,20 +390,21 @@ namespace RhythmThing.Objects
 
                 } else if(item.objectType == easeType.collumn)
                 {
+
+                        //ease basically takes a percent
+                        receivers[item.receiver].xOffset = (int)Math.Round(Ease.Lerp(item.startValueX, item.endValueX, Ease.byName[item.easingType]((chart.beat - item.startTime) / (item.endTime - item.startTime))));
+                        receivers[item.receiver].yOffset = (int)Math.Round(Ease.Lerp(item.startValueY, item.endValueY, Ease.byName[item.easingType]((chart.beat - item.startTime) / (item.endTime - item.startTime))));
+
+                    //windowManager.moveWindow(Ease.Lerp(item.startValueX, item.endValueX, Ease.byName[item.easingType]((chart.beat - item.startTime) / (item.endTime - item.startTime))), Ease.Lerp(item.startValueY, item.endValueY, Ease.byName[item.easingType]((chart.beat - item.startTime) / (item.endTime - item.startTime))));
+                    //is having this after a good idea? maybe? should I have it like this on the other easings?? how do I even test for fuckups?!?!?!? 
+                    //FOUND THE FUCKUP! Make sure this sets us to the end
                     if (chart.beat >= item.endTime)
                     {
-                        
-                        //float hm = Ease.byName[item.easingType](chart.beat - item.startTime, item.endTime - item.startTime, item.startValueX, item.endValueX)/1.6f;
+                        receivers[item.receiver].xOffset = (int)item.endValueX;
+                        receivers[item.receiver].yOffset = (int)item.endValueY;
                         toDie.Add(item);
                     }
-                    else
-                    {
-                        //ease basically takes a percent
-                        receivers[item.receiver].xOffset = (int)Ease.Lerp(item.startValueX, item.endValueX, Ease.byName[item.easingType]((chart.beat - item.startTime) / (item.endTime - item.startTime)));
-                        receivers[item.receiver].yOffset = (int)Ease.Lerp(item.startValueY, item.endValueY, Ease.byName[item.easingType]((chart.beat - item.startTime) / (item.endTime - item.startTime)));
 
-                        //windowManager.moveWindow(Ease.Lerp(item.startValueX, item.endValueX, Ease.byName[item.easingType]((chart.beat - item.startTime) / (item.endTime - item.startTime))), Ease.Lerp(item.startValueY, item.endValueY, Ease.byName[item.easingType]((chart.beat - item.startTime) / (item.endTime - item.startTime))));
-                    }
                 } else if(item.objectType == easeType.rotation)
                 {
                     if (chart.beat >= item.endTime)

@@ -89,6 +89,7 @@
     <Compile Include="Components\Scene.cs" />
     <Compile Include="System Stuff\SceneManager.cs" />
     <Compile Include="Utils\Easings.cs" />
+    <Compile Include="Utils\ModEffects.cs" />
     <Compile Include="WindowManager.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -52,11 +52,13 @@ namespace RhythmThing.Objects
 
         }
         // ---END OF STRUCTS AND ENUMS---
+        public static Chart instance;
         private string folderName;
         private string chartPath;
         public JsonChart chartInfo;
         private AudioTrack song;
         private List<NoteInfo> msNotes;
+        
 
         private Receiver leftReceiver;
         private Receiver downReceiver;
@@ -89,6 +91,7 @@ namespace RhythmThing.Objects
 
         public override void Start(Game game)
         {
+            instance = this;
             Arrow.movementAmount = 75; //static amount
             this.components = new List<Component>();
             type = objType.nonvisual;
@@ -148,8 +151,8 @@ namespace RhythmThing.Objects
             song = game.audioManager.addTrack(Path.Combine(chartPath, chartInfo.songPath));
             //debug obj
             game.addGameObject(new ChartDebug(this));
-            float startBeat = 150;
-            //song.sampleSource.SetPosition(TimeSpan.FromMilliseconds(startBeat / ((float)(chartInfo.bpm) / 60000)));
+            float startBeat = 10;
+            song.sampleSource.SetPosition(TimeSpan.FromMilliseconds(startBeat / ((float)(chartInfo.bpm) / 60000)));
 
         }
         public void changeBPM(float newBPM, float beatChanged)
