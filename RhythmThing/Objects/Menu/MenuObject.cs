@@ -16,6 +16,9 @@ namespace RhythmThing.Objects.Menu
         private ChartInfoVisual chartInfoVisual;
         private int selected = 0;
         private int count = -1;
+        private int drawAmount = 8;
+        private int currentHighestSelect = 7;//must be same as drawAmount-1
+        private int currentLowestSelect = 0; 
         public override void End()
         {
             //throw new NotImplementedException();
@@ -54,8 +57,34 @@ namespace RhythmThing.Objects.Menu
             components.Add(selector);
             chartInfoVisual = new ChartInfoVisual(songs[selected].chart.chartInfo);
             game.addGameObject(chartInfoVisual);
-            
-            
+
+            DrawFromPoint(0);
+        }
+
+        //should only ever be called from a safe index. otherwise I fucked up elsewhere lo
+        void DrawFromPoint(int topmost)
+        {
+            //reset
+            foreach(SongContainer songContainer in songs)
+            {
+                songContainer.visual.active = false;
+            }
+            //draw starting from point, draw drawamount or limit
+            if(songs.Count >= drawAmount)
+            {
+                for (int i = topmost; i < drawAmount+topmost; i++)
+                {
+                    songs[i].visual.active = true;
+                    songs[i].visual.y = (45 + ((i-topmost) * -5));
+                }
+            } else
+            {
+                for (int i = 0; i < songs.Count; i++)
+                {
+                    songs[i].visual.active = true;
+                }
+            }
+
         }
 
         public override void Update(double time, Game game)
@@ -64,13 +93,27 @@ namespace RhythmThing.Objects.Menu
             {
                 if (selected < count)
                 {
+
                     selected++;
-                    selector.y = selector.y - 5;
+                    if (selected > currentHighestSelect)
+                    {
+                        currentLowestSelect++;
+                        currentHighestSelect++;
+                        DrawFromPoint(currentLowestSelect);
+                    } else
+                    {
+                        selector.y = selector.y - 5;
+
+                    }
+                    
 
                 } else
                 {
                     selector.y = 45;
                     selected = 0;
+                    DrawFromPoint(0);
+                    currentLowestSelect = 0;
+                    currentHighestSelect = drawAmount-1;
                 }
                 chartInfoVisual.UpdateChart(songs[selected].chart.chartInfo);
             }
@@ -79,13 +122,32 @@ namespace RhythmThing.Objects.Menu
                 if (selected > 0)
                 {
                     selected--;
-                    selector.y = selector.y + 5;
+                    if(selected < currentLowestSelect)
+                    {
+                        currentLowestSelect--;
+                        currentHighestSelect--;
+                        DrawFromPoint(currentLowestSelect);
+                    } else
+                    {
+                        selector.y = selector.y + 5;
+
+                    }
 
                 }
                 else
                 {
-                    selector.y = 45 + (count * -5);
+                    if(songs.Count > drawAmount)
+                    {
+                    selector.y = 45 + ((drawAmount-1) * -5);
+
+                    } else
+                    {
+                        selector.y = 45 + ((count) * -5);
+                    }
                     selected = count;
+                    DrawFromPoint(count - (drawAmount-1));
+                    currentHighestSelect = count;
+                    currentLowestSelect = (count - (drawAmount-1));
                 }
                 chartInfoVisual.UpdateChart(songs[selected].chart.chartInfo);
             }
