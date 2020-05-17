@@ -31,6 +31,7 @@ namespace RhythmThing.Objects
         private bool nMiss = false;
         public Arrow.direction direction = Arrow.direction.down;
         public Dictionary<string, float> mods;
+        public bool frozen = false;
         public override void End()
         {
         }
@@ -268,7 +269,8 @@ namespace RhythmThing.Objects
                     chart.scoreHandler.Miss(false);
                     deadNotes.Add(item);
                 }
-
+                //REALLLLY FEELS LIKE A BAD IDEA DOING THIS LIKE THIS
+                item.freeze(this.frozen);
             }
             foreach (var item in deadNotes)
             {

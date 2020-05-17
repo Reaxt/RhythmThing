@@ -72,6 +72,7 @@ namespace RhythmThing.Objects
                     float x = 0;
                     float y = 0;
                     float collumn;
+                    
                     float targetx = 0;
                     float targety = 0;
                     //run the event n shit
@@ -208,7 +209,7 @@ namespace RhythmThing.Objects
                             //angle
                             for (int i = 0; i < 4; i++)
                             {
-                                receivers[i].rot = float.Parse(eventInfo.data);
+                                receivers[i].rot = float.Parse(eventInfo.data)/360;
                             }
                             break;
                         case "setAllCollumnAngleEase":
@@ -251,6 +252,44 @@ namespace RhythmThing.Objects
                                 tempEaseing.objectType = easeType.collumn;
                                 easings.Add(tempEaseing);
 
+                            }
+                            break;
+                        case "relativeAllCollumnMove":
+                            targetx = float.Parse(eventInfo.data.Split(' ')[0]);
+                            targety = float.Parse(eventInfo.data.Split(' ')[1]);
+                            for (int i = 0; i < 4; i++)
+                            {
+                                receivers[i].xOffset = (int)Math.Round(targetx + receivers[i].xOffset);
+                                receivers[i].yOffset = (int)Math.Round(targety + receivers[i].yOffset);
+
+
+                            }
+                            break;
+                        case "freezeCollumnArrows":
+                            //collumn, 0/1
+                            //0= unfrozen
+                            //1 = frozen
+                            int col = int.Parse(eventInfo.data.Split(' ')[0]);
+                            int frozena = int.Parse(eventInfo.data.Split(' ')[1]);
+                            if(frozena == 0)
+                            {
+                                receivers[col].frozen = false;
+                            } else
+                            {
+                                receivers[col].frozen = true;
+                            }
+                            break;
+                        case "freezeAllCollumnArrows":
+                            int frozenb = int.Parse(eventInfo.data);
+                            for (int i = 0; i < 4; i++)
+                            {
+                                if(frozenb == 0)
+                                {
+                                    receivers[i].frozen = false;
+                                } else
+                                {
+                                    receivers[i].frozen = true;
+                                }
                             }
                             break;
                         case "relativeCollumnEase":

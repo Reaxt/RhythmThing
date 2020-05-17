@@ -29,6 +29,10 @@ namespace RhythmThing.Objects
         private ConsoleColor noteBGColor;
         private float jumpAmount;
         private float beatTime;
+        public bool frozen;
+        private int frozenX;
+        private int frozenY;
+        private bool wealive = false;
         //static value thats nice
         public static float movementAmount = 100;
         
@@ -180,7 +184,20 @@ namespace RhythmThing.Objects
             visual.x = actualX + xOffset;
             visual.y = actualY + yOffset;
         }
-
+        public void freeze(bool freeze)
+        {
+            //only run if we're alive
+            if (!wealive) return;
+            if(freeze)
+            {
+                this.frozenX = visual.x;
+                this.frozenY = visual.y;
+                frozen = true;
+            } else
+            {
+                frozen = false;
+            }
+        }
         public override void Update(double time, Game game)
         {
             /*
@@ -209,6 +226,13 @@ namespace RhythmThing.Objects
             //angle calculation done by Nytlaz because I Can Not Math
             visual.x = actualX + xOffset - (int)(Math.Sin(angle * 2 * Math.PI) * (Math.Round((percent / chart.firstBPM) * 60 * movementAmount))) + xModOffset;
             visual.y = actualY + yOffset + yModOffset;
+            //say fuckyou to all the above stuff if we need to.
+            if (frozen) {
+                visual.x = frozenX;
+                visual.y = frozenY;
+            }
+            //make sure frozen only works if this loops been ran once
+            wealive = true;
         }
     }
 }
