@@ -11,25 +11,19 @@ namespace RhythmThing.Objects.Menu
     public class SongContainer : GameObject
     {
         public string chartName;
-        private Visual visual;
+        public Visual visual;
         public Chart chart;
         private ConsoleColor backColor;
         private ConsoleColor frontColor;
-        private int pos;
+        public int pos;
         public SongContainer(string chartName, int pos)
         {
             this.chartName = chartName;
             chart = new Chart(chartName);
             this.pos = pos;
-        }
-        public override void End()
-        {
-            //throw new NotImplementedException();
-        }
-
-        public override void Start(Game game)
-        {
             this.type = objType.visual;
+
+            //sorry for moving this here "('w')
             switch (chart.chartInfo.difficulty)
             {
                 case 0:
@@ -63,7 +57,7 @@ namespace RhythmThing.Objects.Menu
             visual = new Visual();
             visual.x = 5;
             visual.y = 45;
-            visual.active = true;
+            visual.active = false;
 
             visual.y = (visual.y + (pos * -5));
 
@@ -82,6 +76,15 @@ namespace RhythmThing.Objects.Menu
                 visual.localPositions.Add(new Coords(i, 0, chartChar[i], frontColor, backColor));
             }
             visual.localPositions.Add(new Coords(-1, 0, ' ', frontColor, backColor));
+        }
+        public override void End()
+        {
+            //throw new NotImplementedException();
+        }
+
+        public override void Start(Game game)
+        {
+
 
             components.Add(visual);
         }

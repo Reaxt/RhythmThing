@@ -78,6 +78,10 @@ namespace RhythmThing.System_Stuff
                 this.Loop();
 
             }
+
+            //YER DONE
+            //TODO: Find out why this takes so long.
+            Environment.Exit(0);
         }
 
         public void addGameObject(GameObject gameObject)
