@@ -119,7 +119,7 @@ namespace RhythmThing.Utils
 
                     // Use the amount to scale a fast sin wave, so things beat 
                     // back and forth differently depending on the kind of note.
-                    float beatModShift = beatFrequency * beatModAmount * (float)Math.Sin(percent * beatAmplitude * Math.PI + Math.PI / 2.0f);
+                    float beatModShift = beatAmplitude * beatModAmount * (float)Math.Sin(percent * beatFrequency * Math.PI + Math.PI / 2.0f);
 
                     // We're done!
                     modOffset += (int)(mods["beat"] * beatModShift);
@@ -206,7 +206,7 @@ namespace RhythmThing.Utils
 
                     // Use the amount to scale a fast sin wave, so things beat 
                     // back and forth differently depending on the kind of note.
-                    float beatModShift = beatFrequency * beatModAmount;
+                    float beatModShift = beatAmplitude * beatModAmount;
 
                     // We're done!
                     modOffset += (int)(mods["beat"] * beatModShift);
