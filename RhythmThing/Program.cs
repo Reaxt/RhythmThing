@@ -2,7 +2,8 @@
 using RhythmThing.System_Stuff;
 using RhythmThing.Objects;
 using System.Text;
-
+using System.Globalization;
+using System.Threading;
 namespace RhythmThing
 {
 
@@ -25,11 +26,15 @@ namespace RhythmThing
         //STATICS
         public static int ScreenX = 100;
         public static int ScreenY = 50;
+        
         //this feels wrong but it works!
         [STAThread]
         static void Main(string[] args)
         {
 
+            //needed for some locale I guess
+            CultureInfo nonInvariantCulture = new CultureInfo("en-US");
+            Thread.CurrentThread.CurrentCulture = nonInvariantCulture;
 
             //Console.ReadLine();
             //ConsoleHelper.SetConsoleFont();

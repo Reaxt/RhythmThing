@@ -31,7 +31,8 @@ namespace RhythmThing.Objects
             collumn,
             rotation,
             mod,
-            movementAmount
+            movementAmount,
+            screenX
         }
         private Chart chart;
         private Receiver[] receivers;
@@ -399,6 +400,21 @@ namespace RhythmThing.Objects
                         case "BPMChange":
                             chart.changeBPM(float.Parse(eventInfo.data), eventInfo.time);
                             break;
+                        //THIS EVENT IS VOLITALE. IT IS MEANT TO **BREAK THE GAME**
+                        case "changeScreenX":
+                            windowManager.wwidth1 = int.Parse(eventInfo.data);
+                            break;
+                        case "changeScreenXEase":
+                            //old, new, easing, time
+                            tempEaseing.startValueX = int.Parse(eventInfo.data.Split(' ')[0]);
+                            tempEaseing.endValueX = int.Parse(eventInfo.data.Split(' ')[1]);
+                            tempEaseing.easingType = eventInfo.data.Split(' ')[2];
+                            tempEaseing.startTime = eventInfo.time;
+                            tempEaseing.endTime = eventInfo.time + float.Parse(eventInfo.data.Split(' ')[3]);
+                            tempEaseing.objectType = easeType.screenX;
+
+                            easings.Add(tempEaseing);
+                            break;
                         default:
                             break;
                     }
@@ -449,7 +465,7 @@ namespace RhythmThing.Objects
                     if (chart.beat >= item.endTime)
                     {
 
-                        //float hm = Ease.byName[item.easingType](chart.beat - item.startTime, item.endTime - item.startTime, item.startValueX, item.endValueX)/1.6f;
+                        //receivers[item.receiver].rot = item.endValueX;
                         toDie.Add(item);
                     }
                     else
@@ -476,6 +492,17 @@ namespace RhythmThing.Objects
                     } else
                     {
                         Arrow.movementAmount = Ease.Lerp(item.startValueX, item.endValueX, Ease.byName[item.easingType](chart.beat - item.startTime) / (item.endTime - item.startTime));
+                    }
+                } else if(item.objectType == easeType.screenX)
+                {
+                    if(chart.beat >= item.endTime)
+                    {
+                        toDie.Add(item);
+                        windowManager.wwidth1 = (int)item.endValueX;
+                    } else
+                    {
+                        windowManager.wwidth1 = (int)Math.Round(Ease.Lerp(item.startValueX, item.endValueX, Ease.byName[item.easingType](chart.beat - item.startTime) / (item.endTime - item.startTime)));
+
                     }
                 }
             }

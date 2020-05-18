@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RhythmThing.Components;
 using RhythmThing.System_Stuff;
-using RhythmThing.Objects.Menu.OptionsMenu;
+using RhythmThing.Objects.Menu.Options_Menu;
 
 namespace RhythmThing.Scenes
 {

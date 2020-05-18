@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RhythmThing.Objects.Menu.OptionsMenu
+namespace RhythmThing.Objects.Menu.Options_Menu
 {
     //TODO: make this exist.
     public class OptionsPlaceholder : GameObject
@@ -34,6 +34,7 @@ namespace RhythmThing.Objects.Menu.OptionsMenu
                 visual.localPositions.Add(new Coords(i, 25, enterMessage[i], ConsoleColor.White, ConsoleColor.Black));
 
             }
+
             components.Add(visual);
         }
 

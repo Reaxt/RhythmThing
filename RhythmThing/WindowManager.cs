@@ -21,6 +21,11 @@ namespace RhythmThing
         int wwidth = 100;
         int wheight = 50;
 
+
+
+        public int wwidth1 = 100;
+        public int wheight1 = 50;
+
         short pwidth = 15;
         short pheight = 15;
 
@@ -219,8 +224,8 @@ namespace RhythmThing
 
         public void RenderBuffer(CHAR_INFO[] buffer)
         {
-            SMALL_RECT writeArea = new SMALL_RECT { Left = 0, Top = 0, Right = (short)(wwidth - 1), Bottom = (short)(wheight - 1) };
-            WriteConsoleOutput(wHnd, buffer, new COORD { X = (short)wwidth, Y = (short)wheight }, new COORD { X = 0, Y = 0 }, ref writeArea);
+            SMALL_RECT writeArea = new SMALL_RECT { Left = 0, Top = 0, Right = (short)(wwidth1 - 1), Bottom = (short)(wheight1 - 1) };
+            WriteConsoleOutput(wHnd, buffer, new COORD { X = (short)wwidth1, Y = (short)wheight1 }, new COORD { X = 0, Y = 0 }, ref writeArea);
         }
         //move relative to window or something
         public void moveWindow(float x, float y)

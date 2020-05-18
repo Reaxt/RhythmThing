@@ -20,6 +20,7 @@ namespace RhythmThing.Scenes
         {
             initialObjs = new List<GameObject>();
             initialObjs.Add(new ScoreScreenHandler());
+            
         }
 
         public override void Update()

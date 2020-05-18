@@ -16,6 +16,16 @@ namespace RhythmThing.System_Stuff
             held,
             lifted
         }
+        //should this be with a method?
+        public static Key left = Key.Left;
+        public static Key right = Key.Right;
+        public static Key up = Key.Up;
+        public static Key down = Key.Down;
+
+        //should these be rebound?
+        public static Key enter = Key.Enter;
+        public static Key esc = Key.Escape;
+
         public static buttonState leftKey;
         public static buttonState upKey;
         public static buttonState downKey;

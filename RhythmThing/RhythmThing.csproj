@@ -67,7 +67,10 @@
     <Compile Include="Objects\Menu\ChartInfoVisual.cs" />
     <Compile Include="Objects\Menu\ChartLauncher.cs" />
     <Compile Include="Objects\Menu\MenuObject.cs" />
+    <Compile Include="Objects\Menu\Options Menu\OffsetButton.cs" />
+    <Compile Include="Objects\Menu\Options Menu\OptionsObject.cs" />
     <Compile Include="Objects\Menu\Options Menu\OptionsPlaceholder.cs" />
+    <Compile Include="Objects\Menu\Options Menu\RebindButton.cs" />
     <Compile Include="Objects\Menu\SongContainer.cs" />
     <Compile Include="Objects\Score Screen\ScoreScreenHandler.cs" />
     <Compile Include="Objects\ScoreHandler.cs" />
