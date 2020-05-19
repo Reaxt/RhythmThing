@@ -27,7 +27,7 @@ namespace RhythmThing.Objects.Menu
             switch (chart.chartInfo.difficulty)
             {
                 case 0:
-                    frontColor = ConsoleColor.White;
+                    frontColor = ConsoleColor.Black;
                     backColor = ConsoleColor.Green;
                     break;
                 case 1:

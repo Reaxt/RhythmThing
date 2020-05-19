@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RhythmThing.Components;
 using RhythmThing.System_Stuff;
-
+using System.Windows.Input;
 namespace RhythmThing.Objects.Menu.Options_Menu
 {
     public class RebindButton : GameObject
@@ -67,7 +67,13 @@ namespace RhythmThing.Objects.Menu.Options_Menu
 
             }
         }
-
+        public static void KeyboardEventHandle(object sender, KeyboardEventArgs args)
+        {
+            Console.WriteLine("g");
+        }
+        //vro how do I DO THIS I JUST WANT INPUT WINDOWS WHY
+        //is this how delegates work?
+        KeyboardEventHandler eventHandler = KeyboardEventHandle;
 
         public override void Update(double time, Game game)
         {
