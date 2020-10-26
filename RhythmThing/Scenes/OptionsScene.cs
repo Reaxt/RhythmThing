@@ -21,7 +21,7 @@ namespace RhythmThing.Scenes
         {
             initialObjs = new List<GameObject>();
             //This is a tempoary placeholder while I make the actual menu. . . (Is there really much to even put in there? Offset I guess. Might remove) 
-            initialObjs.Add(new OptionsPlaceholder());
+            initialObjs.Add(new OptionsObject());
 
         }
 

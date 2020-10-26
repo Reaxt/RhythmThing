@@ -51,7 +51,7 @@ namespace RhythmThing.System_Stuff
             {
                 return;
             }
-            if (Keyboard.IsKeyDown(Key.Escape))
+            if (Keyboard.IsKeyDown(esc))
             {
                 if (escKey == buttonState.off)
                 {
@@ -74,7 +74,7 @@ namespace RhythmThing.System_Stuff
                 }
             }
 
-            if (Keyboard.IsKeyDown(Key.Left))
+            if (Keyboard.IsKeyDown(left))
             {
                 if (leftKey == buttonState.off)
                 {
@@ -96,7 +96,7 @@ namespace RhythmThing.System_Stuff
 
 
 
-            if (Keyboard.IsKeyDown(Key.Up))
+            if (Keyboard.IsKeyDown(up))
             {
                 if (upKey == buttonState.off)
                 {
@@ -120,7 +120,7 @@ namespace RhythmThing.System_Stuff
             }
 
 
-            if (Keyboard.IsKeyDown(Key.Right))
+            if (Keyboard.IsKeyDown(right))
             {
                 if (rightKey == buttonState.off)
                 {
@@ -143,7 +143,7 @@ namespace RhythmThing.System_Stuff
                 }
             }
 
-            if (Keyboard.IsKeyDown(Key.Down))
+            if (Keyboard.IsKeyDown(down))
             {
                 if (downKey == buttonState.off)
                 {
@@ -167,7 +167,7 @@ namespace RhythmThing.System_Stuff
             }
 
 
-            if (Keyboard.IsKeyDown(Key.Enter))
+            if (Keyboard.IsKeyDown(enter))
             {
                 if (enterKey == buttonState.off)
                 {

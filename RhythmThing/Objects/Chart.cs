@@ -6,7 +6,6 @@ using RhythmThing.System_Stuff;
 using Newtonsoft.Json;
 using System.IO;
 using CSCore;
-
 namespace RhythmThing.Objects
 {
     public class Chart : GameObject
@@ -91,6 +90,7 @@ namespace RhythmThing.Objects
 
         public override void Start(Game game)
         {
+
             instance = this;
             Arrow.movementAmount = 75; //static amount
             this.components = new List<Component>();

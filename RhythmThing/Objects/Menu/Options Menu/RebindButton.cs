@@ -19,6 +19,7 @@ namespace RhythmThing.Objects.Menu.Options_Menu
         private int rebindState = 0; //collumn order. (0 = left, 1 = down, etc..)
         private bool boundConfirm = false;
         private bool activated = false;
+        private Key[] allKeys;
 
         public override void End()
         {
@@ -27,6 +28,8 @@ namespace RhythmThing.Objects.Menu.Options_Menu
 
         public override void Start(Game game)
         {
+            //populate key array
+            allKeys = Enum.GetValues(typeof(Key)).Cast<Key>().ToArray<Key>();
             this.components = new List<Component>();
             visual = new Visual();
             visual.active = true;
@@ -80,9 +83,9 @@ namespace RhythmThing.Objects.Menu.Options_Menu
             //hrow new NotImplementedException();
             if(activated)
             {
-                if(!boundConfirm)
+                if (!boundConfirm)
                 {
-                    
+
                 }
             }
         }

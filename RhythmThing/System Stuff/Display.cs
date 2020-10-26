@@ -31,7 +31,8 @@ namespace RhythmThing.System_Stuff
         private List<Visual> Objects;
         private List<Visual> ObjectsToRemove;
         private List<Visual> ObjectsToAdd;
-
+        private ScreenFilter screenFilter;
+        private bool filterActive;
         ConsoleColor[,] currentForeColors;
         ConsoleColor[,] currentBackColors;
         char[,] currentFinalChars;
@@ -98,6 +99,17 @@ namespace RhythmThing.System_Stuff
             ObjectsToAdd.Add(visual);
         }
 
+        public void ActivateFilter(ScreenFilter filter)
+        {
+            screenFilter = filter;
+            filterActive = true;
+
+        }
+
+        public void DisableFilter()
+        {
+            filterActive = false;
+        }
 
         public void DrawFrame(double time)
         {
@@ -176,6 +188,14 @@ namespace RhythmThing.System_Stuff
                         }
                     }
                 }
+            }
+
+            if (filterActive)
+            {
+                DisplayData newData = screenFilter.RunFilt(finalForeColors, finalBackColors, finalChars);
+                finalForeColors = newData.foreColors;
+                finalBackColors = newData.backColors;
+                finalChars = newData.characters;
             }
             //not gonna try drawing this way anymore...
             /*
