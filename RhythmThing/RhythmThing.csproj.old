@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9B5DB554-BCC1-442C-8E44-71A5D4609640}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>RhythmThing</RootNamespace>
+    <AssemblyName>RhythmThing</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CSCore, Version=1.2.1.2, Culture=neutral, PublicKeyToken=5a08f2b6f4415dea, processorArchitecture=MSIL">
+      <HintPath>..\packages\CSCore.1.2.1.2\lib\net35-client\CSCore.dll</HintPath>
+    </Reference>
+    <Reference Include="CSCore.Ffmpeg, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CSCore.Ffmpeg.1.2.0-beta1\lib\net35\CSCore.Ffmpeg.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Components\ScreenFilter.cs" />
+    <Compile Include="Components\Visual.cs" />
+    <Compile Include="Objects\Arrows\Arrow.cs" />
+    <Compile Include="Objects\Arrows\Receiver.cs" />
+    <Compile Include="Objects\Chart.cs" />
+    <Compile Include="Objects\ChartDebug.cs" />
+    <Compile Include="Objects\ChartEventHandler.cs" />
+    <Compile Include="Objects\Intro\IntroAnimationHandler.cs" />
+    <Compile Include="Objects\Menu\ChartInfoVisual.cs" />
+    <Compile Include="Objects\Menu\ChartLauncher.cs" />
+    <Compile Include="Objects\Menu\MenuObject.cs" />
+    <Compile Include="Objects\Menu\Options Menu\OffsetButton.cs" />
+    <Compile Include="Objects\Menu\Options Menu\OptionsObject.cs" />
+    <Compile Include="Objects\Menu\Options Menu\OptionsPlaceholder.cs" />
+    <Compile Include="Objects\Menu\Options Menu\RebindButton.cs" />
+    <Compile Include="Objects\Menu\SongContainer.cs" />
+    <Compile Include="Objects\Score Screen\ScoreScreenHandler.cs" />
+    <Compile Include="Objects\ScoreHandler.cs" />
+    <Compile Include="Objects\Test Arrows\DownArrow.cs" />
+    <Compile Include="Objects\Test Arrows\LeftArrow.cs" />
+    <Compile Include="Objects\Test Arrows\RightArrow.cs" />
+    <Compile Include="Objects\Test Arrows\UpArrow.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scenes\OptionsScene.cs" />
+    <Compile Include="Scenes\IntroScene.cs" />
+    <Compile Include="Scenes\MenuScene.cs" />
+    <Compile Include="Scenes\ScoreScene.cs" />
+    <Compile Include="Scenes\SongScene.cs" />
+    <Compile Include="Shaders\TestFilter.cs" />
+    <Compile Include="System Stuff\AudioManager.cs" />
+    <Compile Include="System Stuff\Component.cs" />
+    <Compile Include="System Stuff\Display.cs" />
+    <Compile Include="System Stuff\Game.cs" />
+    <Compile Include="System Stuff\Input.cs" />
+    <Compile Include="System Stuff\Mixer.cs" />
+    <Compile Include="Components\Scene.cs" />
+    <Compile Include="System Stuff\SceneManager.cs" />
+    <Compile Include="Utils\Easings.cs" />
+    <Compile Include="Utils\Logger.cs" />
+    <Compile Include="Utils\ModEffects.cs" />
+    <Compile Include="WindowManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\CSCore.Ffmpeg.1.2.0-beta1\build\CSCore.Ffmpeg.targets" Condition="Exists('..\packages\CSCore.Ffmpeg.1.2.0-beta1\build\CSCore.Ffmpeg.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\CSCore.Ffmpeg.1.2.0-beta1\build\CSCore.Ffmpeg.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CSCore.Ffmpeg.1.2.0-beta1\build\CSCore.Ffmpeg.targets'))" />
+  </Target>
+</Project>
