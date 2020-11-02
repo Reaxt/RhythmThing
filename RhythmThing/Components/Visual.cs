@@ -26,6 +26,15 @@ namespace RhythmThing.Components
         private int smallx = int.MaxValue;
         private int smally = int.MaxValue;
         
+        public void writeText(int startingX, int startingY, string text, ConsoleColor front, ConsoleColor back)
+        {
+            char[] textArray = text.ToCharArray();
+            for (int i = 0; i < textArray.Length; i++)
+            {
+                this.localPositions.Add(new Coords(startingX + i, startingY, textArray[i], front, back));
+            }
+        }
+
         public override void Update(double time)
         {
             //KISS for now

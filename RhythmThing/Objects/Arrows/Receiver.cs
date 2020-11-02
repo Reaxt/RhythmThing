@@ -203,20 +203,20 @@ namespace RhythmThing.Objects
                     switch (collumn)
                     {
                         case Chart.collumn.Left:
-                            if (Input.leftKey == Input.buttonState.press)
+                            if (game.input.ButtonStates[Input.ButtonKind.Left] == Input.ButtonState.Press)
                                 hit = true;
                             
                             break;
                         case Chart.collumn.Down:
-                            if (Input.downKey == Input.buttonState.press)
+                            if (game.input.ButtonStates[Input.ButtonKind.Down] == Input.ButtonState.Press)
                                 hit = true;
                             break;
                         case Chart.collumn.Up:
-                            if (Input.upKey == Input.buttonState.press)
+                            if (game.input.ButtonStates[Input.ButtonKind.Up] == Input.ButtonState.Press)
                                 hit = true;
                             break;
                         case Chart.collumn.Right:
-                            if (Input.rightKey == Input.buttonState.press)
+                            if (game.input.ButtonStates[Input.ButtonKind.Right] == Input.ButtonState.Press)
                                 hit = true;
                             break;
                         default:
@@ -235,20 +235,20 @@ namespace RhythmThing.Objects
                     switch (collumn)
                     {
                         case Chart.collumn.Left:
-                            if (Input.leftKey == Input.buttonState.press)
+                            if (game.input.ButtonStates[Input.ButtonKind.Left] == Input.ButtonState.Press)
                                 miss = true;
 
                             break;
                         case Chart.collumn.Down:
-                            if (Input.downKey == Input.buttonState.press)
+                            if (game.input.ButtonStates[Input.ButtonKind.Down] == Input.ButtonState.Press)
                                 miss = true;
                             break;
                         case Chart.collumn.Up:
-                            if (Input.upKey == Input.buttonState.press)
+                            if (game.input.ButtonStates[Input.ButtonKind.Up] == Input.ButtonState.Press)
                                 miss = true;
                             break;
                         case Chart.collumn.Right:
-                            if (Input.rightKey == Input.buttonState.press)
+                            if (game.input.ButtonStates[Input.ButtonKind.Right] == Input.ButtonState.Press)
                                 miss = true;
                             break;
                         default:
@@ -282,20 +282,20 @@ namespace RhythmThing.Objects
             switch (collumn)
             {
                 case Chart.collumn.Left:
-                    if (Input.leftKey == Input.buttonState.held)
+                    if (game.input.ButtonStates[Input.ButtonKind.Left] == Input.ButtonState.Held)
                         pressed = true;
 
                     break;
                 case Chart.collumn.Down:
-                    if (Input.downKey == Input.buttonState.held)
+                    if (game.input.ButtonStates[Input.ButtonKind.Down] == Input.ButtonState.Held)
                         pressed = true;
                     break;
                 case Chart.collumn.Up:
-                    if (Input.upKey == Input.buttonState.held)
+                    if (game.input.ButtonStates[Input.ButtonKind.Up] == Input.ButtonState.Held)
                         pressed = true;
                     break;
                 case Chart.collumn.Right:
-                    if (Input.rightKey == Input.buttonState.held)
+                    if (game.input.ButtonStates[Input.ButtonKind.Right] == Input.ButtonState.Held)
                         pressed = true;
                     break;
                 default:

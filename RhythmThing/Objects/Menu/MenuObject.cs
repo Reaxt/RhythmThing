@@ -151,7 +151,7 @@ namespace RhythmThing.Objects.Menu
         {
             if (menuSection == MenuSection.songSelect)
             {
-                if (Input.downKey == Input.buttonState.press)
+                if (game.input.ButtonStates[Input.ButtonKind.Down] == Input.ButtonState.Press)
                 {
                     if (selected < count)
                     {
@@ -181,7 +181,7 @@ namespace RhythmThing.Objects.Menu
                     }
                     chartInfoVisual.UpdateChart(songs[selected].chart.chartInfo);
                 }
-                if (Input.upKey == Input.buttonState.press)
+                if (game.input.ButtonStates[Input.ButtonKind.Up] == Input.ButtonState.Press)
                 {
                     if (selected > 0)
                     {
@@ -218,12 +218,12 @@ namespace RhythmThing.Objects.Menu
                     }
                     chartInfoVisual.UpdateChart(songs[selected].chart.chartInfo);
                 }
-                if (Input.enterKey == Input.buttonState.press)
+                if (game.input.ButtonStates[Input.ButtonKind.Confirm] == Input.ButtonState.Press)
                 {
                     game.ChartToLoad = songs[selected].chartName;
                     game.sceneManager.loadScene(1);
                 }
-                if (Input.leftKey == Input.buttonState.press || Input.rightKey == Input.buttonState.press)
+                if (game.input.ButtonStates[Input.ButtonKind.Left] == Input.ButtonState.Press || game.input.ButtonStates[Input.ButtonKind.Right] == Input.ButtonState.Press)
                 {
                     menuSection = MenuSection.optSelect;
                     selector.x = 58;
@@ -233,7 +233,7 @@ namespace RhythmThing.Objects.Menu
             } else if (menuSection == MenuSection.optSelect)
             {
                 //else if is so juuuust in case, switching cant be at the same time as trying to press one of these
-                if (Input.leftKey == Input.buttonState.press || Input.rightKey == Input.buttonState.press)
+                if (game.input.ButtonStates[Input.ButtonKind.Left] == Input.ButtonState.Press || game.input.ButtonStates[Input.ButtonKind.Right] == Input.ButtonState.Press)
                 {
                     menuSection = MenuSection.songSelect;
                     selector.x = 3;
@@ -242,7 +242,7 @@ namespace RhythmThing.Objects.Menu
                     optionSelected = optSelections.options;
 
                     //this line can check for either right now as there is only two options. I dont see any case where there would be more.
-                } else if (Input.upKey == Input.buttonState.press || Input.downKey == Input.buttonState.press)
+                } else if (game.input.ButtonStates[Input.ButtonKind.Up] == Input.ButtonState.Press || game.input.ButtonStates[Input.ButtonKind.Down] == Input.ButtonState.Press)
                 {
                     if (optionSelected == optSelections.options)
                     {
@@ -253,7 +253,7 @@ namespace RhythmThing.Objects.Menu
                         optionSelected = optSelections.options;
                         selector.y = selector.y + 5;
                     }
-                } else if(Input.enterKey == Input.buttonState.press)
+                } else if(game.input.ButtonStates[Input.ButtonKind.Confirm] == Input.ButtonState.Press)
                 {
                     //follow through with the selectiooooon
                     if(optionSelected == optSelections.quit)

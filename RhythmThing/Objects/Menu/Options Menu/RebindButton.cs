@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using RhythmThing.Components;
 using RhythmThing.System_Stuff;
 using System.Windows.Input;
+using RhythmThing.Utils;
+
 namespace RhythmThing.Objects.Menu.Options_Menu
 {
     public class RebindButton : GameObject
@@ -18,7 +20,9 @@ namespace RhythmThing.Objects.Menu.Options_Menu
         private ConsoleColor visualBack = ConsoleColor.White;
         private int rebindState = 0; //collumn order. (0 = left, 1 = down, etc..)
         private bool boundConfirm = false;
+        
         private bool activated = false;
+        private bool liftGood = false;
         private Key[] allKeys;
 
         public override void End()
@@ -62,13 +66,9 @@ namespace RhythmThing.Objects.Menu.Options_Menu
         {
             activated = true;
             rebindVisual.active = true;
-            char[] leftText = "Please press the key you wish to assign to LEFT".ToCharArray();
+            
 
-            for (int i = 0; i < leftText.Length; i++)
-            {
-                rebindVisual.localPositions.Add(new Coords(i, 0, leftText[i], visualFront, visualBack));
-
-            }
+            rebindVisual.writeText(0, 0, "Please press the key you wish to assign to LEFT", visualFront, visualBack);
         }
         public static void KeyboardEventHandle(object sender, KeyboardEventArgs args)
         {
@@ -83,9 +83,8 @@ namespace RhythmThing.Objects.Menu.Options_Menu
             //hrow new NotImplementedException();
             if(activated)
             {
-                if (!boundConfirm)
+                if(!game.input.anythingIsHeld)
                 {
-
                 }
             }
         }

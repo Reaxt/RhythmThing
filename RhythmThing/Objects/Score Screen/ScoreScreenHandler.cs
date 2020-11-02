@@ -416,7 +416,7 @@ namespace RhythmThing.Objects.ScoreScreen
                 }
             }
             timePassed = timePassed + (float)time;
-            if(Input.enterKey == Input.buttonState.press || Input.escKey == Input.buttonState.press)
+            if(game.input.ButtonStates[Input.ButtonKind.Confirm] == Input.ButtonState.Press || game.input.ButtonStates[Input.ButtonKind.Cancel] == Input.ButtonState.Press)
             {
                 game.sceneManager.loadScene(0);
             }

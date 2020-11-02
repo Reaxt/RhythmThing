@@ -66,7 +66,7 @@ namespace RhythmThing.System_Stuff
             */
             display = new Display();
             addBuffer = new List<GameObject>();
-            input = new Input();
+            input = Input.Instance;
             deltaTime = 0;
             sceneManager = new SceneManager(this);
             //entry point
@@ -167,7 +167,7 @@ namespace RhythmThing.System_Stuff
                 deltaTime = stopwatch.ElapsedMilliseconds * 0.001;
                 display.DrawFrame(deltaTime);
                 
-                Input.UpdateInput();
+                input.UpdateInput();
                     // your code
                 
                 stopwatch.Reset();

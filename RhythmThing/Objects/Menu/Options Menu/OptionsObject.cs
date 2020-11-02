@@ -84,7 +84,7 @@ namespace RhythmThing.Objects.Menu.Options_Menu
             if(selectorFocused)
             {
                 //these two lines are responsible for selecting
-                if(Input.downKey == Input.buttonState.press)
+                if(game.input.ButtonStates[Input.ButtonKind.Down] == Input.ButtonState.Press)
                 {
                     if (selectedOption >= maxOption)
                     {
@@ -96,7 +96,7 @@ namespace RhythmThing.Objects.Menu.Options_Menu
                         selector.y = selector.y - 5;
                     }
 
-                } else  if(Input.upKey == Input.buttonState.press)
+                } else  if(game.input.ButtonStates[Input.ButtonKind.Up] == Input.ButtonState.Press)
                 {
                     if(selectedOption <= 0)
                     {
@@ -109,13 +109,13 @@ namespace RhythmThing.Objects.Menu.Options_Menu
                         selector.y = selector.y + 5;
                     }
                 }
-                if(Input.escKey == Input.buttonState.press)
+                if(game.input.ButtonStates[Input.ButtonKind.Cancel] == Input.ButtonState.Press)
                 {
                     game.sceneManager.loadScene(0);
                 }
 
                 //handle enter/select
-                if(Input.enterKey == Input.buttonState.press)
+                if(game.input.ButtonStates[Input.ButtonKind.Confirm] == Input.ButtonState.Press)
                 {
                     //quit first, just in case I add more, this makes it easier
                     if(selectedOption == maxOption)

@@ -40,7 +40,7 @@ namespace RhythmThing.Objects.Menu.Options_Menu
 
         public override void Update(double time, Game game)
         {
-            if(Input.enterKey == Input.buttonState.press)
+            if(game.input.ButtonStates[Input.ButtonKind.Confirm] == Input.ButtonState.Press)
             {
                 game.sceneManager.loadScene(0);
             }

@@ -4,6 +4,8 @@ using RhythmThing.Objects;
 using System.Text;
 using System.Globalization;
 using System.Threading;
+using RhythmThing.Utils;
+
 namespace RhythmThing
 {
 
@@ -31,7 +33,10 @@ namespace RhythmThing
         [STAThread]
         static void Main(string[] args)
         {
+            //backup last log
+            Logger.NewLog();
 
+            Logger.DebugLog("we're starting!");
             //needed for some locale I guess
             CultureInfo nonInvariantCulture = new CultureInfo("en-US");
             Thread.CurrentThread.CurrentCulture = nonInvariantCulture;

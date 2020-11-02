@@ -6,6 +6,8 @@ using RhythmThing.System_Stuff;
 using Newtonsoft.Json;
 using System.IO;
 using CSCore;
+using System.Reflection;
+
 namespace RhythmThing.Objects
 {
     public class Chart : GameObject
@@ -90,7 +92,20 @@ namespace RhythmThing.Objects
 
         public override void Start(Game game)
         {
+            /*test plugin loading
 
+            Assembly testAssembly = Utils.PluginLoader.LoadPlugin(Path.Combine(chartPath, "script.dll"));
+            SongScript testScript = null;
+            foreach(Type type in testAssembly.GetTypes())
+            {
+                if(typeof(SongScript).IsAssignableFrom(type))
+                {
+                    testScript = Activator.CreateInstance(type) as SongScript;
+
+                }
+            }
+            testScript.runScript();
+            */
             instance = this;
             Arrow.movementAmount = 75; //static amount
             this.components = new List<Component>();
@@ -184,7 +199,7 @@ namespace RhythmThing.Objects
                 game.sceneManager.loadScene(2);
                 
             }
-            if(Input.escKey == Input.buttonState.press)
+            if(game.input.ButtonStates[Input.ButtonKind.Cancel] == Input.ButtonState.Press)
             {
                 game.notesHit = scoreHandler.hits;
                 game.totalNotes = scoreHandler.notes;
