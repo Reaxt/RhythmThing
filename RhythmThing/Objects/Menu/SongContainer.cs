@@ -16,6 +16,9 @@ namespace RhythmThing.Objects.Menu
         private ConsoleColor backColor;
         private ConsoleColor frontColor;
         public int pos;
+        private int _animOff = 5;
+        private string _animEase = "easeOutExpo";
+        private float _animDuration = 0.05f;
         public SongContainer(string chartName, int pos)
         {
             this.chartName = chartName;
@@ -82,11 +85,27 @@ namespace RhythmThing.Objects.Menu
             //throw new NotImplementedException();
         }
 
+        public void OutAnim()
+        {
+            int[] point1 = new int[] { visual.x, visual.y };
+            int[] point2 = new int[] { visual.x+5, visual.y };
+            visual.Animate(point1, point2, _animEase, _animDuration);
+        }
+        public void InAnim()
+        {
+            int[] point1 = new int[] { visual.x, visual.y };
+            int[] point2 = new int[] { visual.x - 5, visual.y };
+            visual.Animate(point1, point2, _animEase, _animDuration);
+        }
+
         public override void Start(Game game)
         {
 
 
             components.Add(visual);
+            int[] point1 = { visual.x-(100+(10*pos)), visual.y };
+            int[] point2 = { visual.x, visual.y };
+            visual.Animate(point1, point2, "easeOutExpo", 0.25f+(0.0125f*pos));
         }
 
         public override void Update(double time, Game game)

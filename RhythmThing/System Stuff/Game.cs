@@ -13,6 +13,8 @@ namespace RhythmThing.System_Stuff
         public static float approachSpeed = 5300;
         public static float scoringTime = 100;
         public static float missTime = 250;
+        private int frames = 0;
+        private float timePassed = 0;
         //a ref to the game instance JUST in case
         public static Game mainInstance;
         //the current "State" of the game loop
@@ -70,7 +72,12 @@ namespace RhythmThing.System_Stuff
             deltaTime = 0;
             sceneManager = new SceneManager(this);
             //entry point
+
             sceneManager.loadScene(0);
+
+            //debug scene
+            //sceneManager.loadScene(5);
+            
             while(gameLoopLives)
             {
                 
@@ -162,14 +169,29 @@ namespace RhythmThing.System_Stuff
                     gameObjects.Remove(obj);
                     display.RemoveObject(obj);
                 }
+
+
+                display.DrawFrame(deltaTime);
+                
+
+
+                input.UpdateInput();
+                // your code
+
                 Thread.Sleep(1); //just in case
                 stopwatch.Stop();
                 deltaTime = stopwatch.ElapsedMilliseconds * 0.001;
-                display.DrawFrame(deltaTime);
-                
-                input.UpdateInput();
-                    // your code
-                
+
+                //calculate framerate
+                frames++;
+                if (timePassed > 1000)
+                {
+                    Console.Title = $"FPS: {frames}";
+                    frames = 0;
+                    timePassed = 0;
+                }
+                timePassed += stopwatch.ElapsedMilliseconds;
+
                 stopwatch.Reset();
                 //Console.WriteLine("frame");
             }

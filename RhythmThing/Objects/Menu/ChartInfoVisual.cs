@@ -18,7 +18,7 @@ namespace RhythmThing.Objects.Menu
 
         private bool Animating = false;
         private float timePassed = 0;
-        private float timeToPass = 0.125f;
+        private float timeToPass = 0.3f;
         private int xSteps = 40;
         private int ySteps = 0;
         private int[] xyPoint1 = new int[] { 0, 0 };
@@ -43,6 +43,7 @@ namespace RhythmThing.Objects.Menu
             visual.y = 45;
             components.Add(visual);
             Draw();
+            AnimateIn();
             random = new Random();
 
         }
@@ -104,9 +105,9 @@ namespace RhythmThing.Objects.Menu
             timePassed = 0;
             */
             //visual.ClearAnims();
-            xyPoint1 = new int[] { visual.x+40, visual.y };
+            xyPoint1 = new int[] { visual.x+60, visual.y };
             xyPoint2 = new int[] { visual.x, visual.y };
-            visual.Animate(xyPoint1, xyPoint2, "easeOutCubic", 0.125f, false);
+            visual.Animate(xyPoint1, xyPoint2, "easeOutBack", timeToPass, false);
 
             //Game.mainInstance.audioManager.playForget("wheelMove.ogg");
         }

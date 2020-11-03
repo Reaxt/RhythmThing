@@ -11,6 +11,13 @@ namespace RhythmThing.Objects.Menu.Options_Menu
         private Visual visual;
         private ConsoleColor frontColor = ConsoleColor.Black;
         private ConsoleColor backColor = ConsoleColor.Yellow;
+
+        public bool Animate = false;
+        private float _timeToPass = 3f;
+        private float _timeHasPassed = 0;
+        private int[] firstPos = { 0, 0 };
+        private int[] secondPos = { 3, 5 };
+
         public override void End()
         {
             //throw new NotImplementedException();
@@ -40,7 +47,8 @@ namespace RhythmThing.Objects.Menu.Options_Menu
 
         public override void Update(double time, Game game)
         {
-            //hrow new NotImplementedException();
+
+
         }
     }
 }

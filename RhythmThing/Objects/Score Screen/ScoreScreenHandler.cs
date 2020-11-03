@@ -28,9 +28,9 @@ namespace RhythmThing.Objects.ScoreScreen
         private float percent;
         private float guagePercent = -1;
         private float timePassed = 0;
-        private float guageTick = 0.01f;
+        private float guageTick = 0.04f;
         private float coverWait = 0.05f;
-        private float coverTick = 0.005f;
+        private float coverTick = 0.025f;
         private bool coverSlide = false;
         string grade;
         public override void End()

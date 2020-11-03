@@ -31,8 +31,10 @@ namespace RhythmThing
         
         //this feels wrong but it works!
         [STAThread]
+         
         static void Main(string[] args)
         {
+
             //backup last log
             Logger.NewLog();
 

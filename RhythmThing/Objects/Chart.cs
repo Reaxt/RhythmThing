@@ -35,9 +35,15 @@ namespace RhythmThing.Objects
             public NoteInfo[] notes;
             public EventInfo[] events;
             public int difficulty;
+            public videoInfo video;
 
         }
-        
+        public struct videoInfo
+        {
+            public int framerate;
+            public string videoPath;
+
+        }
         public struct NoteInfo
         {
             public float time;
@@ -106,6 +112,7 @@ namespace RhythmThing.Objects
             }
             testScript.runScript();
             */
+            
             instance = this;
             Arrow.movementAmount = 75; //static amount
             this.components = new List<Component>();
@@ -159,6 +166,12 @@ namespace RhythmThing.Objects
                 //msNotes.Add()
             }
 
+            //check if theres a video
+            if(chartInfo.video.videoPath != null)
+            {
+                game.addGameObject(new VideoPlayer(Path.Combine(chartPath, chartInfo.video.videoPath), chartInfo.video.framerate));
+            }
+
             scoreHandler = new ScoreHandler(this, chartInfo.notes.Length);
             game.addGameObject(scoreHandler);
             game.addGameObject(chartEventHandler);
@@ -166,7 +179,9 @@ namespace RhythmThing.Objects
             song = game.audioManager.addTrack(Path.Combine(chartPath, chartInfo.songPath));
             //debug obj
             game.addGameObject(new ChartDebug(this));
-            float startBeat = 354;
+
+
+
             //song.sampleSource.SetPosition(TimeSpan.FromMilliseconds(startBeat / ((float)(chartInfo.bpm) / 60000)));
 
         }

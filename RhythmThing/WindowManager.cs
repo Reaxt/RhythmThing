@@ -211,8 +211,10 @@ namespace RhythmThing
             };
             cfi.cbSize = (uint)Marshal.SizeOf(cfi);
             SetCurrentConsoleFontEx(wHnd, false, ref cfi);
-
-
+            wwidth = Program.ScreenX;
+            wheight = Program.ScreenY;
+            wwidth1 = Program.ScreenX;
+            wheight1 = Program.ScreenY;
             Console.SetWindowSize(wwidth, wheight);
             Console.SetBufferSize(wwidth, wheight);
             Console.Title = wtitle;

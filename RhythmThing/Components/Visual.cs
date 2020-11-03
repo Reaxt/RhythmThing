@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using RhythmThing.System_Stuff;
 using RhythmThing.Utils;
+using System.Drawing;
+using System.IO;
 
 namespace RhythmThing.Components
 {
@@ -43,6 +45,35 @@ namespace RhythmThing.Components
         {
             _animations.Add(new VisualAnimation(startPoint, endPoint, easing, duration, new int[] {x,y}, saveCoords));
         }
+
+        public void LoadBMP(string path, int[] LBcorner)
+        {
+            
+            Bitmap bitmap = (Bitmap)Image.FromFile(Path.Combine(Directory.GetCurrentDirectory(), "!Content", path));
+            for (int x = 0; x < bitmap.Width; x++)
+            {
+                for (int y = 0; y < bitmap.Height; y++)
+                {
+                    Color pixel = bitmap.GetPixel(x, y);
+                    ConsoleColor consoleColor = NearestConsoleColor.ClosestConsoleColor(pixel.R, pixel.G, pixel.B);
+                    localPositions.Add(new Coords(LBcorner[0]+x,LBcorner[1]+(-y+bitmap.Height),' ',consoleColor,consoleColor));
+                }
+            }
+
+        }
+        public void LoadBMP(Bitmap bitmap, int[] LBcorner)
+        {
+            for (int x = 0; x < bitmap.Width; x++)
+            {
+                for (int y = 0; y < bitmap.Height; y++)
+                {
+                    Color pixel = bitmap.GetPixel(x, y);
+                    ConsoleColor consoleColor = NearestConsoleColor.ClosestConsoleColor(pixel.R, pixel.G, pixel.B);
+                    localPositions.Add(new Coords(LBcorner[0] + x, LBcorner[1] + (-y + bitmap.Height), ' ', consoleColor, consoleColor));
+                }
+            }
+        }
+
         public void ClearAnims()
         {
             foreach(VisualAnimation animation in _animations)
@@ -67,6 +98,8 @@ namespace RhythmThing.Components
                 {
                     if (animation.SaveCoords)
                     {
+                        x += offset[0];
+                        y += offset[1];
                         _savedX += offset[0];
                         _savedY += offset[1];
                     }
