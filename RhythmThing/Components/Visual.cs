@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using RhythmThing.System_Stuff;
+using RhythmThing.Utils;
+
 namespace RhythmThing.Components
 {
     public class Visual : Component
@@ -10,9 +12,9 @@ namespace RhythmThing.Components
         
         public int x;
         public int y;
+        private int _savedX;
+        private int _savedY;
         public int z;
-        //privated so I DONT USE IT
-        private int scale;
         public ConsoleColor overrideback;
         public ConsoleColor overridefront;
         public bool overrideColor = false;
@@ -20,6 +22,8 @@ namespace RhythmThing.Components
         public List<Coords> localPositions = new List<Coords>();
         //what the visual class wil work with (world space)
         public List<Coords> renderPositions = new List<Coords>();
+        //animation list
+        private List<VisualAnimation> _animations = new List<VisualAnimation>();
 
         private int bigx = int.MinValue;
         private int bigy = int.MinValue;
@@ -35,8 +39,46 @@ namespace RhythmThing.Components
             }
         }
 
+        public void Animate(int[] startPoint, int[] endPoint, string easing, float duration, bool saveCoords = true)
+        {
+            _animations.Add(new VisualAnimation(startPoint, endPoint, easing, duration, new int[] {x,y}, saveCoords));
+        }
+        public void ClearAnims()
+        {
+            foreach(VisualAnimation animation in _animations)
+            {
+                animation.Live = false;
+            }
+        }
+        public void AddAnimObject(VisualAnimation anim)
+        {
+            _animations.Add(anim);
+        }
         public override void Update(double time)
         {
+            //move the visual positions with any animations
+            _savedX = x;
+            _savedY = y;
+            //anims only go on x and y rn...
+            foreach (VisualAnimation animation in _animations.ToArray())
+            {
+                int[] offset = animation.UpdateAnim(time);
+                if (!animation.Live)
+                {
+                    if (animation.SaveCoords)
+                    {
+                        _savedX += offset[0];
+                        _savedY += offset[1];
+                    }
+                    _animations.Remove(animation);
+                } else
+                {
+                    x += offset[0];
+                    y += offset[1];
+
+                }
+            }
+
             //KISS for now
             renderPositions = new List<Coords>();
 
@@ -52,164 +94,56 @@ namespace RhythmThing.Components
                    renderPositions.Add(new Coords(x + coord.x, y+coord.y, coord.character, coord.foreColor, coord.backColor));
 
                 }
-                if(scale != 0)
-                {
-                    //TODO: FIX THIS MAYBE
-                    //check current "bounds"
-                    if(bigx < coord.x)
-                    {
-                        bigx = coord.x;
-
-                    }
-                    if(bigy < coord.y)
-                    {
-                        bigy = coord.y;
-                    }
-                    if(smallx > coord.x)
-                    {
-                        smallx = coord.x;
-                    }
-                    if(smally > coord.y)
-                    {
-                        smally = coord.y;                               
-                    }
-                }
 
 
             }
-            //calculate scale
-            if(scale < 0)
-            {
-                int newX = bigx;
-                int newY = bigy;
-                int subY = 0;
-                int subX = 0;
-                Coords[,] currentWorkArray;
-                //center
-                /*
-                 *-2 4 -> 7
-                 * 3 9 -> 7
-                 */
-                newX = ((bigx - smallx)+1);
-                newY = ((bigy - smally)+1);
-                //fill new 2d array
-                Coords[,] firstArray = new Coords[newX,newY];
-                Coords[,] lastArray;
-                for (int x = 0; x < newX; x++)
-                {
-                    for (int y = 0; y < newY; y++)
-                    {
-                        Coords tempCoord = localPositions.Find(c => c.x == (x + smallx) && c.y == (y + smally));
-                        firstArray[x, y] = tempCoord;   
-                    }
-                }
-                int scaledX = newX + scale;
-                int scaledY = newY + scale;
-                int curX = newX;
-                int curY = newY;
-                
-                for (int i = scale; i < 0; i++)
-                {
-                    currentWorkArray = new Coords[curX-1, curY-1];
-                    for (int y = 0; y < curY-1; y++)
-                    {
-                        for (int x = 0; x < curX-1; x++)
-                        {
-                            ConsoleColor[] foreColors = new ConsoleColor[4];
-                            ConsoleColor[] backColors = new ConsoleColor[4];
-                            char[] chars = new char[4];
-                            char charLead = ' ';
-                            ConsoleColor foreLead = ConsoleColor.Black;
-                            ConsoleColor backLead = ConsoleColor.Black;
-                            for (int l = 0; l < 4; l++)
-                            {
-                                int chX = 0;
-                                int chY = 0;
-                                if (l == 0) { chX = x + 0; chY = y + 0; }
-                                if (l == 1) { chX = x + 1; chY = y + 0; }
-                                if (l == 2) { chX = x + 0; chY = y + 1; }
-                                if (l == 3) { chX = x + 1; chY = y + 1; }
-                                if(firstArray[chX, chY] != null)
-                                {
-                                    foreColors[l] = firstArray[chX, chY].foreColor;
-                                    backColors[l] = firstArray[chX, chY].backColor;
-                                    chars[l] = firstArray[chX, chY].character;
+            //Restore the positions for any calculations an stuff
+            x = _savedX;
+            y = _savedY;
 
-                                }
-                            }
-                            //find most common foreground
-                            int leadingAmount = 0;
-                            foreach (var item in foreColors)
-                            {
-                                int count = 0;
-                                foreach (var item2 in foreColors)
-                                {
-                                    if (item == item2) count++;
-                                }
-                                if(count > leadingAmount)
-                                {
-                                    foreLead = item;
-                                    leadingAmount = count;
-                                }
-                            }
-                            //most common background
-                            leadingAmount = 0;
-                            foreach (var item in backColors)
-                            {
-                                int count = 0;
-                                foreach (var item2 in backColors)
-                                {
-                                    if (item == item2) count++;
-                                }
-                                if (count > leadingAmount)
-                                {
-                                    backLead = item;
-                                    leadingAmount = count;
-                                }
-                            }
-                            //find most common char
-                            leadingAmount = 0;
-                            foreach (var item in chars)
-                            {
-                                int count = 0;
-                                foreach (var item2 in chars)
-                                {
-                                    if (item == item2) count++;
-                                }
-                                if (count > leadingAmount)
-                                {
-                                    charLead = item;
-                                    leadingAmount = count;
-                                }
-                            }
-                            currentWorkArray[x, y] = new Coords(x, y, charLead, foreLead, backLead);
-                        }
-                    }
-                    firstArray = new Coords[currentWorkArray.GetLength(0), currentWorkArray.GetLength(1)];
-                    for (int copyX = 0; copyX < firstArray.GetLength(0); copyX++)
-                    {
-                        for (int copyY = 0; copyY < firstArray.GetLength(1); copyY++)
-                        {
-                            firstArray[copyX, copyY] = currentWorkArray[copyX, copyY];
-                        }
-                    }
-                    curX = curX - 1;
-                    curY = curY - 1;
-                }
-                //drawwww that shit
-                for (int drX = 0; drX < firstArray.GetLength(0); drX++)
-                {
-                    for (int drY = 0; drY < firstArray.GetLength(1); drY++)
-                    {
-                        //just a simple way for now to see if this actually works lol
-                        Coords tempCoord = firstArray[drX, drY];
-                        renderPositions.Add(new Coords((drX + smallx) + x, (drY + smally) + y, tempCoord.character, tempCoord.foreColor, tempCoord.backColor));
-                    }
-                }
-                
-            }
         }
     }
+    public class VisualAnimation
+    {
+        public bool Live;
+        private float _timePassed;
+        private float _duration;
+        private int[] _startPoint;
+        private int[] _endPoint;
+        private int[] _offset = { 0, 0 };
+        public bool SaveCoords;
+        private Func<float,float> _easeFunction;
+        public VisualAnimation(int[] startPoint, int[] endPoint, string easing, float duration, int[] initialPoint, bool saveCoords)
+        {
+            this._startPoint = startPoint;
+            this._endPoint = endPoint;
+            this.SaveCoords = saveCoords;
+            _easeFunction = Ease.byName[easing];
+            _duration = duration;
+            _timePassed = 0;
+
+            _offset = new int[]{ _startPoint[0] - initialPoint[0], _startPoint[1] - initialPoint[1]};
+
+            Live = true;
+
+        }
+
+        public int[] UpdateAnim(double time)
+        {
+            if (_timePassed > _duration)
+            {
+                Live = false;
+                return new int[] { _endPoint[0]-_startPoint[0]+_offset[0], _endPoint[1]-_startPoint[1]+_offset[1]};
+            }
+            int resX = (int)Math.Ceiling(((float)_endPoint[0]-(float)_startPoint[0])*(_easeFunction(_timePassed / _duration)))+_offset[0];
+            int resY = (int)Math.Ceiling(((float)_endPoint[1] - (float)_startPoint[1]) * (_easeFunction(_timePassed / _duration)))+_offset[1];
+            _timePassed += (float)time;
+            return new int[] { resX, resY };
+
+
+        }
+    }
+
     public class Coords
     {
         //all relative to 0,0 on the visual

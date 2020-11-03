@@ -47,6 +47,9 @@ namespace RhythmThing
             //Line needed for some pcs
             Console.WriteLine("proof");
             Console.OutputEncoding = Encoding.Unicode;
+            //load player settings
+            PlayerSettings.Instance.ReadSettings();
+
             Game main = new Game(ScreenX, ScreenY);
             //testOUTPUT test = new testOUTPUT();
            // test.Setup();

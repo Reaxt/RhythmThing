@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using Linearstar.Windows.RawInput.Native;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace RhythmThing.System_Stuff
 {
@@ -19,21 +20,27 @@ namespace RhythmThing.System_Stuff
         //conclusion: will be handled by objects ingame
         //conlcusion 2: it will not!!!
 
-        const int leftCode = 75;
-        const int upCode = 72;
-        const int downCode = 80;
-        const int rightCode = 77;
-        const int enterCode = 28;
-        const int escCode = 1;
+        /*
+        private int _leftCode = 75;
+        private int _upCode = 72;
+        private int _downCode = 80;
+        private int _rightCode = 77;
+        private int _enterCode = 28;
+        private int _escCode = 1;
+        */
 
-        private static Input INSTANCE;
+
+        private static Input _instance;
         public static Input Instance {
             get {
-                if(INSTANCE == null)
-                    INSTANCE = new Input();
-                return INSTANCE;
+                if(_instance == null)
+                    _instance = new Input();
+                return _instance;
             } 
         }
+
+        public bool RebindStatus { get; private set; }
+        private ButtonKind _keyToRebind;
 
         public enum ButtonState
         {
@@ -68,6 +75,7 @@ namespace RhythmThing.System_Stuff
         
         private Dictionary<int, ButtonKind> _buttonBindings;
 
+
         public bool anythingIsHeld = false;
 
 
@@ -82,6 +90,12 @@ namespace RhythmThing.System_Stuff
 
         private ConcurrentQueue<RawInputState> _inputQueue;
 
+        public void RebindKey(ButtonKind button)
+        {
+            _keyToRebind = button;
+            RebindStatus = true;
+        }
+
         private Input()
         {
             ButtonStates = new Dictionary<ButtonKind, ButtonState>()
@@ -94,16 +108,8 @@ namespace RhythmThing.System_Stuff
                 { ButtonKind.Cancel, ButtonState.Off },
             };
 
-            _buttonBindings = new Dictionary<int, ButtonKind>()
-            {
-                { leftCode, ButtonKind.Left },
-                { upCode, ButtonKind.Up },
-                { downCode, ButtonKind.Down },
-                { rightCode, ButtonKind.Right },
-                { enterCode, ButtonKind.Confirm },
-                { escCode, ButtonKind.Cancel },
-            };
-
+            //GenBindingDictionary();
+            _buttonBindings = PlayerSettings.Instance.ButtonBindings;
 
             var devices = RawInputDevice.GetDevices();
             foreach (var device in devices)
@@ -145,12 +151,35 @@ namespace RhythmThing.System_Stuff
                 RawInputDevice.RegisterDevice(HidUsageAndPage.Keyboard, RawInputDeviceFlags.ExInputSink | RawInputDeviceFlags.NoLegacy, window.Handle);
                 Application.Run();
             }).Start();
+            RebindStatus = false;
         }
 
+        public Dictionary<int, ButtonKind> GenDefaultBindings()
+        {
 
+            return new Dictionary<int, ButtonKind>()
+            {
+                { 75, ButtonKind.Left },
+                { 72, ButtonKind.Up },
+                { 80, ButtonKind.Down },
+                { 77, ButtonKind.Right },
+                { 28, ButtonKind.Confirm },
+                { 1, ButtonKind.Cancel },
+            };
+        }
 
+        public void SaveCurrentBindings()
+        {
+            PlayerSettings.Instance.ButtonBindings = this._buttonBindings;
+            PlayerSettings.Instance.WriteSettings();
+        }
+        public void SetBindingsToConfig()
+        {
+            this._buttonBindings = PlayerSettings.Instance.ButtonBindings;
+        }
         public void UpdateInput()
         {
+
 
             //checking with held
             foreach (var button in ButtonStates.ToArray())
@@ -166,7 +195,7 @@ namespace RhythmThing.System_Stuff
             
 
 
-            anythingIsHeld = false;
+            
             if (!WindowManager.isFocused())
             {
                 return;
@@ -181,9 +210,30 @@ namespace RhythmThing.System_Stuff
                     Thread.Yield();
                 }
 
+                //for rebinding
+                if (RebindStatus)
+                {
+                    if (rawInputState.State)
+                    {
+                        //thas the one
+                        //this code, is bad.
+                        foreach (var item in _buttonBindings.ToArray())
+                        {
+                            if(item.Value == _keyToRebind)
+                            {
+                                _buttonBindings.Remove(item.Key);
+                                _buttonBindings.Add(rawInputState.Code, _keyToRebind);
+
+                                RebindStatus = false;
+                                Logger.DebugLog(JsonConvert.SerializeObject(_buttonBindings));
+                            }
+                        }
+                    }
+                    return;
+                }
 
 
-                if(_buttonBindings.ContainsKey(rawInputState.Code))
+                if (_buttonBindings.ContainsKey(rawInputState.Code))
                 {
                     ButtonKind buttonKind = _buttonBindings[rawInputState.Code];
                     if(rawInputState.State && (ButtonStates[buttonKind] == ButtonState.Off || ButtonStates[buttonKind] == ButtonState.Lifted))

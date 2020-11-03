@@ -18,7 +18,8 @@ namespace RhythmThing.System_Stuff
                 Y = 0,
                 Width = 0,
                 Height = 0,
-                Style = 0x800000
+                Style = 0x800000,
+                Caption = "RhythmThing input because windows is dumb"
             });
            
         }

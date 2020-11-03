@@ -18,18 +18,23 @@ namespace RhythmThing.Objects.Menu.Options_Menu
         private ConsoleColor backColor = ConsoleColor.Yellow;
         private ConsoleColor visualFront = ConsoleColor.Black;
         private ConsoleColor visualBack = ConsoleColor.White;
-        private int rebindState = 0; //collumn order. (0 = left, 1 = down, etc..)
+        private Input.ButtonKind keyToRebind;
         private bool boundConfirm = false;
-        
+        private OptionsObject optionsObject;
         private bool activated = false;
         private bool liftGood = false;
         private Key[] allKeys;
+
+        public RebindButton(OptionsObject optionsObject)
+        {
+            this.optionsObject = optionsObject;
+        }
 
         public override void End()
         {
             //throw new NotImplementedException();
         }
-
+        
         public override void Start(Game game)
         {
             //populate key array
@@ -66,9 +71,51 @@ namespace RhythmThing.Objects.Menu.Options_Menu
         {
             activated = true;
             rebindVisual.active = true;
-            
-
             rebindVisual.writeText(0, 0, "Please press the key you wish to assign to LEFT", visualFront, visualBack);
+            keyToRebind = Input.ButtonKind.Left;
+            Input.Instance.RebindKey(Input.ButtonKind.Left);
+        }
+        private void rebindNext()
+        {
+            rebindVisual.localPositions.Clear();
+            switch (keyToRebind)
+            {
+                case Input.ButtonKind.Left:
+                    rebindVisual.writeText(0, 0, "Please press the key you wish to assign to DOWN", visualFront, visualBack);
+                    keyToRebind = Input.ButtonKind.Down;
+                    Input.Instance.RebindKey(Input.ButtonKind.Down);
+
+                    break;
+                case Input.ButtonKind.Down:
+                    rebindVisual.writeText(0, 0, "Please press the key you wish to assign to UP", visualFront, visualBack);
+                    keyToRebind = Input.ButtonKind.Up;
+                    Input.Instance.RebindKey(Input.ButtonKind.Up);
+                    break;
+                case Input.ButtonKind.Up:
+                    rebindVisual.writeText(0, 0, "Please press the key you wish to assign to RIGHT", visualFront, visualBack);
+                    keyToRebind = Input.ButtonKind.Right;
+                    Input.Instance.RebindKey(Input.ButtonKind.Right);
+                    break;
+                case Input.ButtonKind.Right:
+                    rebindVisual.writeText(0, 0, "Please press the key you wish to assign to CONFIRM", visualFront, visualBack);
+                    keyToRebind = Input.ButtonKind.Confirm;
+                    Input.Instance.RebindKey(Input.ButtonKind.Confirm);
+                    break;
+                case Input.ButtonKind.Confirm:
+                    rebindVisual.writeText(0, 0, "Please press the key you wish to assign to CANCEL", visualFront, visualBack);
+                    keyToRebind = Input.ButtonKind.Cancel;
+                    Input.Instance.RebindKey(Input.ButtonKind.Cancel);
+                    break;
+                case Input.ButtonKind.Cancel:
+                    rebindVisual.localPositions.Clear();
+                    rebindVisual.active = false;
+                    activated = false;
+                    optionsObject.returnFocus();
+                    Input.Instance.SaveCurrentBindings();
+                    break;
+                default:
+                    break;
+            }
         }
         public static void KeyboardEventHandle(object sender, KeyboardEventArgs args)
         {
@@ -83,8 +130,9 @@ namespace RhythmThing.Objects.Menu.Options_Menu
             //hrow new NotImplementedException();
             if(activated)
             {
-                if(!game.input.anythingIsHeld)
+                if (!Input.Instance.RebindStatus)
                 {
+                    rebindNext();
                 }
             }
         }

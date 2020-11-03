@@ -22,6 +22,9 @@ namespace RhythmThing.Objects.Menu
             quit
         }
 
+        private float animTime = 0.025f;
+        private string animEasing = "easeLinear";
+
         List<SongContainer> songs;
         private Visual selector;
         private Visual optButton;
@@ -165,15 +168,15 @@ namespace RhythmThing.Objects.Menu
                         }
                         else
                         {
-                            selector.y = selector.y - 5;
 
+                            moveSelector(selector.x, selector.y - 5);
                         }
 
 
                     }
                     else
                     {
-                        selector.y = 45;
+                        moveSelector(selector.x, 45);
                         selected = 0;
                         DrawFromPoint(0);
                         currentLowestSelect = 0;
@@ -194,8 +197,8 @@ namespace RhythmThing.Objects.Menu
                         }
                         else
                         {
-                            selector.y = selector.y + 5;
-
+                            
+                            moveSelector(selector.x, selector.y + 5);
                         }
 
                     }
@@ -203,13 +206,14 @@ namespace RhythmThing.Objects.Menu
                     {
                         if (songs.Count > drawAmount)
                         {
-                            selector.y = 45 + ((drawAmount - 1) * -5);
+                            moveSelector(selector.x, (45 + ((drawAmount - 1) * -5)));
                             currentLowestSelect = (count - (drawAmount - 1));
 
                         }
                         else
                         {
-                            selector.y = 45 + ((count) * -5);
+                            moveSelector(selector.x, 45 + ((count) * -5));
+                            
                             currentLowestSelect = 0;
                         }
                         selected = count;
@@ -226,8 +230,8 @@ namespace RhythmThing.Objects.Menu
                 if (game.input.ButtonStates[Input.ButtonKind.Left] == Input.ButtonState.Press || game.input.ButtonStates[Input.ButtonKind.Right] == Input.ButtonState.Press)
                 {
                     menuSection = MenuSection.optSelect;
-                    selector.x = 58;
-                    selector.y = 13;
+                    
+                    moveSelector(58, 13);
 
                 }
             } else if (menuSection == MenuSection.optSelect)
@@ -236,9 +240,8 @@ namespace RhythmThing.Objects.Menu
                 if (game.input.ButtonStates[Input.ButtonKind.Left] == Input.ButtonState.Press || game.input.ButtonStates[Input.ButtonKind.Right] == Input.ButtonState.Press)
                 {
                     menuSection = MenuSection.songSelect;
-                    selector.x = 3;
                     //calculates where selector should be
-                    selector.y = (45 - ((selected - currentLowestSelect) * 5));
+                    moveSelector(3,(45 - ((selected - currentLowestSelect) * 5)));
                     optionSelected = optSelections.options;
 
                     //this line can check for either right now as there is only two options. I dont see any case where there would be more.
@@ -247,11 +250,11 @@ namespace RhythmThing.Objects.Menu
                     if (optionSelected == optSelections.options)
                     {
                         optionSelected = optSelections.quit;
-                        selector.y = selector.y - 5;
+                        moveSelector(selector.x, selector.y - 5);
                     } else if(optionSelected == optSelections.quit)
                     {
                         optionSelected = optSelections.options;
-                        selector.y = selector.y + 5;
+                        moveSelector(selector.x, selector.y + 5);
                     }
                 } else if(game.input.ButtonStates[Input.ButtonKind.Confirm] == Input.ButtonState.Press)
                 {
@@ -270,6 +273,13 @@ namespace RhythmThing.Objects.Menu
 
             }
 
+        }
+
+        private void moveSelector(int x, int y)
+        {
+            int[] point1 = new int[] { selector.x, selector.y };
+            int[] point2 = new int[] { x, y };
+            selector.Animate(point1, point2, animEasing, animTime,true);
         }
     }
 }

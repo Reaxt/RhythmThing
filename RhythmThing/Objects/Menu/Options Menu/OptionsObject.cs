@@ -15,11 +15,12 @@ namespace RhythmThing.Objects.Menu.Options_Menu
         private Visual quit;
         private RebindButton rebindButton;
         private OffsetButton offsetButton;
+        private DefaultOptionsButton defaultButton;
         //if this is true, we can select shit, if not, another thing is doing stuff we dont want to interfere with
         private bool selectorFocused = true;
-        //0 = rebind, 1 = offset maybe, 2 = menu
+        //0 = rebind, 1 = offset maybe, 3 = reset
         int selectedOption = 0;
-        int maxOption = 2; //just in case I want to add more it wont be *as* bad
+        int maxOption = 3; //just in case I want to add more it wont be *as* bad
         private ConsoleColor quitFront = ConsoleColor.Black;
         private ConsoleColor quitBack = ConsoleColor.Red;
         public override void End()
@@ -69,11 +70,13 @@ namespace RhythmThing.Objects.Menu.Options_Menu
             components.Add(quit);
 
             //spawn buttons
-            rebindButton = new RebindButton();
+            rebindButton = new RebindButton(this);
             offsetButton = new OffsetButton();
+            defaultButton = new DefaultOptionsButton();
+
             game.addGameObject(rebindButton);
             game.addGameObject(offsetButton);
-
+            game.addGameObject(defaultButton);
         }
         public void returnFocus()
         {
@@ -130,6 +133,10 @@ namespace RhythmThing.Objects.Menu.Options_Menu
                             rebindButton.rebind();
                             //bleeeeech ill finish this later
                             //probably have a listener inside of the actual like, input class, have that listen for keystrokes, if its one we want then set it. bleeeh I should rewrite so much stuff this project is turning into a mess ""
+                            break;
+                        case 2: //this is reset to default
+                            //will have proper screen n stuff later.
+                            PlayerSettings.Instance.WriteDefaultSettings();
                             break;
                         default:
                             break;

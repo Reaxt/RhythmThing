@@ -9,12 +9,13 @@ namespace RhythmThing.Utils
 {
     public static class Logger
     {
-        private static string logFile = "log.txt";
+        private static string logFile = "loge.txt";
         private static string logPath = Path.Combine(Directory.GetCurrentDirectory(), "!Content", logFile);
         public static void DebugLog(string log)
         {
 #if DEBUG
-            File.AppendAllText(logPath, (log + "\n"));
+            //broken..
+            //File.AppendAllText(logPath, (log + "\n"));
 #endif
         }
         public static void NewLog()
