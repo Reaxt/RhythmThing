@@ -5,6 +5,7 @@ using RhythmThing.System_Stuff;
 using RhythmThing.Utils;
 using System.Drawing;
 using System.IO;
+using System.Runtime.Serialization;
 
 namespace RhythmThing.Components
 {
@@ -176,8 +177,9 @@ namespace RhythmThing.Components
 
         }
     }
-
-    public class Coords
+    
+    [Serializable()]
+    public struct Coords : ISerializable
     {
         //all relative to 0,0 on the visual
         public int x;
@@ -194,6 +196,15 @@ namespace RhythmThing.Components
             this.backColor = backcol;
         }
 
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("x", this.x, typeof(int));
+            info.AddValue("y", this.y, typeof(int));
+            info.AddValue("char", this.character, typeof(char));
+            info.AddValue("foreCol", this.foreColor, typeof(ConsoleColor));
+            info.AddValue("backCol", this.backColor, typeof(ConsoleColor));
+
+        }
     }
 
 }

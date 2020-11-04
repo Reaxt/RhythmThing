@@ -42,6 +42,8 @@ namespace RhythmThing.Objects
         {
             public int framerate;
             public string videoPath;
+            public int frames;
+            public int[] startPoint;
 
         }
         public struct NoteInfo
@@ -169,7 +171,7 @@ namespace RhythmThing.Objects
             //check if theres a video
             if(chartInfo.video.videoPath != null)
             {
-                game.addGameObject(new VideoPlayer(Path.Combine(chartPath, chartInfo.video.videoPath), chartInfo.video.framerate));
+                game.addGameObject(new VideoPlayer(Path.Combine(chartPath, chartInfo.video.videoPath),chartPath, Path.Combine(chartPath, "ChartInfo.json"), chartInfo.video));
             }
 
             scoreHandler = new ScoreHandler(this, chartInfo.notes.Length);
