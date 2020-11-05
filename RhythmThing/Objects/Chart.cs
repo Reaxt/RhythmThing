@@ -171,7 +171,7 @@ namespace RhythmThing.Objects
             //check if theres a video
             if(chartInfo.video.videoPath != null)
             {
-                game.addGameObject(new VideoPlayer(Path.Combine(chartPath, chartInfo.video.videoPath),chartPath, Path.Combine(chartPath, "ChartInfo.json"), chartInfo.video));
+                game.addGameObject(new VideoPlayer(Path.Combine(chartPath, chartInfo.video.videoPath),chartPath, Path.Combine(chartPath, "ChartInfo.json"), chartInfo.video, this));
             }
 
             scoreHandler = new ScoreHandler(this, chartInfo.notes.Length);
@@ -179,6 +179,8 @@ namespace RhythmThing.Objects
             game.addGameObject(chartEventHandler);
             firstBPM = chartInfo.bpm;
             song = game.audioManager.addTrack(Path.Combine(chartPath, chartInfo.songPath));
+            double tempbeat = beatstoADD + (((TimeConverterFactory.Instance.GetTimeConverterForSource(song.sampleSource).ToTimeSpan(song.sampleSource.WaveFormat, song.sampleSource.Length).TotalMilliseconds + (chartInfo.offset * 1000) - mstoSUB) * ((float)(chartInfo.bpm) / 60000)));
+            VideoPlayer.LastBeat = (float)Math.Round(tempbeat, 2);
             //debug obj
             game.addGameObject(new ChartDebug(this));
 

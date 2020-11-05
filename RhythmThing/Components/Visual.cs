@@ -62,6 +62,29 @@ namespace RhythmThing.Components
             }
 
         }
+
+        public void LoadCVidFrame(int[,] frame)
+        {
+            for (int x = 0; x < frame.GetLength(0); x++)
+            {
+                for (int y = 0; y < frame.GetLength(1); y++)
+                {
+                    
+                    localPositions.Add(new Coords(x, y, ' ', (ConsoleColor)frame[x, y], (ConsoleColor)frame[x, y]));
+                }
+            }
+        }
+        public void LoadCVidFrame(int[,] frame, int[] lbcorner)
+        {
+            for (int x = 0; x < frame.GetLength(0); x++)
+            {
+                for (int y = 0; y < frame.GetLength(1); y++)
+                {
+
+                    localPositions.Add(new Coords(x+lbcorner[0], y+lbcorner[1], ' ', (ConsoleColor)frame[x, y], (ConsoleColor)frame[x, y]));
+                }
+            }
+        }
         public void LoadBMP(Bitmap bitmap, int[] LBcorner)
         {
             for (int x = 0; x < bitmap.Width; x++)

@@ -207,6 +207,7 @@ namespace RhythmThing.System_Stuff
                 RawInputState rawInputState;
                 while (!_inputQueue.TryDequeue(out rawInputState))
                 {
+                    Console.WriteLine("");
                     Thread.Yield();
                 }
 

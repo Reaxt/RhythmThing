@@ -26,7 +26,7 @@ namespace RhythmThing.Utils
                 {
                     Color pixel = bitmap.GetPixel(x, y);
                     ConsoleColor consoleColor = NearestConsoleColor.ClosestConsoleColor(pixel.R, pixel.G, pixel.B);
-                    coords.Append(new Coords(x, -y, ' ', consoleColor, consoleColor));
+                    coords.Append(new Coords(x, y, ' ', consoleColor, consoleColor));
                 }
             }
             return coords;
@@ -34,7 +34,7 @@ namespace RhythmThing.Utils
         }
         public static void BMPToBinary(string pathToFolder, string pathToWrite)
         {
-            Console.WriteLine("Converting BMP to Binary file..");
+            Console.WriteLine("Converting BMP files to Binary file(CVID)..");
             IFormatter formatter = new BinaryFormatter();
             string[] files = Directory.GetFiles(pathToFolder);
             List<Coords>[] data = new List<Coords>[files.Length];
@@ -42,22 +42,46 @@ namespace RhythmThing.Utils
             for (int i = 0; i < files.Length; i++)
             {
                 Bitmap bitmap = (Bitmap)Image.FromFile(files[i]);
-                //Coords[] tempCoords = new Coords[bitmap.Width*bitmap.Height];
-                /*
+
+                int[,] tempCoords = new int[bitmap.Width, bitmap.Height];
+                
                 for (int x = 0; x < bitmap.Width; x++)
                 {
                     for (int y = 0; y < bitmap.Height; y++)
                     {
                         Color pixel = bitmap.GetPixel(x, y);
                         ConsoleColor consoleColor = NearestConsoleColor.ClosestConsoleColor(pixel.R, pixel.G, pixel.B);
-                        tempCoords.Append(new Coords(x, -y, ' ', consoleColor, consoleColor));
+                        tempCoords[x,(bitmap.Height-y)-1] = (int)consoleColor;
                     }
-                }*/
-                formatter.Serialize(fileStream, bitmap);
+                }
+                formatter.Serialize(fileStream, tempCoords);
             }
             fileStream.Close();
 
         }
+
+        public static void BMPToCframe(string pathToBMP, string pathToWrite)
+        {
+            IFormatter formatter = new BinaryFormatter();
+            Bitmap bitmap = (Bitmap)Image.FromFile(pathToBMP);
+            int[,] tempCoords = new int[bitmap.Width, bitmap.Height];
+            FileStream fileStream = new FileStream(pathToWrite, FileMode.Create);
+
+            for (int x = 0; x < bitmap.Width; x++)
+            {
+                for (int y = 0; y < bitmap.Height; y++)
+                {
+                    Color pixel = bitmap.GetPixel(x, y);
+                    ConsoleColor consoleColor = NearestConsoleColor.ClosestConsoleColor(pixel.R, pixel.G, pixel.B);
+                    tempCoords[x, (bitmap.Height - y) - 1] = (int)consoleColor;
+                }
+            }
+            formatter.Serialize(fileStream, tempCoords);
+            fileStream.Close();
+            
+        }
+
+
 
         public static void BMPToCVID(string pathToFolder, string ChartInfoPath, Chart.videoInfo videoInfo, out string path, out int[] startPoint, out int frames)
         {

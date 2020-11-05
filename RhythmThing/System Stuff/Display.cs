@@ -5,6 +5,7 @@ using RhythmThing.Components;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Diagnostics;
+using System.Collections.Concurrent;
 
 namespace RhythmThing.System_Stuff
 {
@@ -31,6 +32,8 @@ namespace RhythmThing.System_Stuff
         private List<Visual> Objects;
         private List<Visual> ObjectsToRemove;
         private List<Visual> ObjectsToAdd;
+        private ConcurrentQueue<Visual> _objectsToAdd;
+        private ConcurrentQueue<Visual> _objectsToRemove;
         private ScreenFilter screenFilter;
         private bool filterActive;
         ConsoleColor[,] currentForeColors;
@@ -68,8 +71,8 @@ namespace RhythmThing.System_Stuff
                         if (component != null)
                         {
 
+                            //_objectsToAdd.Enqueue((Visual)component);
                             ObjectsToAdd.Add((Visual)component);
-
 
                         }
                     }
@@ -87,6 +90,7 @@ namespace RhythmThing.System_Stuff
                     {
                         if (component is Visual)
                         {
+                            //_objectsToRemove.Enqueue((Visual)component);
                             ObjectsToRemove.Add((Visual)component);
                         }
                     }
@@ -96,7 +100,8 @@ namespace RhythmThing.System_Stuff
 
         public void AddObject(Visual visual)
         {
-            ObjectsToAdd.Add(visual);
+            //_objectsToAdd.Enqueue(visual);
+            ObjectsToRemove.Add(visual);
         }
 
         public void ActivateFilter(ScreenFilter filter)
