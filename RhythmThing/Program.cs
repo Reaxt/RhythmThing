@@ -5,6 +5,7 @@ using System.Text;
 using System.Globalization;
 using System.Threading;
 using RhythmThing.Utils;
+using System.IO;
 
 namespace RhythmThing
 {
@@ -28,13 +29,13 @@ namespace RhythmThing
         //STATICS
         public static int ScreenX = 100;
         public static int ScreenY = 50;
-        
+        public static string contentPath;
         //this feels wrong but it works!
         [STAThread]
          
         static void Main(string[] args)
         {
-
+            contentPath = Path.Combine(Directory.GetCurrentDirectory(), "!Content");
             //backup last log
             Logger.NewLog();
 

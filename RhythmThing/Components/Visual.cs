@@ -18,9 +18,13 @@ namespace RhythmThing.Components
         private int _savedX;
         private int _savedY;
         public int z;
+        public int randAmount = 0;
+        public bool randBreak = false;
         public ConsoleColor overrideback;
         public ConsoleColor overridefront;
         public bool overrideColor = false;
+        public int randSeed = 1337;
+        private Random random = new Random();
         //what the object should interact with (local space)
         public List<Coords> localPositions = new List<Coords>();
         //what the visual class wil work with (world space)
@@ -56,8 +60,15 @@ namespace RhythmThing.Components
                 for (int y = 0; y < bitmap.Height; y++)
                 {
                     Color pixel = bitmap.GetPixel(x, y);
-                    ConsoleColor consoleColor = NearestConsoleColor.ClosestConsoleColor(pixel.R, pixel.G, pixel.B);
-                    localPositions.Add(new Coords(LBcorner[0]+x,LBcorner[1]+(-y+bitmap.Height),' ',consoleColor,consoleColor));
+                    if(pixel.A == 0)
+                    {
+
+                    } else
+                    {
+                        ConsoleColor consoleColor = NearestConsoleColor.ClosestConsoleColor(pixel.R, pixel.G, pixel.B);
+                        localPositions.Add(new Coords(LBcorner[0]+x,LBcorner[1]+(-y+bitmap.Height),' ',consoleColor,consoleColor));
+
+                    }
                 }
             }
 
@@ -69,7 +80,7 @@ namespace RhythmThing.Components
             {
                 for (int y = 0; y < frame.GetLength(1); y++)
                 {
-                    
+                   
                     localPositions.Add(new Coords(x, y, ' ', (ConsoleColor)frame[x, y], (ConsoleColor)frame[x, y]));
                 }
             }
@@ -136,19 +147,28 @@ namespace RhythmThing.Components
                 }
             }
 
+
+
             //KISS for now
             renderPositions = new List<Coords>();
-
+            random = new Random(randSeed);
             foreach (Coords coord in localPositions)
             {
                 //only works with the one way rn
+                int coordX = coord.x;
+                int coordY = coord.y;
                 
-                if(overrideColor)
+                if (randBreak)
                 {
-                   renderPositions.Add(new Coords(x + coord.x, y + coord.y, coord.character, overrideback, overridefront));
+                    coordX += random.Next(-randAmount, randAmount);
+                    coordY += random.Next(-randAmount, randAmount);
+                }
+                if (overrideColor)
+                {
+                   renderPositions.Add(new Coords(x + coordX, y + coordY, coord.character, overrideback, overridefront));
                 } else
                 {
-                   renderPositions.Add(new Coords(x + coord.x, y+coord.y, coord.character, coord.foreColor, coord.backColor));
+                   renderPositions.Add(new Coords(x + coordX, y+coordY, coord.character, coord.foreColor, coord.backColor));
 
                 }
 

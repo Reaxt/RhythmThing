@@ -14,22 +14,87 @@ namespace RhythmThing.Utils
 {
     public static class ImageUtils
     {
-
+        //TODO: IMPLEMENT TRANSPARENCY INTO CFRAMES
         public static Coords[] BMPToCoords(string pathToBMP)
         {
 
             Bitmap bitmap = (Bitmap)Image.FromFile(pathToBMP);
-            Coords[] coords = new Coords[bitmap.Width*bitmap.Height];
+            Coords[] coords = new Coords[bitmap.Width * bitmap.Height];
             for (int x = 0; x < bitmap.Width; x++)
             {
                 for (int y = 0; y < bitmap.Height; y++)
                 {
                     Color pixel = bitmap.GetPixel(x, y);
+                    if(pixel.A == 1)
+                    {
+                        //nah
+                    } else
+                    {
+
                     ConsoleColor consoleColor = NearestConsoleColor.ClosestConsoleColor(pixel.R, pixel.G, pixel.B);
                     coords.Append(new Coords(x, y, ' ', consoleColor, consoleColor));
+                    }
                 }
             }
             return coords;
+
+        }
+        public static void visualToBMP(Visual visual, string path)
+        {
+            //THIS FUNCTION IS NOT OPTIMIZED. IT SHOULD NOT BE USED FOR ANYTHING OTHER THAN DEV.
+            //first make whats basically a cframe
+            //find out the bounds
+
+            int smallestX = int.MaxValue;
+            int biggestX = int.MinValue;
+            int smallestY = int.MaxValue;
+            int biggestY = int.MinValue;
+
+            visual.renderPositions.ForEach(coord =>
+            {
+                if (smallestX > coord.x) smallestX = coord.x;
+                if (smallestY > coord.y) smallestY = coord.y;
+                if (biggestX < coord.x) biggestX = coord.x;
+                if (biggestY < coord.y) biggestY = coord.y;
+            });
+            //smallestX and smallestY are now OFFSETS. always subtract by these numbers.
+            Bitmap bitmap = new Bitmap((biggestX - smallestX) + 1, (biggestY - smallestY) + 1);
+            visual.renderPositions.ForEach(coord =>
+            {
+                Color color = Color.FromName(coord.backColor.ToString());
+                bitmap.SetPixel(coord.x - smallestX, biggestY - (coord.y - smallestY), color);
+            });
+            bitmap.Save(Path.Combine(Program.contentPath, path));
+        }
+        public static void visualToCframe(Visual visual, string path)
+        {
+
+            //THIS FUNCTION IS NOT OPTIMIZED. IT SHOULD NOT BE USED FOR ANYTHING OTHER THAN DEV.
+            //first make whats basically a cframe
+            //find out the bounds
+            IFormatter formatter = new BinaryFormatter();
+
+            int smallestX = int.MaxValue;
+            int biggestX = int.MinValue;
+            int smallestY = int.MaxValue;
+            int biggestY = int.MinValue;
+            FileStream fileStream = new FileStream(Path.Combine(Program.contentPath, path), FileMode.Create);
+            visual.renderPositions.ForEach(coord =>
+            {
+                if (smallestX > coord.x) smallestX = coord.x;
+                if (smallestY > coord.y) smallestY = coord.y;
+                if (biggestX < coord.x) biggestX = coord.x;
+                if (biggestY < coord.y) biggestY = coord.y;
+            });
+            //smallestX and smallestY are now OFFSETS. always subtract by these numbers.
+            int[,] tempCoords = new int[(biggestX - smallestX) + 1, (biggestY - smallestY) + 1];
+
+            visual.renderPositions.ForEach(coord =>
+            {
+                tempCoords[coord.x - smallestX, biggestY - (coord.y - smallestY)] = (int)coord.backColor;
+            });
+            formatter.Serialize(fileStream, tempCoords);
+
 
         }
         public static void BMPToBinary(string pathToFolder, string pathToWrite)
@@ -44,14 +109,18 @@ namespace RhythmThing.Utils
                 Bitmap bitmap = (Bitmap)Image.FromFile(files[i]);
 
                 int[,] tempCoords = new int[bitmap.Width, bitmap.Height];
-                
+
                 for (int x = 0; x < bitmap.Width; x++)
                 {
                     for (int y = 0; y < bitmap.Height; y++)
                     {
                         Color pixel = bitmap.GetPixel(x, y);
+                        if(pixel.A == 1)
+                        {
+                            //hm
+                        }
                         ConsoleColor consoleColor = NearestConsoleColor.ClosestConsoleColor(pixel.R, pixel.G, pixel.B);
-                        tempCoords[x,(bitmap.Height-y)-1] = (int)consoleColor;
+                        tempCoords[x, (bitmap.Height - y) - 1] = (int)consoleColor;
                     }
                 }
                 formatter.Serialize(fileStream, tempCoords);
@@ -78,7 +147,7 @@ namespace RhythmThing.Utils
             }
             formatter.Serialize(fileStream, tempCoords);
             fileStream.Close();
-            
+
         }
 
 
