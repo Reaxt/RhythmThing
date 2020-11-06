@@ -85,13 +85,13 @@ namespace RhythmThing.Objects
                 //_timePassed += time;
                 if(_chart.vBeat >= _timePerFrame * _currentFrame)
                 {
-                    int[,] toLoad = null;
+                    byte[,] toLoad = null;
                     visual.localPositions.Clear();
 
                     while (_chart.vBeat >= _timePerFrame*(_currentFrame) && (_currentFrame != _frames))
                     {
                         
-                        toLoad = (int[,])formatter.Deserialize(readStream);
+                        toLoad = (byte[,])formatter.Deserialize(readStream);
 
                         _currentFrame++;
                     }

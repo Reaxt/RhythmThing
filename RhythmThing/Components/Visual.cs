@@ -74,7 +74,7 @@ namespace RhythmThing.Components
 
         }
 
-        public void LoadCVidFrame(int[,] frame)
+        public void LoadCVidFrame(byte[,] frame)
         {
             for (int x = 0; x < frame.GetLength(0); x++)
             {
@@ -85,7 +85,7 @@ namespace RhythmThing.Components
                 }
             }
         }
-        public void LoadCVidFrame(int[,] frame, int[] lbcorner)
+        public void LoadCVidFrame(byte[,] frame, int[] lbcorner)
         {
             for (int x = 0; x < frame.GetLength(0); x++)
             {
@@ -108,7 +108,18 @@ namespace RhythmThing.Components
                 }
             }
         }
-
+        public void LoadBMP(Bitmap bitmap)
+        {
+            for (int x = 0; x < bitmap.Width; x++)
+            {
+                for (int y = 0; y < bitmap.Height; y++)
+                {
+                    Color pixel = bitmap.GetPixel(x, y);
+                    ConsoleColor consoleColor = NearestConsoleColor.ClosestConsoleColor(pixel.R, pixel.G, pixel.B);
+                    localPositions.Add(new Coords( x,  (-y + bitmap.Height), ' ', consoleColor, consoleColor));
+                }
+            }
+        }
         public void ClearAnims()
         {
             foreach(VisualAnimation animation in _animations)

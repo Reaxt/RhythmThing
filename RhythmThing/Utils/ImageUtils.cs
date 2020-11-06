@@ -108,7 +108,7 @@ namespace RhythmThing.Utils
             {
                 Bitmap bitmap = (Bitmap)Image.FromFile(files[i]);
 
-                int[,] tempCoords = new int[bitmap.Width, bitmap.Height];
+                byte[,] tempCoords = new byte[bitmap.Width, bitmap.Height];
 
                 for (int x = 0; x < bitmap.Width; x++)
                 {
@@ -120,7 +120,7 @@ namespace RhythmThing.Utils
                             //hm
                         }
                         ConsoleColor consoleColor = NearestConsoleColor.ClosestConsoleColor(pixel.R, pixel.G, pixel.B);
-                        tempCoords[x, (bitmap.Height - y) - 1] = (int)consoleColor;
+                        tempCoords[x, (bitmap.Height - y) - 1] = (byte)consoleColor;
                     }
                 }
                 formatter.Serialize(fileStream, tempCoords);
@@ -133,7 +133,7 @@ namespace RhythmThing.Utils
         {
             IFormatter formatter = new BinaryFormatter();
             Bitmap bitmap = (Bitmap)Image.FromFile(pathToBMP);
-            int[,] tempCoords = new int[bitmap.Width, bitmap.Height];
+            byte[,] tempCoords = new byte[bitmap.Width, bitmap.Height];
             FileStream fileStream = new FileStream(pathToWrite, FileMode.Create);
 
             for (int x = 0; x < bitmap.Width; x++)
@@ -142,7 +142,7 @@ namespace RhythmThing.Utils
                 {
                     Color pixel = bitmap.GetPixel(x, y);
                     ConsoleColor consoleColor = NearestConsoleColor.ClosestConsoleColor(pixel.R, pixel.G, pixel.B);
-                    tempCoords[x, (bitmap.Height - y) - 1] = (int)consoleColor;
+                    tempCoords[x, (bitmap.Height - y) - 1] = (byte)consoleColor;
                 }
             }
             formatter.Serialize(fileStream, tempCoords);
