@@ -37,7 +37,6 @@ namespace RhythmThing.Objects.ScoreScreen
         private float coverWait = 0.05f;
         private float coverTick = 0.025f;
         private bool coverSlide = false;
-        private List<pixelanim> pixelAnims;
         private Random random;
 
 
