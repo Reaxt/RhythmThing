@@ -12,29 +12,7 @@ using System.Threading.Tasks;
 namespace RhythmThing.Objects.ScoreScreen
 {
 
-    class pixelanim
-    {
-        public int firstX;
-        public int secondX;
-        public int firstY;
-        public int secondY;
-        public float dur;
-        public string easing;
-        public double currentTime { get; set; }
-        public Coords pixel;
-        public pixelanim(int fx, int fy, int sx, int sy, float d, string ease, ConsoleColor color)
-        {
-            this.firstX = fx;
-            this.secondX = sx;
-            this.firstY = fy;
-            this.secondY = sy;
-            this.easing = ease;
-            this.currentTime = 0;
-            this.dur = d;
-            this.pixel = new Coords(fx, fy, ' ', color, color);
-
-        }
-    }
+    
     public class ScoreScreenHandler : GameObject
     {
         /*
@@ -84,7 +62,6 @@ namespace RhythmThing.Objects.ScoreScreen
             letterGrade.z = 1;
             letterGrade.x = 60;
             visual.y = 49;
-            pixelAnims = new List<pixelanim>();
             random = new Random();
             percent = (float)Math.Floor(percent * 100);
             char[] songName = ("Song: " + (game.songName)).ToCharArray();
@@ -227,42 +204,8 @@ namespace RhythmThing.Objects.ScoreScreen
             components.Add(gradeCover);
             clearGuage.randBreak = true;
         }
-        private void AddPixelAnim(int x, int y, int randamount, ConsoleColor col, string easing, float dur)
-        {
-            int baseMov = 0;
-            pixelanim temp = new pixelanim((random.Next(-randamount, randamount) + x) + baseMov, (random.Next(-randamount, randamount) + y) + baseMov, x, y, dur, easing, col);
-            clearGuage.localPositions.Add(temp.pixel);
-            pixelAnims.Add(temp);
-        }
 
-        private void UpdatePixelAnims(double time)
-        {
-            for (int i = 0; i < pixelAnims.ToArray().Length; i++)
-            {
-                if (pixelAnims[i].currentTime >= pixelAnims[i].dur)
-                {
-                    clearGuage.localPositions.Remove(pixelAnims[i].pixel);
-                    pixelAnims[i].pixel.x = pixelAnims[i].secondX;
-                    pixelAnims[i].pixel.y = pixelAnims[i].secondY;
-                    clearGuage.localPositions.Add(pixelAnims[i].pixel);
-                    pixelAnims.Remove(pixelAnims[i]);
-                }
-                else
-                {
-                    pixelAnims[i].currentTime += time;
 
-                }
-            }
-            for (int i = 0; i < pixelAnims.Count; i++)
-            {
-                clearGuage.localPositions.Remove(pixelAnims[i].pixel);
-                float res = Ease.byName[pixelAnims[i].easing]((float)pixelAnims[i].currentTime / pixelAnims[i].dur);
-                pixelAnims[i].pixel.x = (int)Math.Ceiling(((float)(pixelAnims[i].secondX - pixelAnims[i].firstX) * res) + pixelAnims[i].firstX);
-                pixelAnims[i].pixel.y = (int)Math.Ceiling(((float)(pixelAnims[i].secondY - pixelAnims[i].firstY) * res) + pixelAnims[i].firstY);
-                clearGuage.localPositions.Add(pixelAnims[i].pixel);
-            }
-
-        }
 
         public override void Update(double time, Game game)
         {

@@ -7,6 +7,8 @@ using RhythmThing.System_Stuff;
 using RhythmThing.Components;
 using RhythmThing.Objects;
 using RhythmThing.Utils;
+using System.IO;
+
 namespace RhythmThing.Objects
 {
     public class Receiver : GameObject
@@ -32,6 +34,7 @@ namespace RhythmThing.Objects
         public Arrow.direction direction = Arrow.direction.down;
         public Dictionary<string, float> mods;
         public bool frozen = false;
+        private bool onceDebug = true;
         public override void End()
         {
         }
@@ -69,71 +72,24 @@ namespace RhythmThing.Objects
             switch (collumn)
             {
                 case Chart.collumn.Left:
-                    for (int i = 2; i > -2; i--)
-                    {
-                        visual.localPositions.Add(new Coords(i, 0, ' ', ConsoleColor.Gray, ConsoleColor.Gray));
-                        visual.localPositions.Add(new Coords(i, 1, ' ', ConsoleColor.Gray, ConsoleColor.Gray));
-                        visual.localPositions.Add(new Coords(i, -1, ' ', ConsoleColor.Gray, ConsoleColor.Gray));
-                    }
-                    for (int i = -2; i > -8; i--)
-                    {
-                        for (int x = -5 + ((-i) - 2); x < 5 - ((-i) - 3); x++)
-                        {
-                            visual.localPositions.Add(new Coords(i, x, ' ', ConsoleColor.Gray, ConsoleColor.Gray));
-                        }
-                    }
+                    visual.LoadBMP(Path.Combine(Program.contentPath, "Sprites", "LeftReceiver.bmp"), new int[] { -7,-6});
                     break;
                 case Chart.collumn.Down:
                     visual.x = 42;
                     visual.y = 44;
-                    for (int i = 2; i > -2; i--)
-                    {
-                        visual.localPositions.Add(new Coords(0, i, ' ', ConsoleColor.Gray, ConsoleColor.Gray));
-                        visual.localPositions.Add(new Coords(1, i, ' ', ConsoleColor.Gray, ConsoleColor.Gray));
-                        visual.localPositions.Add(new Coords(-1, i, ' ', ConsoleColor.Gray, ConsoleColor.Gray));
-                    }
-                    for (int i = -2; i > -8; i--)
-                    {
-                        for (int x = -5 + ((-i) - 2); x < 5 - ((-i) - 3); x++)
-                        {
-                            visual.localPositions.Add(new Coords(x, i, ' ', ConsoleColor.Gray, ConsoleColor.Gray));
-                        }
-                    }
+                    visual.LoadBMP(Path.Combine(Program.contentPath, "Sprites", "DownReceiver.bmp"), new int[] { -5, -8 });
+
                     break;
                 case Chart.collumn.Up:
                     visual.x = 56;
                     visual.y = 40;
-                    for (int i = -2; i < 2; i++)
-                    {
-                        visual.localPositions.Add(new Coords(0, i, ' ', ConsoleColor.Gray, ConsoleColor.Gray));
-                        visual.localPositions.Add(new Coords(1, i, ' ', ConsoleColor.Gray, ConsoleColor.Gray));
-                        visual.localPositions.Add(new Coords(-1, i, ' ', ConsoleColor.Gray, ConsoleColor.Gray));
-                    }
-                    //visual.localPositions.Add(new Coords(8, 0, ' ', ConsoleColor.DarkGreen, ConsoleColor.DarkCyan));
-                    for (int i = 2; i < 8; i++)
-                    {
-                        for (int x = (-5) + i - 2; x < 5 - (i - 3); x++)
-                        {
-                            visual.localPositions.Add(new Coords(x, i, ' ', ConsoleColor.Gray, ConsoleColor.Gray));
-                        }
-                    }
+                    visual.LoadBMP(Path.Combine(Program.contentPath, "Sprites", "UpReceiver.bmp"), new int[] { -5, -3 });
+
                     break;
                 case Chart.collumn.Right:
                     visual.x = 68;
-                    for (int i = -2; i < 2; i++)
-                    {
-                        visual.localPositions.Add(new Coords(i, 0, ' ', ConsoleColor.Gray, ConsoleColor.Gray));
-                        visual.localPositions.Add(new Coords(i, 1, ' ', ConsoleColor.Gray, ConsoleColor.Gray));
-                        visual.localPositions.Add(new Coords(i, -1, ' ', ConsoleColor.Gray, ConsoleColor.Gray));
-                    }
-                    //visual.localPositions.Add(new Coords(8, 0, ' ', ConsoleColor.DarkGreen, ConsoleColor.DarkCyan));
-                    for (int i = 2; i < 8; i++)
-                    {
-                        for (int x = (-5) + i - 2; x < 5 - (i - 3); x++)
-                        {
-                            visual.localPositions.Add(new Coords(i, x, ' ', ConsoleColor.Gray, ConsoleColor.Gray));
-                        }
-                    }
+                    visual.LoadBMP(Path.Combine(Program.contentPath, "Sprites", "RightReceiver.bmp"), new int[] { -2, -6 });
+
                     break;
                 default:
                     break;
@@ -155,6 +111,11 @@ namespace RhythmThing.Objects
 
         public override void Update(double time, Game game)
         {
+            if (onceDebug)
+            {
+                ImageUtils.visualToBMP(visual, Path.Combine(Program.contentPath, $"{collumn.ToString()}Receiver.bmp"));
+                onceDebug = false;
+            }
             xModOffset = 0;
             yModOffset = 0;
             //how to do mods!

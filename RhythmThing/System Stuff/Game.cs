@@ -73,7 +73,7 @@ namespace RhythmThing.System_Stuff
             sceneManager = new SceneManager(this);
             //entry point
 
-            sceneManager.loadScene(2);
+            sceneManager.loadScene(0);
 
             //debug scene
             //sceneManager.loadScene(5);

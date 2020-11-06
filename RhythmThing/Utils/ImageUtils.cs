@@ -62,7 +62,7 @@ namespace RhythmThing.Utils
             visual.renderPositions.ForEach(coord =>
             {
                 Color color = Color.FromName(coord.backColor.ToString());
-                bitmap.SetPixel(coord.x - smallestX, biggestY - (coord.y - smallestY), color);
+                bitmap.SetPixel(coord.x - smallestX, (bitmap.Height-1) - (coord.y - smallestY), color);
             });
             bitmap.Save(Path.Combine(Program.contentPath, path));
         }

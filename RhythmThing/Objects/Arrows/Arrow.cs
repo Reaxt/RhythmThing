@@ -95,7 +95,8 @@ namespace RhythmThing.Objects
             }
 
             noteBGColor = noteColor;
-
+            visual.overrideback = noteColor;
+            visual.overridefront = noteColor;
             switch (collumn)
             {
                 case Chart.collumn.Left:
