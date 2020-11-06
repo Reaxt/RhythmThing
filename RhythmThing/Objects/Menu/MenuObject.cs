@@ -66,6 +66,10 @@ namespace RhythmThing.Objects.Menu
                 songs.Add(tempcon);
                 count++;
             }
+            songs.Sort((a, b) =>
+            {
+                return (a.chart.chartInfo.difficulty > b.chart.chartInfo.difficulty) ? 1 : -1;
+            });
             selector = new Visual();
             selector.active = true;
 
@@ -144,7 +148,7 @@ namespace RhythmThing.Objects.Menu
                 for (int i = topmost; i < drawAmount+topmost; i++)
                 {
                     songs[i].visual.active = true;
-                    songs[i].visual.y = (45 + ((i-topmost) * -5));
+                    songs[i].AnimTo(45 + ((i-topmost) * -5));
                 }
             } else
             {

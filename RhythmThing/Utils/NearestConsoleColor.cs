@@ -25,6 +25,12 @@ namespace RhythmThing.Utils
                     ret = cc;
                 }
             }
+            //bad apple only, or youtube compressed. need to think about more
+            /*
+            if(ret == ConsoleColor.Green || ret == ConsoleColor.DarkGreen)
+            {
+                ret = ConsoleColor.Black;
+            }*/
             return ret;
         }
     }

@@ -77,6 +77,7 @@ namespace RhythmThing.Objects
         public ScoreHandler scoreHandler;
         private ChartEventHandler chartEventHandler;
         public float beat;
+        public float vBeat;
         public float approachBeat;
         public float scoreTime;
         public float missTime;
@@ -84,6 +85,7 @@ namespace RhythmThing.Objects
         private float lastBPMChangeBeat = 0;
         private double mstoSUB = 0;
         private float beatstoADD = 0;
+        
         public Chart(string path)
         {
             folderName = path;
@@ -179,7 +181,7 @@ namespace RhythmThing.Objects
             game.addGameObject(chartEventHandler);
             firstBPM = chartInfo.bpm;
             song = game.audioManager.addTrack(Path.Combine(chartPath, chartInfo.songPath));
-            double tempbeat = beatstoADD + (((TimeConverterFactory.Instance.GetTimeConverterForSource(song.sampleSource).ToTimeSpan(song.sampleSource.WaveFormat, song.sampleSource.Length).TotalMilliseconds + (chartInfo.offset * 1000) - mstoSUB) * ((float)(chartInfo.bpm) / 60000)));
+            double tempbeat = beatstoADD + (((TimeConverterFactory.Instance.GetTimeConverterForSource(song.sampleSource).ToTimeSpan(song.sampleSource.WaveFormat, song.sampleSource.Length).TotalMilliseconds) * ((float)(firstBPM) / 60000)));
             VideoPlayer.LastBeat = (float)Math.Round(tempbeat, 2);
             //debug obj
             game.addGameObject(new ChartDebug(this));
@@ -207,6 +209,9 @@ namespace RhythmThing.Objects
             //calculate the current "beat"
             double tempbeat = beatstoADD + (((TimeConverterFactory.Instance.GetTimeConverterForSource(song.sampleSource).ToTimeSpan(song.sampleSource.WaveFormat, song.sampleSource.Position).TotalMilliseconds + (chartInfo.offset * 1000) - mstoSUB) * ((float)(chartInfo.bpm) / 60000)));
             beat = (float)Math.Round(tempbeat, 2);
+
+            double tempbeat2 = (((TimeConverterFactory.Instance.GetTimeConverterForSource(song.sampleSource).ToTimeSpan(song.sampleSource.WaveFormat, song.sampleSource.Position).TotalMilliseconds) * ((float)(firstBPM) / 60000)));
+            vBeat = (float)Math.Round(tempbeat2, 2);
 
             if (song.sampleSource.GetLength().TotalMilliseconds <= song.sampleSource.GetPosition().TotalMilliseconds)
             {

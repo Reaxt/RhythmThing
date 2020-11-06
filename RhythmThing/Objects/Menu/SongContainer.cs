@@ -19,6 +19,10 @@ namespace RhythmThing.Objects.Menu
         private int _animOff = 5;
         private string _animEase = "easeOutExpo";
         private float _animDuration = 0.05f;
+        private string _scrollAnimEase = "easeLinear";
+        private float _scrollAnimDur = 0.1f;
+        private static ConsoleColor _normalBack = ConsoleColor.Gray;
+        private static ConsoleColor _normalFront = ConsoleColor.Black;
         public SongContainer(string chartName, int pos)
         {
             this.chartName = chartName;
@@ -30,28 +34,28 @@ namespace RhythmThing.Objects.Menu
             switch (chart.chartInfo.difficulty)
             {
                 case 0:
-                    frontColor = ConsoleColor.Black;
-                    backColor = ConsoleColor.Green;
+                    frontColor = ConsoleColor.White;
+                    backColor = ConsoleColor.Gray;
                     break;
                 case 1:
                     frontColor = ConsoleColor.White;
-                    backColor = ConsoleColor.DarkGreen;
+                    backColor = ConsoleColor.Blue;
                     break;
                 case 2:
                     frontColor = ConsoleColor.White;
-                    backColor = ConsoleColor.Blue;
+                    backColor = ConsoleColor.Green;
                     break;
                 case 3:
                     frontColor = ConsoleColor.White;
-                    backColor = ConsoleColor.DarkBlue;
+                    backColor = ConsoleColor.Yellow;
                     break;
                 case 4:
                     frontColor = ConsoleColor.White;
-                    backColor = ConsoleColor.DarkRed;
+                    backColor = ConsoleColor.Red;
                     break;
                 case 5:
                     frontColor = ConsoleColor.White;
-                    backColor = ConsoleColor.Red;
+                    backColor = ConsoleColor.Magenta;
                     break;
                 default:
                     break;
@@ -70,15 +74,17 @@ namespace RhythmThing.Objects.Menu
 
             for (int i = -1; i < 30; i++)
             {
-                visual.localPositions.Add(new Coords(i, 1, ' ', frontColor, backColor));
-                visual.localPositions.Add(new Coords(i, 0, ' ', frontColor, backColor));
-                visual.localPositions.Add(new Coords(i, -1, ' ', frontColor, backColor));
+                visual.localPositions.Add(new Coords(i, 1, ' ', _normalFront, _normalBack));
+                visual.localPositions.Add(new Coords(i, 0, ' ', _normalFront, _normalBack));
+                visual.localPositions.Add(new Coords(i, -1, ' ', _normalFront, _normalBack));
             }
             for (int i = 0; i < chartChar.Length; i++)
             {
-                visual.localPositions.Add(new Coords(i, 0, chartChar[i], frontColor, backColor));
+                visual.localPositions.Add(new Coords(i+1, 0, chartChar[i], _normalFront, _normalBack));
             }
-            visual.localPositions.Add(new Coords(-1, 0, ' ', frontColor, backColor));
+            visual.localPositions.Add(new Coords(-1, 1, ' ', _normalFront, backColor));
+            visual.localPositions.Add(new Coords(-1, 0, ' ', _normalFront, backColor));
+            visual.localPositions.Add(new Coords(-1, -1, ' ', _normalFront, backColor));
         }
         public override void End()
         {
@@ -97,7 +103,12 @@ namespace RhythmThing.Objects.Menu
             int[] point2 = new int[] { visual.x - 5, visual.y };
             visual.Animate(point1, point2, _animEase, _animDuration);
         }
-
+        public void AnimTo(int y)
+        {
+            int[] point1 = new int[] { visual.x, visual.y };
+            int[] point2 = new int[] { visual.x, y };
+            visual.Animate(point1, point2, _scrollAnimEase, _scrollAnimDur);
+        }
         public override void Start(Game game)
         {
 
