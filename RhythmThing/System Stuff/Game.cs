@@ -44,6 +44,7 @@ namespace RhythmThing.System_Stuff
         public string ChartToLoad;
         public int totalNotes = 100;
         public int notesHit = 50;
+        public string songHash;
         public string songName = "Test song name";
         //private List<GameObject> toRemove;
         //for our good ol friend deltatime
@@ -77,10 +78,10 @@ namespace RhythmThing.System_Stuff
 
             //debug scene
             //sceneManager.loadScene(5);
-            
-            while(gameLoopLives)
+
+            while (gameLoopLives)
             {
-                
+
 
                 this.Loop();
 
@@ -109,8 +110,8 @@ namespace RhythmThing.System_Stuff
 
             //put in test object
             //mainInstance.addGameObject(new LeftArrow());
-           // mainInstance.addGameObject(new RightArrow());
-           //mainInstance.addGameObject(new DownArrow());
+            // mainInstance.addGameObject(new RightArrow());
+            //mainInstance.addGameObject(new DownArrow());
             //mainInstance.addGameObject(new UpArrow());
             //mainInstance.addGameObject(new Chart("Metronome80"));
 
@@ -123,7 +124,8 @@ namespace RhythmThing.System_Stuff
             //changing scene stuff
             foreach (GameObject obj in gameObjects)
             {
-               obj.alive = false;
+                obj.alive = false;
+                obj.End();
             }
 
             addBuffer = new List<GameObject>(sceneManager.initScene());
@@ -139,7 +141,7 @@ namespace RhythmThing.System_Stuff
                     obj.Start(this);
                     gameObjects.Add(obj);
 
-                    if(obj.type == objType.visual)
+                    if (obj.type == objType.visual)
                     {
                         display.AddObject(obj);
                     }
@@ -147,9 +149,9 @@ namespace RhythmThing.System_Stuff
                 gameObjectsToAdd.Clear();
                 //calculate objects that exist
                 toRemove.Clear();
-                foreach(GameObject obj in gameObjects)
+                foreach (GameObject obj in gameObjects)
                 {
-                    if(obj.alive)
+                    if (obj.alive)
                     {
                         //run the components first or last?
                         foreach (Component comp in obj.components)
@@ -158,7 +160,8 @@ namespace RhythmThing.System_Stuff
                         }
 
                         obj.Update(deltaTime, this);
-                    } else
+                    }
+                    else
                     {
                         toRemove.Add(obj);
                         obj.End();
@@ -172,7 +175,7 @@ namespace RhythmThing.System_Stuff
 
 
                 display.DrawFrame(deltaTime);
-                
+
 
 
                 input.UpdateInput();

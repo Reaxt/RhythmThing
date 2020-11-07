@@ -10,7 +10,7 @@ namespace RhythmThing.System_Stuff
     {
         public objType type;
         public bool alive = true;
-        public List<Component> components;
+        public List<Component> components = new List<Component>();
         public abstract void Update(double time, Game game);
         public abstract void Start(Game game);
         public abstract void End();

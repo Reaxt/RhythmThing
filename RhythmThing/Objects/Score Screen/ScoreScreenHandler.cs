@@ -2,6 +2,7 @@
 using RhythmThing.System_Stuff;
 using RhythmThing.Utils;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -38,7 +39,8 @@ namespace RhythmThing.Objects.ScoreScreen
         private float coverTick = 0.025f;
         private bool coverSlide = false;
         private Random random;
-
+        private bool _highScore = false;
+        private float _lastScore = 0;
 
         string grade;
         public override void End()
@@ -48,6 +50,8 @@ namespace RhythmThing.Objects.ScoreScreen
 
         public override void Start(Game game)
         {
+            //Save the score.
+
             components = new List<Component>();
             percent = (float)game.notesHit / (float)game.totalNotes;
             //just write it out for now
@@ -65,14 +69,14 @@ namespace RhythmThing.Objects.ScoreScreen
             percent = (float)Math.Floor(percent * 100);
             char[] songName = ("Song: " + (game.songName)).ToCharArray();
             char[] percentText = ("Percent: " + percent + "%").ToCharArray();
-            char[] grade;
+            string grade = "NA";
 
 
             //This esentially draws the letter sprites. Its a bit of a mess, but it works fine.
             //TODO: now that I can do BMP stuff, make these into cframes!
             if (percent == 100)
             {
-                grade = "SSS".ToCharArray();
+                grade = "SSS";
                 //first s
                 letterGrade.LoadBMP(Path.Combine(Program.contentPath, "Sprites", "SSS.bmp"), new int[] { 0, 0 });
 
@@ -81,7 +85,7 @@ namespace RhythmThing.Objects.ScoreScreen
             else if (percent >= 90)
             {
                 letterGrade.x = 65;
-                grade = "SS".ToCharArray();
+                grade = "SS";
                 letterGrade.LoadBMP(Path.Combine(Program.contentPath, "Sprites", "SS.bmp"), new int[] { 0, 0 });
 
 
@@ -89,14 +93,14 @@ namespace RhythmThing.Objects.ScoreScreen
             else if (percent >= 87)
             {
                 letterGrade.x = 70;
-                grade = "S".ToCharArray();
+                grade = "S";
                 letterGrade.LoadBMP(Path.Combine(Program.contentPath, "Sprites", "S.bmp"), new int[] { 2, 0 });
 
             }
             else if (percent >= 80)
             {
                 letterGrade.x = 69;
-                grade = "A".ToCharArray();
+                grade = "A";
                 letterGrade.LoadBMP(Path.Combine(Program.contentPath, "Sprites", "A.bmp"), new int[] { 0, 0 });
 
 
@@ -104,7 +108,7 @@ namespace RhythmThing.Objects.ScoreScreen
             else if (percent >= 73)
             {
                 letterGrade.x = 69;
-                grade = "B".ToCharArray();
+                grade = "B";
                 letterGrade.LoadBMP(Path.Combine(Program.contentPath, "Sprites", "B.bmp"), new int[] { 0, 0 });
 
 
@@ -112,7 +116,7 @@ namespace RhythmThing.Objects.ScoreScreen
             else if (percent >= 67)
             {
                 letterGrade.x = 65;
-                grade = "C".ToCharArray();
+                grade = "C";
                 letterGrade.LoadBMP(Path.Combine(Program.contentPath, "Sprites", "C.bmp"), new int[] { 4, 0 });
 
 
@@ -120,17 +124,29 @@ namespace RhythmThing.Objects.ScoreScreen
             else if (percent >= 60)
             {
                 letterGrade.x = 65;
-                grade = "D".ToCharArray();
+                grade = "D";
                 letterGrade.LoadBMP(Path.Combine(Program.contentPath, "Sprites", "D.bmp"), new int[] { 5, 0 });
 
             }
             else
             {
                 letterGrade.x = 67;
-                grade = "F".ToCharArray();
+                grade = "F";
                 letterGrade.LoadBMP(Path.Combine(Program.contentPath, "Sprites", "F.bmp"), new int[] { 5, 0 });
 
             }
+            if(grade == "NA")
+            {
+                throw new Exception("NO VALID SCORE");
+
+            }
+            _lastScore = PlayerSettings.Instance.chartScores[game.songHash].percent;
+            if (percent > PlayerSettings.Instance.chartScores[game.songHash].percent)
+            {
+                PlayerSettings.Instance.SaveScore(game.songHash, grade, percent);
+
+            }
+
             for (int i = 0; i < 101; i++)
             {
                 visual.localPositions.Add(new Coords(i, 0, ' ', ConsoleColor.Magenta, ConsoleColor.DarkGray));

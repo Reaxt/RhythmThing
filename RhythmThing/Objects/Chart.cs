@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.IO;
 using CSCore;
 using System.Reflection;
+using System.Security.Cryptography;
 
 namespace RhythmThing.Objects
 {
@@ -32,6 +33,7 @@ namespace RhythmThing.Objects
             public string chartAuthor;
             //might not implement that one honestly
             public float preview;
+            public float previewLength;
             public NoteInfo[] notes;
             public EventInfo[] events;
             public int difficulty;
@@ -63,11 +65,11 @@ namespace RhythmThing.Objects
         // ---END OF STRUCTS AND ENUMS---
         public static Chart instance;
         private string folderName;
-        private string chartPath;
+        public string chartPath;
         public JsonChart chartInfo;
         private AudioTrack song;
         private List<NoteInfo> msNotes;
-        
+        public string hash;
 
         private Receiver leftReceiver;
         private Receiver downReceiver;
@@ -92,7 +94,11 @@ namespace RhythmThing.Objects
             chartPath = Path.Combine(Directory.GetCurrentDirectory(), "!Content/!Songs", path);
            // Console.WriteLine(chartPath);
             chartInfo = JsonConvert.DeserializeObject<JsonChart>(File.ReadAllText(Path.Combine(chartPath, "ChartInfo.json")));
-        
+            if(chartInfo.previewLength == 0)
+            {
+                chartInfo.previewLength = 3;
+            }
+            hash = Convert.ToBase64String(Program.mD5.ComputeHash(File.ReadAllBytes(Path.Combine(chartPath, "ChartInfo.json"))));
         }
 
         public override void End()
@@ -219,6 +225,7 @@ namespace RhythmThing.Objects
                 game.notesHit = scoreHandler.hits;
                 game.totalNotes = scoreHandler.notes;
                 game.songName = this.chartInfo.songName;
+                game.songHash = this.hash;
                 game.audioManager.removeTrack(song);
                 game.sceneManager.loadScene(2);
                 
@@ -228,6 +235,7 @@ namespace RhythmThing.Objects
                 game.notesHit = scoreHandler.hits;
                 game.totalNotes = scoreHandler.notes;
                 game.songName = this.chartInfo.songName;
+                game.songHash = this.hash;
                 game.audioManager.removeTrack(song);
                 game.sceneManager.loadScene(2);
 

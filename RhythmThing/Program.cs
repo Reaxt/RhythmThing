@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Threading;
 using RhythmThing.Utils;
 using System.IO;
+using System.Security.Cryptography;
 
 namespace RhythmThing
 {
@@ -30,6 +31,7 @@ namespace RhythmThing
         public static int ScreenX = 100;
         public static int ScreenY = 50;
         public static string contentPath;
+        public static MD5 mD5 = MD5.Create();
         //this feels wrong but it works!
         [STAThread]
          

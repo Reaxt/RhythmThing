@@ -1,33 +1,31 @@
 ﻿using RhythmThing.Components;
-using RhythmThing.Objects;
-using RhythmThing.Objects.Menu;
-using RhythmThing.Objects.Test_Objects;
+using RhythmThing.Objects.Menu.MenuMusic;
 using RhythmThing.System_Stuff;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace RhythmThing.Scenes
 {
-    class SongScene : Scene
+    class SongTransitionScene : Scene
     {
-        public SongScene()
+        public SongTransitionScene()
         {
-            this.name = "SongScene";
-            this.index = 1;
+            this.name = "Intro Animation";
+            this.index = 6;
         }
         public override void Start()
         {
-            initialObjs = new List<GameObject>();
 
-            initialObjs.Add(new Chart(Game.mainInstance.ChartToLoad));
+
+            initialObjs = new List<GameObject>();
+            initialObjs.Add(MenuMusicHandler.GetMusicAnim());
+
         }
 
         public override void Update()
         {
-
+            //throw new NotImplementedException();
         }
     }
 }

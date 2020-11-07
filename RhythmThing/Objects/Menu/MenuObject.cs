@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using RhythmThing.Objects.Menu.MenuMusic;
 
 namespace RhythmThing.Objects.Menu
 {
@@ -29,6 +30,7 @@ namespace RhythmThing.Objects.Menu
         private string animEasing = "easeLinear";
         private int[] lastAnimPoint;
         List<SongContainer> songs;
+        private MenuMusicHandler menuMusic;
         private Visual selector;
         private Visual optButton;
         //option button colors
@@ -55,7 +57,7 @@ namespace RhythmThing.Objects.Menu
         {
             
             components = new List<Component>();
-
+            menuMusic = new MenuMusicHandler();
             string[] chartNames = Directory.GetDirectories(Path.Combine(Directory.GetCurrentDirectory(), "!Content/!Songs"));
             
             songs = new List<SongContainer>();
@@ -70,6 +72,13 @@ namespace RhythmThing.Objects.Menu
             {
                 return (a.chart.chartInfo.difficulty > b.chart.chartInfo.difficulty) ? 1 : -1;
             });
+
+            for (int i = 0; i < songs.Count; i++)
+            {
+                songs[i].pos = i;
+                chartNames[i] = songs[i].chartName;
+            }
+
             selector = new Visual();
             selector.active = true;
 
@@ -130,7 +139,8 @@ namespace RhythmThing.Objects.Menu
                 quitButton.localPositions.Add(new Coords(i, 0, quitText[i], quitFront, quitBack));
             }
             components.Add(quitButton);
-
+            game.addGameObject(menuMusic);
+            menuMusic.StartMainMusic();
             DrawFromPoint(0);
         }
 
@@ -194,6 +204,8 @@ namespace RhythmThing.Objects.Menu
                     }
                     chartInfoVisual.UpdateChart(songs[selected].chart.chartInfo);
                     songs[selected].OutAnim();
+                    menuMusic.SelectNoise(songs[selected]);
+
                 }
                 if (game.input.ButtonStates[Input.ButtonKind.Up] == Input.ButtonState.Press)
                 {
@@ -234,6 +246,7 @@ namespace RhythmThing.Objects.Menu
                     }
                     chartInfoVisual.UpdateChart(songs[selected].chart.chartInfo);
                     songs[selected].OutAnim();
+                    menuMusic.SelectNoise(songs[selected]);
                 }
 
                 //a little out animation!
@@ -242,7 +255,7 @@ namespace RhythmThing.Objects.Menu
                 if (game.input.ButtonStates[Input.ButtonKind.Confirm] == Input.ButtonState.Press)
                 {
                     game.ChartToLoad = songs[selected].chartName;
-                    game.sceneManager.loadScene(1);
+                    game.sceneManager.loadScene(6);
                 }
                 if (game.input.ButtonStates[Input.ButtonKind.Left] == Input.ButtonState.Press || game.input.ButtonStates[Input.ButtonKind.Right] == Input.ButtonState.Press)
                 {
