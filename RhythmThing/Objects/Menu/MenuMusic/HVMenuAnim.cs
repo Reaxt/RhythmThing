@@ -16,7 +16,7 @@ namespace RhythmThing.Objects.Menu.MenuMusic
         private float timePoint3 = 0.9f;
         private float timePoint4 = 0.9f;
         private float timePoint5 = 2.25f;
-        private string audioPath = Path.Combine(Program.contentPath, "MenuMusic", "HVMusic", "HVSongSelect.mp3");
+        private string audioPath = Path.Combine(Program.contentPath, "MenuMusic", "HVMusic", "Select.wav");
         private AudioTrack audio;
         private string resourcePath = Path.Combine(Program.contentPath, "MenuMusic", "HVMusic");
         private Visual leftVis1;

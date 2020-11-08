@@ -13,14 +13,13 @@ namespace RhythmThing.Objects.Menu.MenuMusic
 {
     class HVMusic : MenuMusic
     {
-        string pathToMusic = Path.Combine(Program.contentPath, "MenuMusic", "HVMusic", "HVmusicSelect.mp3");
+        string pathToMusic = Path.Combine(Program.contentPath, "MenuMusic", "HVMusic", "bgmPhase2.wav");
         AudioTrack mainMusic;
         ISampleSource ding;
         float timeToPreview = 1f;
         VolumeSource previewVol;
         float previewDur;
         bool previewLoaded = false;
-        
         bool doPreview = false;
         float timePassed = 0;
         ISampleSource previewSampleSource;
@@ -28,6 +27,8 @@ namespace RhythmThing.Objects.Menu.MenuMusic
         private SongContainer songContainer;
         private TimeSpanConverter spanConverter;
         string pathToSelectDing = Path.Combine(Program.contentPath, "MenuMusic", "HVMusic", "ding.wav");
+        //ref may be relevant?
+        private HVVideo video;
         public override void End()
         {
             Game.mainInstance.audioManager.removeTrack(mainMusic);
@@ -74,6 +75,10 @@ namespace RhythmThing.Objects.Menu.MenuMusic
         {
             ding = CodecFactory.Instance.GetCodec(pathToSelectDing).ChangeSampleRate(AudioManager.sampleRate).ToStereo().ToSampleSource();
             spanConverter = new TimeSpanConverter();
+            //ImageUtils.BMPToBinary(Path.Combine(Program.contentPath, "MenuMusic", "HVMusic", "bitmaps"), Path.Combine(Program.contentPath, "MenuMusic", "vid.cvid"));
+
+            video = new HVVideo();
+            game.addGameObject(video);
         }
 
         public override void StartMenuMusic()
