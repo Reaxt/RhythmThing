@@ -29,23 +29,14 @@ namespace RhythmThing.Objects.Test_Objects
             this.components = new List<Component>();
             visual = new Visual();
             visual.active = true;
-            visual.x = 15;
-            visual.z = -2;
             //visual.y = 25;
-            visual.localPositions.Add(new Coords(0, 0, ' ', ConsoleColor.Red, ConsoleColor.Red));
-            files = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "!Content", "bmpvideotest", "bitmaps"));
-            for (int i = 0; i < 5000; i++)
-            {
-                frames.Add((Bitmap)Image.FromFile(files[i]));
-            }
+            visual.LoadBMP(Path.Combine(Program.contentPath, "MenuMusic", "HVMusic", "ScoreConcept4.bmp"), new int[] { 0,0});
             components.Add(visual);
         }
 
         public override void Update(double time, Game game)
         {
-            visual.localPositions.Clear();
-            visual.LoadBMP(files[index], startPoint);
-            index++;
+
         }
     }
 }

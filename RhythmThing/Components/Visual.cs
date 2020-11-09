@@ -12,7 +12,7 @@ namespace RhythmThing.Components
     public class Visual : Component
     {
 
-        
+
         public int x;
         public int y;
         private int _savedX;
@@ -36,7 +36,7 @@ namespace RhythmThing.Components
         private int bigy = int.MinValue;
         private int smallx = int.MaxValue;
         private int smally = int.MaxValue;
-        
+
         public void writeText(int startingX, int startingY, string text, ConsoleColor front, ConsoleColor back)
         {
             char[] textArray = text.ToCharArray();
@@ -48,25 +48,49 @@ namespace RhythmThing.Components
 
         public void Animate(int[] startPoint, int[] endPoint, string easing, float duration, bool saveCoords = true)
         {
-            _animations.Add(new VisualAnimation(startPoint, endPoint, easing, duration, new int[] {x,y}, saveCoords));
+            _animations.Add(new VisualAnimation(startPoint, endPoint, easing, duration, new int[] { x, y }, saveCoords));
         }
 
         public void LoadBMP(string path, int[] LBcorner)
         {
-            
+
             Bitmap bitmap = (Bitmap)Image.FromFile(Path.Combine(Directory.GetCurrentDirectory(), "!Content", path));
             for (int x = 0; x < bitmap.Width; x++)
             {
                 for (int y = 0; y < bitmap.Height; y++)
                 {
                     Color pixel = bitmap.GetPixel(x, y);
-                    if(pixel.A == 0)
+                    if (pixel.A == 0)
                     {
 
-                    } else
+                    }
+                    else
                     {
                         ConsoleColor consoleColor = NearestConsoleColor.ClosestConsoleColor(pixel.R, pixel.G, pixel.B);
-                        localPositions.Add(new Coords(LBcorner[0]+x,LBcorner[1]+(-y+bitmap.Height),' ',consoleColor,consoleColor));
+                        localPositions.Add(new Coords(LBcorner[0] + x, LBcorner[1] + (-y + bitmap.Height), ' ', consoleColor, consoleColor));
+
+                    }
+                }
+            }
+
+        }
+        public void LoadBMP(string path)
+        {
+
+            Bitmap bitmap = (Bitmap)Image.FromFile(Path.Combine(Directory.GetCurrentDirectory(), "!Content", path));
+            for (int x = 0; x < bitmap.Width; x++)
+            {
+                for (int y = 0; y < bitmap.Height; y++)
+                {
+                    Color pixel = bitmap.GetPixel(x, y);
+                    if (pixel.A == 0)
+                    {
+
+                    }
+                    else
+                    {
+                        ConsoleColor consoleColor = NearestConsoleColor.ClosestConsoleColor(pixel.R, pixel.G, pixel.B);
+                        localPositions.Add(new Coords(x, (-y + bitmap.Height), ' ', consoleColor, consoleColor));
 
                     }
                 }
@@ -80,7 +104,7 @@ namespace RhythmThing.Components
             {
                 for (int y = 0; y < frame.GetLength(1); y++)
                 {
-                   
+
                     localPositions.Add(new Coords(x, y, ' ', (ConsoleColor)frame[x, y], (ConsoleColor)frame[x, y]));
                 }
             }
@@ -92,7 +116,7 @@ namespace RhythmThing.Components
                 for (int y = 0; y < frame.GetLength(1); y++)
                 {
 
-                    localPositions.Add(new Coords(x+lbcorner[0], y+lbcorner[1], ' ', (ConsoleColor)frame[x, y], (ConsoleColor)frame[x, y]));
+                    localPositions.Add(new Coords(x + lbcorner[0], y + lbcorner[1], ' ', (ConsoleColor)frame[x, y], (ConsoleColor)frame[x, y]));
                 }
             }
         }
@@ -116,13 +140,13 @@ namespace RhythmThing.Components
                 {
                     Color pixel = bitmap.GetPixel(x, y);
                     ConsoleColor consoleColor = NearestConsoleColor.ClosestConsoleColor(pixel.R, pixel.G, pixel.B);
-                    localPositions.Add(new Coords( x,  (-y + bitmap.Height), ' ', consoleColor, consoleColor));
+                    localPositions.Add(new Coords(x, (-y + bitmap.Height), ' ', consoleColor, consoleColor));
                 }
             }
         }
         public void ClearAnims()
         {
-            foreach(VisualAnimation animation in _animations)
+            foreach (VisualAnimation animation in _animations)
             {
                 animation.Live = false;
             }
@@ -150,7 +174,8 @@ namespace RhythmThing.Components
                         _savedY += offset[1];
                     }
                     _animations.Remove(animation);
-                } else
+                }
+                else
                 {
                     x += offset[0];
                     y += offset[1];
@@ -168,7 +193,7 @@ namespace RhythmThing.Components
                 //only works with the one way rn
                 int coordX = coord.x;
                 int coordY = coord.y;
-                
+
                 if (randBreak)
                 {
                     coordX += random.Next(-randAmount, randAmount);
@@ -176,10 +201,11 @@ namespace RhythmThing.Components
                 }
                 if (overrideColor)
                 {
-                   renderPositions.Add(new Coords(x + coordX, y + coordY, coord.character, overrideback, overridefront));
-                } else
+                    renderPositions.Add(new Coords(x + coordX, y + coordY, coord.character, overrideback, overridefront));
+                }
+                else
                 {
-                   renderPositions.Add(new Coords(x + coordX, y+coordY, coord.character, coord.foreColor, coord.backColor));
+                    renderPositions.Add(new Coords(x + coordX, y + coordY, coord.character, coord.foreColor, coord.backColor));
 
                 }
 
@@ -200,7 +226,7 @@ namespace RhythmThing.Components
         private int[] _endPoint;
         private int[] _offset = { 0, 0 };
         public bool SaveCoords;
-        private Func<float,float> _easeFunction;
+        private Func<float, float> _easeFunction;
         public VisualAnimation(int[] startPoint, int[] endPoint, string easing, float duration, int[] initialPoint, bool saveCoords)
         {
             this._startPoint = startPoint;
@@ -210,7 +236,7 @@ namespace RhythmThing.Components
             _duration = duration;
             _timePassed = 0;
 
-            _offset = new int[]{ _startPoint[0] - initialPoint[0], _startPoint[1] - initialPoint[1]};
+            _offset = new int[] { _startPoint[0] - initialPoint[0], _startPoint[1] - initialPoint[1] };
 
             Live = true;
 
@@ -221,17 +247,17 @@ namespace RhythmThing.Components
             if (_timePassed > _duration)
             {
                 Live = false;
-                return new int[] { _endPoint[0]-_startPoint[0]+_offset[0], _endPoint[1]-_startPoint[1]+_offset[1]};
+                return new int[] { _endPoint[0] - _startPoint[0] + _offset[0], _endPoint[1] - _startPoint[1] + _offset[1] };
             }
-            int resX = (int)Math.Ceiling(((float)_endPoint[0]-(float)_startPoint[0])*(_easeFunction(_timePassed / _duration)))+_offset[0];
-            int resY = (int)Math.Ceiling(((float)_endPoint[1] - (float)_startPoint[1]) * (_easeFunction(_timePassed / _duration)))+_offset[1];
+            int resX = (int)Math.Ceiling(((float)_endPoint[0] - (float)_startPoint[0]) * (_easeFunction(_timePassed / _duration))) + _offset[0];
+            int resY = (int)Math.Ceiling(((float)_endPoint[1] - (float)_startPoint[1]) * (_easeFunction(_timePassed / _duration))) + _offset[1];
             _timePassed += (float)time;
             return new int[] { resX, resY };
 
 
         }
     }
-    
+
     [Serializable()]
     public struct Coords : ISerializable
     {

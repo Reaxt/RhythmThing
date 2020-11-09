@@ -222,6 +222,7 @@ namespace RhythmThing.Objects
             if (song.sampleSource.GetLength().TotalMilliseconds <= song.sampleSource.GetPosition().TotalMilliseconds)
             {
                 //we are done.
+                game.exitViaEsc = false;
                 game.notesHit = scoreHandler.hits;
                 game.totalNotes = scoreHandler.notes;
                 game.songName = this.chartInfo.songName;
@@ -232,6 +233,7 @@ namespace RhythmThing.Objects
             }
             if(game.input.ButtonStates[Input.ButtonKind.Cancel] == Input.ButtonState.Press)
             {
+                game.exitViaEsc = true;
                 game.notesHit = scoreHandler.hits;
                 game.totalNotes = scoreHandler.notes;
                 game.songName = this.chartInfo.songName;

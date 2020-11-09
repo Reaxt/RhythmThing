@@ -75,7 +75,7 @@ namespace RhythmThing.Objects.Menu.MenuMusic
         {
             ding = CodecFactory.Instance.GetCodec(pathToSelectDing).ChangeSampleRate(AudioManager.sampleRate).ToStereo().ToSampleSource();
             spanConverter = new TimeSpanConverter();
-            //ImageUtils.BMPToBinary(Path.Combine(Program.contentPath, "MenuMusic", "HVMusic", "bitmaps"), Path.Combine(Program.contentPath, "MenuMusic", "vid.cvid"));
+            //ImageUtils.BMPToBinary(Path.Combine(Program.contentPath, "MenuMusic", "HVMusic", "bitmaps"), Path.Combine(Program.contentPath, "MenuMusic", "vidR.cvid"));
 
             video = new HVVideo();
             game.addGameObject(video);

@@ -39,12 +39,12 @@ namespace RhythmThing.System_Stuff
 
         //audio manager
         public AudioManager audioManager;
-
+        public bool exitViaEsc = false;
         //these are for storing information between scenes.
         public string ChartToLoad;
         public int totalNotes = 100;
-        public int notesHit = 50;
-        public string songHash;
+        public int notesHit = 100;
+        public string songHash = "1tb56k0XFKSw49gL2xm0lA==";
         public string songName = "Test song name";
         //private List<GameObject> toRemove;
         //for our good ol friend deltatime
@@ -74,7 +74,7 @@ namespace RhythmThing.System_Stuff
             sceneManager = new SceneManager(this);
             //entry point
 
-            sceneManager.loadScene(0);
+            sceneManager.loadScene(2);
 
             //debug scene
             //sceneManager.loadScene(5);

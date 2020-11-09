@@ -15,7 +15,7 @@ namespace RhythmThing.Objects.Menu.MenuMusic
         private Visual videoPlayer;
         private IFormatter formatter = new BinaryFormatter();
         private FileStream readStream;
-        private string _path = Path.Combine(Program.contentPath, "MenuMusic", "HVMusic", "vid5.cvid");
+        private string _path = Path.Combine(Program.contentPath, "MenuMusic", "HVMusic", "vidR.cvid");
         private double timePassed = 0;
         private double timePerFrame;
         private int[] _startPoint = new int[] { 0, 0 };
