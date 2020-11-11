@@ -127,6 +127,8 @@ namespace RhythmThing.Objects.ScoreScreen
         }
         public override void Start(Game game)
         {
+            //a fix to a bug
+            game.display.windowManager.CenterWindow();
 
             components = new List<Component>();
             savePercent = (((float)game.notesHit / (float)game.totalNotes)*100);
