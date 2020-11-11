@@ -226,7 +226,7 @@ namespace RhythmThing
 
         public void RenderBuffer(CHAR_INFO[] buffer)
         {
-            SMALL_RECT writeArea = new SMALL_RECT { Left = 0, Top = 0, Right = (short)(wwidth1 - 1), Bottom = (short)(wheight1 - 1) };
+            SMALL_RECT writeArea = new SMALL_RECT { Left = 0, Top = 0, Right = (short)(wwidth1 - 1), Bottom = (short)(wheight1) };
             WriteConsoleOutput(wHnd, buffer, new COORD { X = (short)wwidth1, Y = (short)wheight1 }, new COORD { X = 0, Y = 0 }, ref writeArea);
         }
         //move relative to window or something

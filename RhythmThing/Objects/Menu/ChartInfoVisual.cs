@@ -6,12 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RhythmThing.Utils;
+using System.IO;
 
 namespace RhythmThing.Objects.Menu
 {
     class ChartInfoVisual : GameObject
     {
-        private Visual visual;
+        private Visual infoVisual;
+        private Visual scoreVisual;
+        private Visual barVisual;
+        private Visual letterVisual;
+        private Chart chart;
         private Chart.JsonChart chartInfo;
         private ConsoleColor foreground = ConsoleColor.Black;
         private ConsoleColor background = ConsoleColor.White;
@@ -24,10 +29,11 @@ namespace RhythmThing.Objects.Menu
         private int[] xyPoint1 = new int[] { 0, 0 };
         private int[] xyPoint2 = new int[] { 0, 0 };
         private Random random;
-
-        public ChartInfoVisual(Chart.JsonChart chartInfo)
+        private string resourcePath = Path.Combine(Program.contentPath, "MenuMusic", "MainMenu");
+        public ChartInfoVisual(Chart chart)
         {
-            this.chartInfo = chartInfo;
+            this.chart = chart;
+            this.chartInfo = chart.chartInfo;
         }
         public override void End()
         {
@@ -37,65 +43,108 @@ namespace RhythmThing.Objects.Menu
         public override void Start(Game game)
         {
             components = new List<Component>();
-            visual = new Visual();
-            visual.active = true;
-            visual.x = 60;
-            visual.y = 45;
-            components.Add(visual);
+            infoVisual = new Visual();
+            infoVisual.active = true;
+            //visual.x = 60;
+            //visual.y = 45;
+            infoVisual.x += 8;
+            components.Add(infoVisual);
+
+            scoreVisual = new Visual();
+            scoreVisual.active = true;
+
+
+            scoreVisual.x += 8;
+            scoreVisual.y -= 1;
+            components.Add(scoreVisual);
+
+            barVisual = new Visual();
+            barVisual.active = true;
+
+
+            barVisual.x += 8;
+            barVisual.y -= 1;
+            barVisual.z = 1;
+            barVisual.overrideColor = true;
+            barVisual.overrideback = ConsoleColor.Green;
+            barVisual.overridefront = ConsoleColor.Green;
+            components.Add(barVisual);
+
+            letterVisual = new Visual();
+            letterVisual.active = true;
+
+
+            letterVisual.x += 8;
+            letterVisual.y -= 1;
+            letterVisual.z = 2;
+            components.Add(letterVisual);
+
             Draw();
             AnimateIn();
             random = new Random();
 
         }
-        public void UpdateChart(Chart.JsonChart jsonChart)
+        public void UpdateChart(Chart chart)
         {
-            this.chartInfo = jsonChart;
+            this.chart = chart;
+            this.chartInfo = chart.chartInfo;
             Draw();
             AnimateIn();
 
         }
         private void Draw()
         {
-            visual.localPositions.Clear();
+            infoVisual.localPositions.Clear();
+            scoreVisual.localPositions.Clear();
+            barVisual.localPositions.Clear();
+            letterVisual.localPositions.Clear();
+            infoVisual.LoadBMP(Path.Combine(Program.contentPath, "MenuMusic", "MainMenu", "InfoBar.bmp"), new int[] {20,-1 });
 
             //visual.x = 60;
             //visual.y = 45;
+            
 
-            for (int x = 0; x < 30; x++)
-            {
-                for (int y = 0; y < 30; y++)
-                {
-                    visual.localPositions.Add(new Coords(x, -y, ' ', foreground, background));
-                }
-            }
 
-            visual.localPositions.Add(new Coords(0, 0, ' ', ConsoleColor.DarkBlue, ConsoleColor.DarkBlue));
-            char[] SongName = ("Song Name: " + chartInfo.songName).ToCharArray();
-            char[] AuthorName = ("Song Author: " + chartInfo.songAuthor).ToCharArray();
-            char[] ChartAuthor = ("Chart Author: " + chartInfo.chartAuthor).ToCharArray();
-            char[] bpm = ("BPM: " + chartInfo.bpm.ToString()).ToCharArray();
-            char[] diff = ("Difficulty: " + chartInfo.difficulty.ToString()).ToCharArray();
+            //visual.localPositions.Add(new Coords(0, 0, ' ', ConsoleColor.DarkBlue, ConsoleColor.DarkBlue));
+            string SongName = ("Song Name: " + chartInfo.songName);
+            string AuthorName = ("Song Author: " + chartInfo.songAuthor);
+            string ChartAuthor = ("Chart Author: " + chartInfo.chartAuthor);
+            string bpm = ("BPM: " + chartInfo.bpm.ToString());
+            string diff = ("Difficulty: " + chartInfo.difficulty.ToString());
+            float percent = PlayerSettings.Instance.chartScores[chart.hash].percent;
+            string grade = PlayerSettings.Instance.chartScores[chart.hash].letter;
 
-            for (int i = 0; i < SongName.Length; i++)
+            if (percent >= 60)
             {
-                visual.localPositions.Add(new Coords(i, 0, SongName[i], foreground, background));
-            }
-            for (int i = 0; i < AuthorName.Length; i++)
+                barVisual.overrideback = ConsoleColor.Green;
+                barVisual.overridefront = ConsoleColor.Green;
+            } else
             {
-                visual.localPositions.Add(new Coords(i, -3, AuthorName[i], foreground, background));
+                barVisual.overrideback = ConsoleColor.Red;
+                barVisual.overridefront = ConsoleColor.Red;
             }
-            for (int i = 0; i < ChartAuthor.Length; i++)
+            int letx = -8;
+            if(grade == "SSS")
             {
-                visual.localPositions.Add(new Coords(i, -6, ChartAuthor[i], foreground, background));
+                letx = 16;
             }
-            for (int i = 0; i < bpm.Length; i++)
+            else if (grade == "SS")
             {
-                visual.localPositions.Add(new Coords(i, -9, bpm[i], foreground, background));
+                letx = 4;
             }
-            for (int i = 0; i < diff.Length; i++)
-            {
-                visual.localPositions.Add(new Coords(i, -12, diff[i], foreground, background));
-            }
+            
+            scoreVisual.LoadBMP(Path.Combine(resourcePath, "ScoreBar.bmp"));
+            barVisual.LoadBMP(Path.Combine(resourcePath, "ScoreBar.bmp"), new int[] { 100 - (int)((percent / 100) * 100), 0 });
+            letterVisual.LoadBMP(Path.Combine(resourcePath, $"grade{grade}.bmp"), new int[] { letx, 12 });
+
+
+            letterVisual.writeText(72, 26, percent.ToString()+"%", foreground, background);
+            infoVisual.writeText(40, 47, SongName, foreground, background);
+            infoVisual.writeText(45, 43, AuthorName, foreground, background);
+            infoVisual.writeText(50, 39, ChartAuthor, foreground, background);
+            infoVisual.writeText(54, 35, bpm, foreground, background);
+            infoVisual.writeText(58, 31, diff, foreground, background);
+
         }
         private void AnimateIn()
         {
@@ -105,27 +154,33 @@ namespace RhythmThing.Objects.Menu
             timePassed = 0;
             */
             //visual.ClearAnims();
-            xyPoint1 = new int[] { visual.x+60, visual.y };
-            xyPoint2 = new int[] { visual.x, visual.y };
-            visual.Animate(xyPoint1, xyPoint2, "easeOutBack", timeToPass, false);
+            xyPoint1 = new int[] { infoVisual.x+60, infoVisual.y };
+            xyPoint2 = new int[] { infoVisual.x, infoVisual.y };
+            infoVisual.Animate(xyPoint1, xyPoint2, "easeOutBack", timeToPass, false);
+
+            xyPoint1 = new int[] { scoreVisual.x + 60, scoreVisual.y };
+            xyPoint2 = new int[] { scoreVisual.x, scoreVisual.y };
+            scoreVisual.Animate(xyPoint1, xyPoint2, "easeOutBack", timeToPass + 0.125f, false);
+            barVisual.Animate(xyPoint1, xyPoint2, "easeOutBack", timeToPass + 0.15f, false);
+            letterVisual.Animate(xyPoint1, xyPoint2, "easeOutBack", timeToPass + 0.175f, false);
 
             //Game.mainInstance.audioManager.playForget("wheelMove.ogg");
         }
         public override void Update(double time, Game game)
         {
-            if(visual.x != 60)
+            if(infoVisual.x != 60)
             {
                 Logger.DebugLog("a");
             }
             if (Animating)
             {
-                visual.x = (int)Math.Ceiling((float)xyPoint1[0] + (((float)xyPoint2[0] - (float)xyPoint1[0]) * Ease.Cubic.Out(timePassed / timeToPass)));
-                visual.y = (int)Math.Ceiling((float)xyPoint1[1] + (((float)xyPoint2[1] - (float)xyPoint1[1]) * Ease.Cubic.Out(timePassed / timeToPass)));
+                infoVisual.x = (int)Math.Ceiling((float)xyPoint1[0] + (((float)xyPoint2[0] - (float)xyPoint1[0]) * Ease.Cubic.Out(timePassed / timeToPass)));
+                infoVisual.y = (int)Math.Ceiling((float)xyPoint1[1] + (((float)xyPoint2[1] - (float)xyPoint1[1]) * Ease.Cubic.Out(timePassed / timeToPass)));
 
                 if (timePassed >= timeToPass)
                 {
-                    visual.x = xyPoint2[0];
-                    visual.y = xyPoint2[1];
+                    infoVisual.x = xyPoint2[0];
+                    infoVisual.y = xyPoint2[1];
                     timePassed = 0;
                     Animating = false;
                 }

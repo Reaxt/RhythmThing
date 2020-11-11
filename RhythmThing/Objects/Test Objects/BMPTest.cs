@@ -29,8 +29,8 @@ namespace RhythmThing.Objects.Test_Objects
             this.components = new List<Component>();
             visual = new Visual();
             visual.active = true;
-            //visual.y = 25;
-            visual.LoadBMP(Path.Combine(Program.contentPath, "MenuMusic", "HVMusic", "ScoreConcept4.bmp"), new int[] { 0,0});
+            visual.y = -1;
+            visual.LoadBMP(Path.Combine(Program.contentPath, "MenuMusic", "MainMenu", "MainMenuConceptExport.bmp"), new int[] { 0,0});
             components.Add(visual);
         }
 

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using RhythmThing.Objects.Menu.MenuMusic;
+using RhythmThing.Utils;
 
 namespace RhythmThing.Objects.Menu
 {
@@ -28,11 +29,14 @@ namespace RhythmThing.Objects.Menu
 
         private float animTime = 0.05f;
         private string animEasing = "easeLinear";
-        private int[] lastAnimPoint;
+        private int[] selectorOn = new int []{ 8, 25 };
+        private int[] selectorOff = new int[] { 8 - 41, 25 };
         List<SongContainer> songs;
+        private ContainerHandler containerHandler;
         private MenuMusicHandler menuMusic;
         private Visual selector;
         private Visual optButton;
+        private Visual buttonSelector;
         //option button colors
         private ConsoleColor optFront = ConsoleColor.Black;
         private ConsoleColor optBack = ConsoleColor.Yellow;
@@ -41,13 +45,24 @@ namespace RhythmThing.Objects.Menu
         private ConsoleColor quitFront = ConsoleColor.Black;
         private ConsoleColor quitBack = ConsoleColor.Red;
         private ChartInfoVisual chartInfoVisual;
-        private int selected = 0;
+        public static int selected = 0;
         private int count = -1;
         private int drawAmount = 8;
         private int currentHighestSelect = 7;//must be same as drawAmount-1
         private int currentLowestSelect = 0;
         private MenuSection menuSection = MenuSection.songSelect;
         private optSelections optionSelected = optSelections.options;
+        private string assetPath = Path.Combine(Program.contentPath, "MenuMusic", "MainMenu");
+        private Visual ringVisual;
+
+        private int selectorAnim = 0;
+        private double timePassed = 0;
+        const float selectorAnimTick = 0.025f;
+        const float fastSelectorAnimTick = 0f;
+        private float timePerSelectorAnim = selectorAnimTick;
+        private float timeForSpeedup = 0.5f;
+        private float speedupTimePassed = 0;
+        private bool speedup = false;
         public override void End()
         {
             //throw new NotImplementedException();
@@ -83,8 +98,7 @@ namespace RhythmThing.Objects.Menu
             selector.active = true;
 
             selector.x = 3+5;
-            selector.y = 45;
-            lastAnimPoint = new int[] { songMenuX, 45 };
+            selector.y = 25;
 
             selector.localPositions.Add(new Coords(0, 0, ' ', ConsoleColor.Cyan, ConsoleColor.Cyan));
             selector.localPositions.Add(new Coords(0, 1, ' ', ConsoleColor.Cyan, ConsoleColor.Cyan));
@@ -98,8 +112,7 @@ namespace RhythmThing.Objects.Menu
                 selector.localPositions.Add(new Coords(i, -2, ' ', ConsoleColor.Cyan, ConsoleColor.Cyan));
             }
             components.Add(selector);
-            chartInfoVisual = new ChartInfoVisual(songs[selected].chart.chartInfo);
-            songs[selected].OutAnim();
+            chartInfoVisual = new ChartInfoVisual(songs[selected].chart);
             game.addGameObject(chartInfoVisual);
 
 
@@ -107,146 +120,143 @@ namespace RhythmThing.Objects.Menu
             optButton = new Visual();
             optButton.active = true;
             char[] optText = "Options".ToCharArray();
-            optButton.x = 60;
-            optButton.y = 13;
-            for (int i = -1; i < 30; i++)
-            {
-                optButton.localPositions.Add(new Coords(i, 1, ' ', optFront, optBack));
-                optButton.localPositions.Add(new Coords(i, 0, ' ', optFront, optBack));
-                optButton.localPositions.Add(new Coords(i, -1, ' ', optFront, optBack));
-            }
-            for (int i = 0; i < optText.Length; i++)
-            {
-                optButton.localPositions.Add(new Coords(i, 0, optText[i], optFront, optBack));
-            }
+            optButton.x = 50;
+            optButton.y = 3;
+            optButton.LoadBMP(Path.Combine(assetPath, "button.bmp"));
+            optButton.writeText(7, 3, "Options", quitFront, quitBack);
+            optButton.overrideColor = true;
+            optButton.overridefront = optBack;
+            optButton.overrideback = optFront;
             components.Add(optButton);
 
             //draw the quit visual
             quitButton = new Visual();
             quitButton.active = true;
-            char[] quitText = "Quit".ToCharArray();
-            quitButton.x = 60;
-            quitButton.y = 8;
+            quitButton.x = 75;
+            quitButton.y = 3;
 
-            for (int i = -1; i < 30; i++)
-            {
-                quitButton.localPositions.Add(new Coords(i, 1, ' ', quitFront, quitBack));
-                quitButton.localPositions.Add(new Coords(i, 0, ' ', quitFront, quitBack));
-                quitButton.localPositions.Add(new Coords(i, -1, ' ', quitFront, quitBack));
-            }
-            for (int i = 0; i < quitText.Length; i++)
-            {
-                quitButton.localPositions.Add(new Coords(i, 0, quitText[i], quitFront, quitBack));
-            }
+            quitButton.LoadBMP(Path.Combine(assetPath, "button.bmp"));
+            quitButton.writeText(9, 3, "Quit", quitFront, quitBack);
+            quitButton.overrideColor = true;
+            quitButton.overridefront = quitBack;
+            quitButton.overrideback = quitFront;
+            //selector
+            buttonSelector = new Visual();
+            buttonSelector.active = true;
+            buttonSelector.x = 75;
+            buttonSelector.y = 3-10;
+            buttonSelector.z = 10;
+            buttonSelector.LoadBMP(Path.Combine(assetPath, "buttonSelector.bmp"));
+            components.Add(buttonSelector);
+            //draw the rings!
+            ringVisual = new Visual();
+            ringVisual.LoadBMP(Path.Combine(assetPath, "WheelGrey.bmp"), new int[] { 0, -1 });
+            ringVisual.LoadBMP(Path.Combine(assetPath, "WheelBlack.bmp"), new int[] {0,-1 });
+            ringVisual.z = -1;
+            ringVisual.y = -1;
+            ringVisual.active = true;
+            components.Add(ringVisual);
             components.Add(quitButton);
+
+            containerHandler = new ContainerHandler(songs);
+            game.addGameObject(containerHandler);
+
+            ringVisual.Animate(new int[] { -10, 0 }, new int[] { 0, 0 }, "easeOutQuad", 0.5f);
+
             game.addGameObject(menuMusic);
             menuMusic.StartMainMusic();
-            DrawFromPoint(0);
         }
 
         //should only ever be called from a safe index. otherwise I fucked up elsewhere lo
-        void DrawFromPoint(int topmost)
+        private void selectorAnimation(int i)
         {
-            //reset
-            foreach(SongContainer songContainer in songs)
+            if (i < 32)
             {
-                songContainer.visual.active = false;
-            }
-            //draw starting from point, draw drawamount or limit
-            if(songs.Count >= drawAmount)
-            {
-                for (int i = topmost; i < drawAmount+topmost; i++)
-                {
-                    songs[i].visual.active = true;
-                    songs[i].AnimTo(45 + ((i-topmost) * -5));
-                }
+                selector.localPositions.Add(new Coords(32-i, -2, ' ', ConsoleColor.Cyan, ConsoleColor.Cyan));
+                selector.localPositions.Add(new Coords(i, 2, ' ', ConsoleColor.Cyan, ConsoleColor.Cyan));
             } else
             {
-                for (int i = 0; i < songs.Count; i++)
-                {
-                    songs[i].visual.active = true;
-                }
+                selector.localPositions.Add(new Coords(32, 2-(i-32), ' ', ConsoleColor.Cyan, ConsoleColor.Cyan));
+                selector.localPositions.Add(new Coords(0, (-2+(i-32)), ' ', ConsoleColor.Cyan, ConsoleColor.Cyan));
+
             }
 
         }
 
         public override void Update(double time, Game game)
         {
+            //selector animation
+            if (timePassed>timePerSelectorAnim)
+            {
+                selectorAnim++;
+                selector.localPositions.Clear();
+                for (int i = 0; i < 10; i++)
+                {
+                    selectorAnimation((selectorAnim + i) % 36);
+                }
+                if (selectorAnim > 36)
+                {
+                    selectorAnim = 0;
+                }
+                timePassed = 0;
+            }
+            timePassed += time;
+
+            if (speedup)
+            {
+                if (speedupTimePassed > timeForSpeedup)
+                {
+                    timePerSelectorAnim = selectorAnimTick;
+                    speedupTimePassed = 0;
+                    speedup = false;
+                } else
+                {
+                    float easeAmount = Ease.Exponential.In(speedupTimePassed / timeForSpeedup);
+                    timePerSelectorAnim = Ease.Lerp(fastSelectorAnimTick, selectorAnimTick, easeAmount);
+                }
+                speedupTimePassed += (float)time;
+            }
+
+
             if (menuSection == MenuSection.songSelect)
             {
                 if (game.input.ButtonStates[Input.ButtonKind.Down] == Input.ButtonState.Press)
                 {
-                    songs[selected].InAnim();
                     if (selected < count)
                     {
                         selected++;
-                        if (selected > currentHighestSelect)
-                        {
-                            currentLowestSelect++;
-                            currentHighestSelect++;
-                            DrawFromPoint(currentLowestSelect);
-                        }
-                        else
-                        {
-
-                            moveSelector(lastAnimPoint[0], lastAnimPoint[1] - 5);
-                        }
 
 
                     }
                     else
                     {
-                        moveSelector(lastAnimPoint[0], 45);
                         selected = 0;
-                        DrawFromPoint(0);
-                        currentLowestSelect = 0;
-                        currentHighestSelect = drawAmount - 1;
                     }
-                    chartInfoVisual.UpdateChart(songs[selected].chart.chartInfo);
-                    songs[selected].OutAnim();
+                    containerHandler.AnimUp();
+                    chartInfoVisual.UpdateChart(songs[selected].chart);
                     menuMusic.SelectNoise(songs[selected]);
+                    speedup = true;
+                    speedupTimePassed = 0;
 
                 }
                 if (game.input.ButtonStates[Input.ButtonKind.Up] == Input.ButtonState.Press)
                 {
-                    songs[selected].InAnim();
                     if (selected > 0)
                     {
                         selected--;
-                        if (selected < currentLowestSelect)
-                        {
-                            currentLowestSelect--;
-                            currentHighestSelect--;
-                            DrawFromPoint(currentLowestSelect);
-                        }
-                        else
-                        {
-                            
-                            moveSelector(lastAnimPoint[0], lastAnimPoint[1] + 5);
-                        }
-
+                        
                     }
                     else
                     {
-                        if (songs.Count > drawAmount)
-                        {
-                            moveSelector(lastAnimPoint[0], (45 + ((drawAmount - 1) * -5)));
-                            currentLowestSelect = (count - (drawAmount - 1));
 
-                        }
-                        else
-                        {
-                            moveSelector(lastAnimPoint[0], 45 + ((count) * -5));
-                            
-                            currentLowestSelect = 0;
-                        }
                         selected = count;
-                        DrawFromPoint(count - (drawAmount - 1));
-                        currentHighestSelect = count;
                     }
-                    chartInfoVisual.UpdateChart(songs[selected].chart.chartInfo);
-                    songs[selected].OutAnim();
+
+                    containerHandler.AnimDown();
+                    chartInfoVisual.UpdateChart(songs[selected].chart);
                     menuMusic.SelectNoise(songs[selected]);
+                    speedup = true;
+                    speedupTimePassed = 0;
                 }
 
                 //a little out animation!
@@ -260,32 +270,41 @@ namespace RhythmThing.Objects.Menu
                 if (game.input.ButtonStates[Input.ButtonKind.Left] == Input.ButtonState.Press || game.input.ButtonStates[Input.ButtonKind.Right] == Input.ButtonState.Press)
                 {
                     menuSection = MenuSection.optSelect;
-                    songs[selected].InAnim();
-                    moveSelector(optionMenuX, 13);
-
+                    hideSelector();
+                    optionSelected = optSelections.options;
+                    selectOpt();
                 }
             } else if (menuSection == MenuSection.optSelect)
             {
                 //else if is so juuuust in case, switching cant be at the same time as trying to press one of these
-                if (game.input.ButtonStates[Input.ButtonKind.Left] == Input.ButtonState.Press || game.input.ButtonStates[Input.ButtonKind.Right] == Input.ButtonState.Press)
+                if (game.input.ButtonStates[Input.ButtonKind.Left] == Input.ButtonState.Press )
                 {
-                    menuSection = MenuSection.songSelect;
-                    //calculates where selector should be
-                    moveSelector(songMenuX,(45 - ((selected - currentLowestSelect) * 5)));
-                    optionSelected = optSelections.options;
-                    songs[selected].OutAnim();
+                    if(optionSelected == optSelections.quit)
+                    {
+                        optionSelected = optSelections.options;
+                        selectOpt();
+
+                    } else if (optionSelected == optSelections.options)
+                    {
+                        menuSection = MenuSection.songSelect;
+                        hideOptSelector();
+                        showSelector();
+                    }
+                    
 
                     //this line can check for either right now as there is only two options. I dont see any case where there would be more.
-                } else if (game.input.ButtonStates[Input.ButtonKind.Up] == Input.ButtonState.Press || game.input.ButtonStates[Input.ButtonKind.Down] == Input.ButtonState.Press)
+                } else if (game.input.ButtonStates[Input.ButtonKind.Right] == Input.ButtonState.Press)
                 {
                     if (optionSelected == optSelections.options)
                     {
+                        selectQuit();
                         optionSelected = optSelections.quit;
-                        moveSelector(lastAnimPoint[0], lastAnimPoint[1] - 5);
-                    } else if(optionSelected == optSelections.quit)
+                    }
+                    else if(optionSelected == optSelections.quit)
                     {
-                        optionSelected = optSelections.options;
-                        moveSelector(lastAnimPoint[0], lastAnimPoint[1] + 5);
+                        hideOptSelector();
+                        showSelector();
+                        menuSection = MenuSection.songSelect;
                     }
                 } else if(game.input.ButtonStates[Input.ButtonKind.Confirm] == Input.ButtonState.Press)
                 {
@@ -306,12 +325,28 @@ namespace RhythmThing.Objects.Menu
 
         }
 
-        private void moveSelector(int x, int y)
+        private void hideSelector()
         {
-            selector.ClearAnims();
-            int[] point2 = new int[] { x, y };
-            selector.Animate(lastAnimPoint, point2, animEasing, animTime,true);
-            lastAnimPoint = point2;
+            selector.Animate(selectorOn, selectorOff, "easeOutSine", 0.25f);
+        }
+        private void showSelector()
+        {
+            selector.Animate(selectorOff, selectorOn, "easeOutSine", 0.25f);
+
+        }
+        private void hideOptSelector()
+        {
+            buttonSelector.Animate(new int[] { buttonSelector.x, buttonSelector.y }, new int[] { buttonSelector.x, buttonSelector.y - 10 }, "easeOutSine", 0.25f);
+        }
+        private void selectQuit()
+        {
+            buttonSelector.Animate(new int[] { buttonSelector.x, buttonSelector.y }, new int[] { quitButton.x, quitButton.y }, "easeOutSine", 0.125f);
+
+        }
+        private void selectOpt()
+        {
+            buttonSelector.Animate(new int[] { buttonSelector.x, buttonSelector.y }, new int[] { optButton.x, optButton.y }, "easeOutSine", 0.125f);
+
         }
     }
 }
