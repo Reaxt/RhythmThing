@@ -19,10 +19,8 @@ namespace RhythmThing.Objects.Menu.Options_Menu
         private ConsoleColor visualFront = ConsoleColor.Black;
         private ConsoleColor visualBack = ConsoleColor.White;
         private Input.ButtonKind keyToRebind;
-        private bool boundConfirm = false;
         private OptionsObject optionsObject;
         private bool activated = false;
-        private bool liftGood = false;
         private Key[] allKeys;
 
         public RebindButton(OptionsObject optionsObject)

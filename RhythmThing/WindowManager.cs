@@ -31,7 +31,6 @@ namespace RhythmThing
 
         string wtitle = "Rhythm Thing";
 
-        CHAR_INFO[,] buffer;
 
         #region native consts
         const int STD_INPUT_HANDLE = -10;

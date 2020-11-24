@@ -14,16 +14,11 @@ namespace RhythmThing.Objects
     public class VideoPlayer : GameObject
     {
         private Visual visual;
-        int index = 30;
         List<Bitmap> frames;
-        Bitmap[] frameArray;
-        string[] files;
         private string _path;
         private bool _playing = false;
-        private double _timePassed = 0;
         private double _timePerFrame = 0;
         private int[] _startPoint = { 0, 0 };
-        bool tog = false;
         private int _fps = 0;
         private int _frames;
         private int _currentFrame = 0;

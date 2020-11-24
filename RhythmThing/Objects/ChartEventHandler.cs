@@ -39,7 +39,6 @@ namespace RhythmThing.Objects
         private WindowManager windowManager;
         private List<Chart.EventInfo> events;
         private List<easing> easings;
-        private Dictionary<string, float> mods;
 
 
 

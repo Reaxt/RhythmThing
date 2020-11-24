@@ -27,8 +27,7 @@ namespace RhythmThing.Objects.Menu
         const int songMenuX = 8;
         const int optionMenuX = 58;
 
-        private float animTime = 0.05f;
-        private string animEasing = "easeLinear";
+
         private int[] selectorOn = new int []{ 8, 25 };
         private int[] selectorOff = new int[] { 8 - 41, 25 };
         List<SongContainer> songs;
@@ -47,9 +46,7 @@ namespace RhythmThing.Objects.Menu
         private ChartInfoVisual chartInfoVisual;
         public static int selected = 0;
         private int count = -1;
-        private int drawAmount = 8;
-        private int currentHighestSelect = 7;//must be same as drawAmount-1
-        private int currentLowestSelect = 0;
+
         private MenuSection menuSection = MenuSection.songSelect;
         private optSelections optionSelected = optSelections.options;
         private string assetPath = Path.Combine(Program.contentPath, "MenuMusic", "MainMenu");

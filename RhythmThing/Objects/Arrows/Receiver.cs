@@ -13,7 +13,6 @@ namespace RhythmThing.Objects
 {
     public class Receiver : GameObject
     {
-        private double currenttime = 0;
         //sorry,
         public int xOffset = 0;
         public int yOffset = 0;
@@ -35,6 +34,7 @@ namespace RhythmThing.Objects
         public Dictionary<string, float> mods;
         public bool frozen = false;
         private bool onceDebug = true;
+        private float rotation = 0;
         public override void End()
         {
         }
@@ -111,6 +111,13 @@ namespace RhythmThing.Objects
 
         public override void Update(double time, Game game)
         {
+            rotation++;
+            if(rotation > 360)
+            {
+                rotation = 1;
+            }
+            visual.rotation = rotation;
+            pressedVisual.rotation = rotation;
             if (onceDebug)
             {
                 ImageUtils.visualToBMP(visual, Path.Combine(Program.contentPath, $"{collumn.ToString()}Receiver.bmp"));

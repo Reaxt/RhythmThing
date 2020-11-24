@@ -74,10 +74,10 @@ namespace RhythmThing.System_Stuff
             sceneManager = new SceneManager(this);
             //entry point
 
-            sceneManager.loadScene(0);
+            //sceneManager.loadScene(0);
 
             //debug scene
-            //sceneManager.loadScene(5);
+            sceneManager.loadScene(5);
 
             while (gameLoopLives)
             {

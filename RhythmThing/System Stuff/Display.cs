@@ -32,8 +32,6 @@ namespace RhythmThing.System_Stuff
         private List<Visual> Objects;
         private List<Visual> ObjectsToRemove;
         private List<Visual> ObjectsToAdd;
-        private ConcurrentQueue<Visual> _objectsToAdd;
-        private ConcurrentQueue<Visual> _objectsToRemove;
         private ScreenFilter screenFilter;
         private bool filterActive;
         ConsoleColor[,] currentForeColors;
@@ -42,13 +40,11 @@ namespace RhythmThing.System_Stuff
         public WindowManager windowManager;
         //consoleb
         //private ConsoleColor[,] finalPixels; //ech terminology consistency what is that
-        private double TimePassed;
         public Display()
         {
             Objects = new List<Visual>();
             ObjectsToRemove = new List<Visual>();
             ObjectsToAdd = new List<Visual>();
-            TimePassed = 0;
 
             currentForeColors = new ConsoleColor[Program.ScreenX, Program.ScreenY];
             currentBackColors = new ConsoleColor[Program.ScreenX, Program.ScreenY]; 

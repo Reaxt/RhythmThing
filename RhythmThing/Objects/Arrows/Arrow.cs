@@ -22,7 +22,6 @@ namespace RhythmThing.Objects
         public float angle = 0;
         private int actualX;
         private int actualY;
-        private int parX;
         public Dictionary<string, float> mods;
         private Chart chart;
         private ConsoleColor noteColor;
@@ -35,7 +34,7 @@ namespace RhythmThing.Objects
         private bool wealive = false;
         //static value thats nice
         public static float movementAmount = 100;
-        
+        private float rotation = 0;
         //this needs to be changed
         public enum direction
         {
@@ -201,6 +200,12 @@ namespace RhythmThing.Objects
         }
         public override void Update(double time, Game game)
         {
+            rotation++;
+            if (rotation > 360)
+            {
+                rotation = 1;
+            }
+            visual.rotation = rotation;
             /*
             float percent = (chart.beat - beatTime) / (noteInfo.time - beatTime);
             if(percent >= 0.5)
@@ -213,7 +218,7 @@ namespace RhythmThing.Objects
             actualY = visual.y;
             visual.x = actualX + xOffset;
             visual.y = actualY + yOffset; */
-            
+
             float percent = noteInfo.time - chart.beat;
 
             //set x and ymodoffset

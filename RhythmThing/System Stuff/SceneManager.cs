@@ -10,7 +10,6 @@ namespace RhythmThing.System_Stuff
 {
     public class SceneManager
     {
-        private State state = State.Test;
         private Game game;
         private Scene currentScene;
         public int nextScene = 0;
@@ -48,7 +47,6 @@ namespace RhythmThing.System_Stuff
             return currentScene.initialObjs;
 
         }
-        public enum State { Test, Menu, Game, Score }
 
 
 

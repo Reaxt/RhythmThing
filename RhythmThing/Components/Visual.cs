@@ -6,15 +6,20 @@ using RhythmThing.Utils;
 using System.Drawing;
 using System.IO;
 using System.Runtime.Serialization;
+using System.Drawing.Drawing2D;
+
+using Color = System.Drawing.Color;
 
 namespace RhythmThing.Components
 {
     public class Visual : Component
     {
 
-
+        public Matrix matrix = new Matrix();
+        public bool useMatrix = false;
         public int x;
         public int y;
+        public float rotation = 0;
         private int _savedX;
         private int _savedY;
         public int z;
@@ -32,10 +37,6 @@ namespace RhythmThing.Components
         //animation list
         private List<VisualAnimation> _animations = new List<VisualAnimation>();
 
-        private int bigx = int.MinValue;
-        private int bigy = int.MinValue;
-        private int smallx = int.MaxValue;
-        private int smally = int.MaxValue;
 
         public void writeText(int startingX, int startingY, string text, ConsoleColor front, ConsoleColor back)
         {
@@ -157,6 +158,7 @@ namespace RhythmThing.Components
         }
         public override void Update(double time)
         {
+
             //move the visual positions with any animations
             _savedX = x;
             _savedY = y;
@@ -188,11 +190,40 @@ namespace RhythmThing.Components
             //KISS for now
             renderPositions = new List<Coords>();
             random = new Random(randSeed);
-            foreach (Coords coord in localPositions)
+            bool torotate = (rotation == 0);
+
+            Coords[] matrixCoords = null;
+            if (useMatrix)
+            {
+                var localPos = localPositions.ToArray();
+                matrixCoords = new Coords[localPos.Length];
+                PointF[] points = new PointF[localPos.Length];
+                for (int i = 0; i < localPos.Length; i++)
+                {
+                    points[i] = new PointF(localPos[i].x, localPos[i].y);
+                }
+                matrix.TransformPoints(points);
+                for (int i = 0; i < matrixCoords.Length; i++)
+                {
+
+                    matrixCoords[i] = new Coords((int)Math.Round(points[i].X), (int)Math.Round(points[i].Y), localPos[i].character, localPos[i].foreColor, localPos[i].backColor);
+
+                }
+
+            }
+            
+            foreach (Coords coord in (useMatrix ? matrixCoords : localPositions.ToArray()))
             {
                 //only works with the one way rn
+
                 int coordX = coord.x;
                 int coordY = coord.y;
+                if (rotation != 0)
+                {
+
+                }
+                //rotation
+
 
                 if (randBreak)
                 {

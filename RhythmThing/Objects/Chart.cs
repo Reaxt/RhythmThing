@@ -68,14 +68,9 @@ namespace RhythmThing.Objects
         public string chartPath;
         public JsonChart chartInfo;
         private AudioTrack song;
-        private List<NoteInfo> msNotes;
         public string hash;
 
-        private Receiver leftReceiver;
-        private Receiver downReceiver;
-        private Receiver upReceiver;
-        private Receiver rightReceiver;
-        public Receiver[] receivers;
+
         public ScoreHandler scoreHandler;
         private ChartEventHandler chartEventHandler;
         public float beat;

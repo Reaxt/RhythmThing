@@ -15,7 +15,6 @@ namespace RhythmThing.Objects.Menu
         private int initX = 9;
         private ConsoleColor _normalFront = ConsoleColor.Black;
         private ConsoleColor _normalBack = ConsoleColor.White;
-        private int lastSelected = 0;
         private string AnimEasing = "easeOutSine";
         private float AnimDur = 0.125f;
         private List<SongContainer> _containers;

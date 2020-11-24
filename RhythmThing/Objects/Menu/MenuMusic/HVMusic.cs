@@ -19,7 +19,6 @@ namespace RhythmThing.Objects.Menu.MenuMusic
         float timeToPreview = 1f;
         VolumeSource previewVol;
         float previewDur;
-        bool previewLoaded = false;
         bool doPreview = false;
         float timePassed = 0;
         ISampleSource previewSampleSource;

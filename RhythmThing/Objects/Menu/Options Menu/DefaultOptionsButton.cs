@@ -13,8 +13,6 @@ namespace RhythmThing.Objects.Menu.Options_Menu
         private ConsoleColor backColor = ConsoleColor.Yellow;
 
         public bool Animate = false;
-        private float _timeToPass = 3f;
-        private float _timeHasPassed = 0;
         private int[] firstPos = { 0, 0 };
         private int[] secondPos = { 3, 5 };
 
@@ -29,7 +27,7 @@ namespace RhythmThing.Objects.Menu.Options_Menu
             visual = new Visual();
             visual.active = true;
             visual.x = 5;
-            visual.y = 35;
+            visual.y = 40;
             char[] offsetText = "Set to defaults".ToCharArray(); ;
             for (int i = -1; i < 30; i++)
             {

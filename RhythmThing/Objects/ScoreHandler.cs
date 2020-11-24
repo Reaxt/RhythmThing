@@ -21,7 +21,6 @@ namespace RhythmThing.Objects
         private bool lastHit = false;
         private bool lastMiss = false;
         public int notes;
-        private List<Coords> comboCoords;
         public ScoreHandler(Chart chart, int notes)
         {
             this.chart = chart;

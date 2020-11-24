@@ -18,14 +18,13 @@ namespace RhythmThing.Objects.Menu
         private Visual letterVisual;
         private Chart chart;
         private Chart.JsonChart chartInfo;
-        private ConsoleColor foreground = ConsoleColor.Black;
-        private ConsoleColor background = ConsoleColor.White;
+        private const ConsoleColor foreground = ConsoleColor.Black;
+        private const ConsoleColor background = ConsoleColor.White;
 
         private bool Animating = false;
         private float timePassed = 0;
-        private float timeToPass = 0.3f;
-        private int xSteps = 40;
-        private int ySteps = 0;
+        private const float timeToPass = 0.3f;
+
         private int[] xyPoint1 = new int[] { 0, 0 };
         private int[] xyPoint2 = new int[] { 0, 0 };
         private Random random;
