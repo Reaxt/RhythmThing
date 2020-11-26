@@ -10,4 +10,8 @@
     </Reference>
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /y /d &quot;$(TargetDir)$(TargetFileName)&quot; &quot;$(SolutionDir)RhythmThing\bin\Debug\netcoreapp3.1\!Content\!Songs\Broadcast&quot;" />
+  </Target>
+
 </Project>
