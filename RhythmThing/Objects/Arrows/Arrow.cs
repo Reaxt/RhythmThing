@@ -12,7 +12,7 @@ namespace RhythmThing.Objects
 {
     public class Arrow : GameObject
     {
-        private Visual visual;
+        public Visual visual;
         public Chart.collumn collumn;
         public Chart.NoteInfo noteInfo;
         public int yOffset = 0;
@@ -24,8 +24,8 @@ namespace RhythmThing.Objects
         private int actualY;
         public Dictionary<string, float> mods;
         private Chart chart;
-        private ConsoleColor noteColor;
-        private ConsoleColor noteBGColor;
+        public ConsoleColor noteColor;
+        public ConsoleColor noteBGColor;
         private float jumpAmount;
         private float beatTime;
         public bool frozen;

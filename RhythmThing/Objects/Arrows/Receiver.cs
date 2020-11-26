@@ -21,14 +21,14 @@ namespace RhythmThing.Objects
         public float rot = 0f;
         private int actualX;
         private int actualY;
-        private Visual visual;
-        private Visual pressedVisual;
+        public Visual visual;
+        public Visual pressedVisual;
         public Chart.collumn collumn;
         private Chart chart;
-        private List<Chart.NoteInfo> notes;
-        private List<Chart.NoteInfo> spawnedNotes;
-        private List<Arrow> deadNotes;
-        private List<Arrow> arrows;
+        public List<Chart.NoteInfo> notes;
+        public List<Chart.NoteInfo> spawnedNotes;
+        public List<Arrow> deadNotes;
+        public List<Arrow> arrows;
         private bool nMiss = false;
         public Arrow.direction direction = Arrow.direction.down;
         public Dictionary<string, float> mods;
@@ -111,18 +111,8 @@ namespace RhythmThing.Objects
 
         public override void Update(double time, Game game)
         {
-            rotation++;
-            if(rotation > 360)
-            {
-                rotation = 1;
-            }
-            visual.rotation = rotation;
-            pressedVisual.rotation = rotation;
-            if (onceDebug)
-            {
-                ImageUtils.visualToBMP(visual, Path.Combine(Program.contentPath, $"{collumn.ToString()}Receiver.bmp"));
-                onceDebug = false;
-            }
+
+
             xModOffset = 0;
             yModOffset = 0;
             //how to do mods!

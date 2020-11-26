@@ -8,6 +8,7 @@ using System.IO;
 using CSCore;
 using System.Reflection;
 using System.Security.Cryptography;
+using RhythmThing.Objects.SongScripts;
 
 namespace RhythmThing.Objects
 {
@@ -38,6 +39,7 @@ namespace RhythmThing.Objects
             public EventInfo[] events;
             public int difficulty;
             public videoInfo video;
+            public string script;
 
         }
         public struct videoInfo
@@ -72,7 +74,8 @@ namespace RhythmThing.Objects
 
 
         public ScoreHandler scoreHandler;
-        private ChartEventHandler chartEventHandler;
+        public ChartEventHandler chartEventHandler;
+        private ScriptLoader scriptLoader = null;
         public float beat;
         public float vBeat;
         public float approachBeat;
@@ -82,7 +85,10 @@ namespace RhythmThing.Objects
         private float lastBPMChangeBeat = 0;
         private double mstoSUB = 0;
         private float beatstoADD = 0;
-        
+        //making sure scripts can read some important stuf
+        public Receiver[] receivers;
+
+
         public Chart(string path)
         {
             folderName = path;
@@ -103,20 +109,25 @@ namespace RhythmThing.Objects
 
         public override void Start(Game game)
         {
-            /*test plugin loading
-
-            Assembly testAssembly = Utils.PluginLoader.LoadPlugin(Path.Combine(chartPath, "script.dll"));
-            SongScript testScript = null;
-            foreach(Type type in testAssembly.GetTypes())
+            //script load/setup
+            if(chartInfo.script != null)
             {
-                if(typeof(SongScript).IsAssignableFrom(type))
+                Assembly scriptAssembly = Utils.PluginLoader.LoadPlugin(Path.Combine(chartPath, chartInfo.script));
+                SongScript script = null;
+                foreach (Type type in scriptAssembly.GetTypes())
                 {
-                    testScript = Activator.CreateInstance(type) as SongScript;
+                    if (typeof(SongScript).IsAssignableFrom(type))
+                    {
+                        script = Activator.CreateInstance(type) as SongScript;
 
+                    }
                 }
+                //you best have loaded one b o i
+                scriptLoader = new ScriptLoader(script, this);
+                game.addGameObject(scriptLoader);
             }
-            testScript.runScript();
-            */
+
+            
             
             instance = this;
             Arrow.movementAmount = 75; //static amount
@@ -151,19 +162,19 @@ namespace RhythmThing.Objects
                         break;
                 }
             }
-            Receiver[] receiverss = new Receiver[4];
-            receiverss[0] = new Receiver(collumn.Left, tempL, this);
-            receiverss[3] = new Receiver(collumn.Right, tempR, this);
-            receiverss[2] = new Receiver(collumn.Up, tempU, this);
-            receiverss[1] = new Receiver(collumn.Down, tempD, this);
+            receivers = new Receiver[4];
+            receivers[0] = new Receiver(collumn.Left, tempL, this);
+            receivers[3] = new Receiver(collumn.Right, tempR, this);
+            receivers[2] = new Receiver(collumn.Up, tempU, this);
+            receivers[1] = new Receiver(collumn.Down, tempD, this);
             
 
-            game.addGameObject(receiverss[0]);
-            game.addGameObject(receiverss[1]);
-            game.addGameObject(receiverss[2]);
-            game.addGameObject(receiverss[3]);
+            game.addGameObject(receivers[0]);
+            game.addGameObject(receivers[1]);
+            game.addGameObject(receivers[2]);
+            game.addGameObject(receivers[3]);
 
-            chartEventHandler = new ChartEventHandler(this, receiverss, new List<EventInfo>(chartInfo.events));
+            chartEventHandler = new ChartEventHandler(this, receivers, new List<EventInfo>(chartInfo.events));
 
             foreach(NoteInfo noteI in chartInfo.notes)
             {
@@ -181,6 +192,10 @@ namespace RhythmThing.Objects
             game.addGameObject(scoreHandler);
             game.addGameObject(chartEventHandler);
             firstBPM = chartInfo.bpm;
+            if(scriptLoader != null)
+            {
+                scriptLoader.songStart();
+            }
             song = game.audioManager.addTrack(Path.Combine(chartPath, chartInfo.songPath));
             double tempbeat = beatstoADD + (((TimeConverterFactory.Instance.GetTimeConverterForSource(song.sampleSource).ToTimeSpan(song.sampleSource.WaveFormat, song.sampleSource.Length).TotalMilliseconds) * ((float)(firstBPM) / 60000)));
             VideoPlayer.LastBeat = (float)Math.Round(tempbeat, 2);

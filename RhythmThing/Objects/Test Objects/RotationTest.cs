@@ -53,6 +53,14 @@ namespace RhythmThing.Objects.Test_Objects
             {
                 visual.useMatrix = !visual.useMatrix;
             }
+            if(Input.Instance.ButtonStates[Input.ButtonKind.Right] == Input.ButtonState.Press)
+            {
+                visual.x++;
+            }
+            if (Input.Instance.ButtonStates[Input.ButtonKind.Left] == Input.ButtonState.Press)
+            {
+                visual.x--;
+            }
 
             debugText.localPositions.Clear();
             debugText.writeText(0, 0, $"Deg: {rotation} || Matrix: {visual.useMatrix}", ConsoleColor.White, ConsoleColor.Black);

@@ -5,7 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RhythmThing\RhythmThing.csproj" />
+    <Reference Include="RhythmThing">
+      <HintPath>..\RhythmThing\bin\Debug\netcoreapp3.1\RhythmThing.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

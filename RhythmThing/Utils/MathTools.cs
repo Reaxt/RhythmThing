@@ -4,29 +4,32 @@ using System.Text;
 using RhythmThing.Components;
 using System.Drawing.Drawing2D;
 using System.Drawing;
+using System.Linq;
+
 namespace RhythmThing.Utils
 {
     public class MathTools
     {
         public static Coords[] Rotate(Coords[] pointsToRotate, float angleInDegrees)
         {
-            Matrix matrix = new Matrix();
-            matrix.Rotate(angleInDegrees);
-            PointF[] points = new PointF[pointsToRotate.Length];
+            Coords[] newCoords = new Coords[pointsToRotate.Length];
+            double angleInRadians = angleInDegrees * (Math.PI / 180);
+            double cosTheta = Math.Cos(angleInRadians);
+            double sinTheta = Math.Sin(angleInRadians);
+            int midx = 0;
+            int midy = 0;
+            //h
             for (int i = 0; i < pointsToRotate.Length; i++)
             {
-                points[i] = new PointF(pointsToRotate[i].x, pointsToRotate[i].y);
-            }
-            matrix.TransformPoints(points);
-            Coords[] coords = new Coords[pointsToRotate.Length];
-            for (int i = 0; i < points.Length; i++)
-            {
-                coords[i] = new Coords((int)Math.Round(points[i].X), (int)Math.Round(points[i].Y), pointsToRotate[i].character, pointsToRotate[i].foreColor, pointsToRotate[i].backColor);
-                
-            }
-            return coords;
+                //newCoords[i] = pointsToRotate[i];
+                var tempcoord = pointsToRotate[i];
+                tempcoord.x = (int)Math.Round((cosTheta * (pointsToRotate[i].x - midx) - sinTheta * (pointsToRotate[i].y - midy) + midx));
+                tempcoord.y = (int)Math.Round((sinTheta * (pointsToRotate[i].x - midx) + cosTheta * (pointsToRotate[i].y - midy) + midy));
 
-            
+                newCoords[i] = tempcoord;
+            }
+
+            return newCoords;
         }
     }
 }
