@@ -45,7 +45,7 @@ namespace RhythmThing.Objects.Test_Objects
         {
             if(Input.Instance.ButtonStates[Input.ButtonKind.Confirm] == Input.ButtonState.Held)
             {
-                visual.matrix.Rotate(1);
+                //visual.matrix.Rotate(1);
                 rotation++;
 
             }

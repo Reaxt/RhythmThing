@@ -15,11 +15,12 @@ namespace RhythmThing.Components
     public class Visual : Component
     {
 
-        public Matrix matrix = new Matrix();
+        private Matrix matrix = new Matrix();
         public bool useMatrix = false;
         public int x;
         public int y;
         public float rotation = 0;
+        private float lastDoneRot = 0;
         private int _savedX;
         private int _savedY;
         public int z;
@@ -75,6 +76,17 @@ namespace RhythmThing.Components
             }
 
         }
+        //for scripts
+        public void LoadBMPPath(string path)
+        {
+            LoadBMP(path);
+        }
+        public void LoadBMPPath(string path, int[] lbcorner)
+        {
+            Bitmap bitmap = (Bitmap)Image.FromFile(Path.Combine(Directory.GetCurrentDirectory(), "!Content", path));
+
+            LoadBMP(bitmap, lbcorner);
+        }
         public void LoadBMP(string path)
         {
 
@@ -128,8 +140,15 @@ namespace RhythmThing.Components
                 for (int y = 0; y < bitmap.Height; y++)
                 {
                     Color pixel = bitmap.GetPixel(x, y);
-                    ConsoleColor consoleColor = NearestConsoleColor.ClosestConsoleColor(pixel.R, pixel.G, pixel.B);
-                    localPositions.Add(new Coords(LBcorner[0] + x, LBcorner[1] + (-y + bitmap.Height), ' ', consoleColor, consoleColor));
+                    if(pixel.A == 0)
+                    {
+
+                    } else
+                    {
+                        ConsoleColor consoleColor = NearestConsoleColor.ClosestConsoleColor(pixel.R, pixel.G, pixel.B);
+                        localPositions.Add(new Coords(LBcorner[0] + x, LBcorner[1] + (-y + bitmap.Height), ' ', consoleColor, consoleColor));
+
+                    }
                 }
             }
         }
@@ -158,6 +177,12 @@ namespace RhythmThing.Components
         }
         public override void Update(double time)
         {
+            //matrix fixes
+            if(lastDoneRot != rotation)
+            {
+                matrix.Rotate(rotation - lastDoneRot);
+                lastDoneRot = rotation;
+            }
 
             //move the visual positions with any animations
             _savedX = x;

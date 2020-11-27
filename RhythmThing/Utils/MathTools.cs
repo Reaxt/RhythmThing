@@ -31,5 +31,16 @@ namespace RhythmThing.Utils
 
             return newCoords;
         }
+        public static float[,] circle(float radius, int n)
+        {
+            float[,] circ = new float[n, 2];
+            for (int i = 0; i < n; i++)
+            {
+                circ[i, 0] = (float)(radius * Math.Cos((2 * Math.PI) / n * i));
+                circ[i, 1] = (float)(radius * Math.Sin((2 * Math.PI) / n * i));
+
+            }
+            return circ;
+        }
     }
 }

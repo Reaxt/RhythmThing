@@ -21,51 +21,17 @@ namespace TestScript
 
         public void mainScript(Chart chart, Game game, double time)
         {
-            timepassed += (float)time;
-            if (timepassed > timetopass)
-            {
-                timepassed = 0;
-                rot++;
-                for (int i = 0; i < chart.receivers.Length; i++)
-                {
-                    if (togthing)
-                    {
-                        chart.receivers[i].visual.Animate(new int[] { chart.receivers[i].visual.x, chart.receivers[i].visual.y }, new int[] { chart.receivers[i].visual.x + 5, chart.receivers[i].visual.y }, "easeOutExpo", timetopass, true);
-                    } else
-                    {
-                        chart.receivers[i].visual.Animate(new int[] { chart.receivers[i].visual.x, chart.receivers[i].visual.y }, new int[] { chart.receivers[i].visual.x - 5, chart.receivers[i].visual.y }, "easeOutExpo", timetopass, true);
-
-                    }
-                    chart.receivers[i].visual.rotation = rot;
-                    chart.receivers[i].visual.useMatrix = true;
-                    chart.receivers[i].pressedVisual.rotation = rot;
-                    chart.receivers[i].pressedVisual.useMatrix = true;
-                    for (int x = 0; x < chart.receivers[i].arrows.Count; x++)
-                    {
-                        chart.receivers[i].arrows[x].visual.writeText(0, 0, "HEHE :D", ConsoleColor.Black, chart.receivers[i].arrows[x].noteColor);
-                        if (togthing)
-                        {
-                            chart.receivers[i].arrows[x].visual.overrideColor = true;
-                            chart.receivers[i].arrows[x].visual.overrideback = ConsoleColor.White;
-                            chart.receivers[i].arrows[x].visual.overridefront = ConsoleColor.White;
-
-                        }
-                        else
-                        {
-                            chart.receivers[i].arrows[x].visual.overrideColor = false;
-
-                        }
-                    }
-                    
-                }
-                togthing = !togthing;
-            }
+            
         }
 
 
         public void runScript(Chart chart, Game game)
         {
-            
+            for (int i = 0; i < 4; i++)
+            {
+                chart.chartEventHandler.moveCollumn(i, 0, -60);
+                game.addGameObject(new Visual_Gameobject_stuff.FirstArrows(chart));
+            }
         }
     }
 }

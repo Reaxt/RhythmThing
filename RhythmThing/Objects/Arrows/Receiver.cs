@@ -62,7 +62,7 @@ namespace RhythmThing.Objects
             visual.active = true;
             visual.x = 30;
             visual.y = 42;
-            visual.z = -1;
+            visual.z = 0;
             pressedVisual.z = -2;
             
             //holy fuck never do that again
