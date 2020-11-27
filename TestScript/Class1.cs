@@ -30,8 +30,8 @@ namespace TestScript
             for (int i = 0; i < 4; i++)
             {
                 chart.chartEventHandler.moveCollumn(i, 0, -60);
-                game.addGameObject(new Visual_Gameobject_stuff.FirstArrows(chart));
             }
+            game.addGameObject(new Visual_Gameobject_stuff.FirstArrows(chart));
         }
     }
 }

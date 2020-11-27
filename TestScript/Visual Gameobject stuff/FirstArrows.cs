@@ -19,6 +19,7 @@ namespace TestScript.Visual_Gameobject_stuff
         private float timePassed = 0f;
         private int textIndex = 0;
         private bool circBump = false;
+        private static int count = 90;
         Visual beep = new Visual();
         public override void End()
         {
@@ -39,15 +40,14 @@ namespace TestScript.Visual_Gameobject_stuff
             beep.z = -1;
             components.Add(beep);
             arrowVisuals = new List<Visual>();
-            int amount = 20;
-            for (int i = 0; i < amount; i++)
+            for (int i = 0; i < count; i++)
             {
                 Visual newVis = new Visual();
                 newVis.LoadBMPPath("Sprites/UpReceiver.bmp", new int[] { -5, -6 });
                 newVis.active = true;
                 newVis.z = -(i+3);
                 newVis.y = -20;
-                newVis.x = (int)(((float)i / (float)amount) * 100f);
+                newVis.x = (int)(((float)i / (float)count) * 100f);
                 int tx = random.Next(0, 100);
                 int ty = random.Next(10, 50);
                 newVis.overrideColor = true;
@@ -84,22 +84,13 @@ namespace TestScript.Visual_Gameobject_stuff
             {
                 if (!circBump)
                 {
-                    float[,] circ = RhythmThing.Utils.MathTools.circle(30, 20);
+                    float[,] circ = RhythmThing.Utils.MathTools.circle(30, count);
                     int xbase = 50;
                     int ybase = 25;
-                    for (int i = 0; i < 20; i++)
+                    for (int i = 0; i < count; i++)
                     {
-                        if (i == 19)
-                        {
-                            int[] point = new int[] { (int)(circ[i, 0] + xbase), (int)(circ[i, 1] + ybase) };
-                            arrowVisuals[0].Animate(new int[] { arrowVisuals[0].x, arrowVisuals[0].y }, point, "easeOutExpo", 5);
-                        }
-                        else
-                        {
-                            int[] point = new int[] { (int)(circ[i, 0] + xbase), (int)(circ[i, 1] + ybase) };
-                            arrowVisuals[i + 1].Animate(new int[] { arrowVisuals[i+1].x, arrowVisuals[i+1].y }, point, "easeOutExpo", 5);
-                        }
-
+                        int[] point = new int[] {(int)(circ[i,0]+xbase), (int)(circ[i,1]+ybase) };
+                        arrowVisuals[i].Animate(new int[] { arrowVisuals[i].x, arrowVisuals[i].y }, point, "easeOutExpo", 5);
                     }
                     circBump = true;
 
@@ -257,10 +248,10 @@ namespace TestScript.Visual_Gameobject_stuff
 
                 if (!hits[6])
                 {
-                    float[,] circ = RhythmThing.Utils.MathTools.circle(-70, 20);
+                    float[,] circ = RhythmThing.Utils.MathTools.circle(-70, count);
                     int xbase = 50;
                     int ybase = 25;
-                    for (int i = 0; i < 20; i++)
+                    for (int i = 0; i < count; i++)
                     {
                         int[] point = new int[] { (int)(circ[i, 0] + xbase), (int)(circ[i, 1] + ybase) };
                         arrowVisuals[i].Animate(new int[] { arrowVisuals[i].x, arrowVisuals[i].y }, point, "easeInQuad", 2);
