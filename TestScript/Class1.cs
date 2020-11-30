@@ -1,6 +1,8 @@
 ﻿using System;
 using RhythmThing.Objects;
 using RhythmThing.System_Stuff;
+using TestScript.Shaders;
+
 namespace TestScript
 {
     public class TestScript : SongScript
@@ -32,6 +34,7 @@ namespace TestScript
                 chart.chartEventHandler.moveCollumn(i, 0, -60);
             }
             game.addGameObject(new Visual_Gameobject_stuff.FirstArrows(chart));
+            //test shit
         }
     }
 }

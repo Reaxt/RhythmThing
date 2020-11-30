@@ -19,6 +19,8 @@ namespace TestScript.Visual_Gameobject_stuff
         private float timePassed = 0f;
         private int textIndex = 0;
         private bool circBump = false;
+
+
         private static int count = 90;
         Visual beep = new Visual();
         public override void End()
@@ -243,7 +245,6 @@ namespace TestScript.Visual_Gameobject_stuff
                     textIndex = 0;
                 }
                 textvisual.localPositions[textIndex] = new Coords(textvisual.localPositions[textIndex].x, textvisual.localPositions[textIndex].y, (char)random.Next(0, 100), textvisual.localPositions[textIndex].foreColor, textvisual.localPositions[textIndex].backColor);
-
                 textIndex++;
 
                 if (!hits[6])
@@ -284,7 +285,8 @@ namespace TestScript.Visual_Gameobject_stuff
                     chart.receivers[i].visual.overrideColor = false;
 
                 }
-                chart.chartEventHandler.setModPercent("beat", 1);
+                //chart.chartEventHandler.setModPercent("beat", 10);
+                game.addGameObject(new FirstNotes(chart));
                 this.alive = false;
             }
         }

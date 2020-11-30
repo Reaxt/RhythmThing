@@ -9,7 +9,7 @@ namespace RhythmThing.Utils
     /// <summary>
     /// Grabbed from https://gist.github.com/adrianseeley/4242677 . I take no credit for the following code.
     /// </summary>
-    static class Ease
+    public static class Ease
         {
         public static float Lerp(float firstFloat, float secondFloat, float by)
         {
