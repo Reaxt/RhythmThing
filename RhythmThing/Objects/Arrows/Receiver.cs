@@ -63,7 +63,6 @@ namespace RhythmThing.Objects
             visual.x = 30;
             visual.y = 42;
             visual.z = 0;
-            pressedVisual.z = -2;
             
             //holy fuck never do that again
             //rumour has it there was once a disgusting block of code here
@@ -104,7 +103,7 @@ namespace RhythmThing.Objects
             pressedVisual.active = true;
             pressedVisual.x = visual.x;
             pressedVisual.y = visual.y;
-            pressedVisual.z = -2;
+            pressedVisual.z = 1;
             actualX = visual.x;
             actualY = visual.y;
         }
@@ -263,7 +262,7 @@ namespace RhythmThing.Objects
             if(pressed)
             {
                 
-                pressedVisual.z = 0;
+                pressedVisual.z = 1;
             } else
             {
                 pressedVisual.z = -2;

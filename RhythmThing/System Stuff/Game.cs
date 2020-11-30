@@ -127,6 +127,8 @@ namespace RhythmThing.System_Stuff
                 obj.alive = false;
                 obj.End();
             }
+            //get rid of any shaders
+            display.DisableFilter();
 
             addBuffer = new List<GameObject>(sceneManager.initScene());
             //mainInstance.addGameObject(new Chart("Nisemono"));

@@ -14,11 +14,12 @@ namespace TestScript.Visual_Gameobject_stuff
         private BoxBuffer boxBuffer = new BoxBuffer();
         private int lastBeat = 60;
         private bool lrtog = false;
+        private bool udtog = false;
         private bool lrtog2 = false;
         private int moveamount = 30;
         private int currenty = 0;
         private bool[] hits = new bool[3];
-        private float timetopass = 0.05f;
+        private float timetopass = 0;
         private double passed = 0;
         int go = 0;
 
@@ -34,8 +35,8 @@ namespace TestScript.Visual_Gameobject_stuff
 
         public override void Start(Game game)
         {
-            boxBuffer.boxPoint = new int[] { 0, 0 };
-            boxBuffer.boxDimensions = new int[] { 100, 20 };
+            boxBuffer.boxPoint = new int[] { 23, 15 };
+            boxBuffer.boxDimensions = new int[] { 53, 20 };
         }
 
         public override void Update(double time, Game game)
@@ -45,17 +46,37 @@ namespace TestScript.Visual_Gameobject_stuff
                 if (!hits[2])
                 {
                     hits[2] = !hits[2];
+                    lastBeat = 92;
                     game.display.ActivateFilter(boxBuffer);
                 }
                 passed += time;
-                if(timetopass <= passed)
+                /*if(passed>= timetopass)
                 {
-                    if(boxBuffer.boxPoint[1] >= 50)
-                    {
-                        boxBuffer.boxPoint[1] = 0;
-                    }
                     boxBuffer.boxPoint[1]++;
                     passed = 0;
+                    if(boxBuffer.boxPoint[1] >= 50)
+                    {
+                        boxBuffer.boxPoint[1] = -20;
+                    }
+                }*/
+                if(chart.beat >= lastBeat)
+                {
+
+                    if(chart.beat - lastBeat <= 1)
+                    {
+                        if (chart.beat - lastBeat <= 0.5)
+                        {
+                            boxBuffer.boxPoint[0] = (int)(23 + (23 * Ease.Sinusoidal.In((chart.beat - (float)lastBeat)*2)));
+
+                        } else
+                        {
+                            boxBuffer.boxPoint[0] = (int)(0 + (23 * Ease.Sinusoidal.Out((float)(chart.beat - (float)lastBeat-0.5)*2)));
+
+                        }
+                    } else
+                    {
+                        lastBeat += 2;
+                    }
                 }
             }
             if (chart.beat >= 84 && !hits[1])
