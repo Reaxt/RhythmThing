@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /y /d &quot;$(TargetDir)$(TargetFileName)&quot; &quot;$(SolutionDir)RhythmThing\bin\Debug\netcoreapp3.1\!Content\!Songs\Broadcast&quot;" />
+    <Exec Command="xcopy /y /d &quot;$(TargetDir)$(TargetFileName)&quot; &quot;$(SolutionDir)RhythmThing\bin\Debug\net5.0-windows\!Content\!Songs\Broadcast&quot;" />
   </Target>
 
 </Project>
