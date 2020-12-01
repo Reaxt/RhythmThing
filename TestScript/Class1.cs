@@ -10,7 +10,7 @@ namespace TestScript
         private int rot = 0;
         private float timepassed = 0;
         private float timetopass = 0.5f;
-        private bool togthing = false;
+        private bool[] activates = new bool[2];
         public string Name => "neatoo";
 
         public string Description => "this sure is a cool testing thing";
@@ -23,7 +23,11 @@ namespace TestScript
 
         public void mainScript(Chart chart, Game game, double time)
         {
-            
+            if (chart.beat >= 60 && !activates[0])
+            {
+                activates[0] = true;
+                game.addGameObject(new Visual_Gameobject_stuff.FirstNotes(chart));
+            }
         }
 
 

@@ -57,7 +57,7 @@ namespace TestScript.Shaders
                 }
             }
 
-
+            
             return new DisplayData(tempF, tempB, tempC);
         }
     }

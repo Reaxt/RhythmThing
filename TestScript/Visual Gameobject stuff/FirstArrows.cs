@@ -286,7 +286,6 @@ namespace TestScript.Visual_Gameobject_stuff
 
                 }
                 //chart.chartEventHandler.setModPercent("beat", 10);
-                game.addGameObject(new FirstNotes(chart));
                 this.alive = false;
             }
         }

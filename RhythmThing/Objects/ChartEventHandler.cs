@@ -132,6 +132,11 @@ namespace RhythmThing.Objects
                 receivers[i].mods[mod] = percent;
             }
         }
+        
+        public void setMovementAmount(float amount)
+        {
+            Arrow.movementAmount = amount;
+        }
         public void setCollumnMod(int col, string mod, float percent)
         {
             receivers[col].mods[mod] = percent;
