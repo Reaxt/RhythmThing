@@ -11,14 +11,14 @@ namespace RhythmThing.Scenes
     {
         public TestScene()
         {
-            this.name = "BMP Testing";
+            this.name = "Testing";
             this.index = 5;
         }
         public override void Start()
         {
 
             initialObjs = new List<GameObject>();
-            initialObjs.Add(new RotationTest());
+            initialObjs.Add(new MultiWindowTest());
 
         }
 

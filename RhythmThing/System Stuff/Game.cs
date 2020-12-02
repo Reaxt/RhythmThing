@@ -49,6 +49,9 @@ namespace RhythmThing.System_Stuff
         //private List<GameObject> toRemove;
         //for our good ol friend deltatime
         Stopwatch stopwatch = new Stopwatch();
+
+        
+
         public Game(int screenX, int screenY)
         {
             this.screenX = screenX;
@@ -74,10 +77,10 @@ namespace RhythmThing.System_Stuff
             sceneManager = new SceneManager(this);
             //entry point
 
-            sceneManager.loadScene(0);
+            //sceneManager.loadScene(0);
 
             //debug scene
-            //sceneManager.loadScene(5);
+            sceneManager.loadScene(5);
 
             while (gameLoopLives)
             {

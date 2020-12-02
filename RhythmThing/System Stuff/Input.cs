@@ -29,7 +29,7 @@ namespace RhythmThing.System_Stuff
         private int _escCode = 1;
         */
 
-
+        public static bool focusInput = true;
         private static Input _instance;
         public static Input Instance {
             get {
@@ -196,7 +196,7 @@ namespace RhythmThing.System_Stuff
 
 
             
-            if (!WindowManager.isFocused())
+            if (!WindowManager.isFocused() && focusInput)
             {
                 return;
             }

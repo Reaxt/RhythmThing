@@ -7,6 +7,7 @@ using System.Threading;
 using RhythmThing.Utils;
 using System.IO;
 using System.Security.Cryptography;
+using System.Diagnostics;
 
 namespace RhythmThing
 {
@@ -37,6 +38,13 @@ namespace RhythmThing
          
         static void Main(string[] args)
         {
+            if(args.Length > 0)
+            {
+                SlaveWindow slave = new SlaveWindow(args);
+               
+            } else
+            {
+            
             contentPath = Path.Combine(Directory.GetCurrentDirectory(), "!Content");
             //backup last log
             Logger.NewLog();
@@ -56,10 +64,11 @@ namespace RhythmThing
             PlayerSettings.Instance.ReadSettings();
 
             Game main = new Game(ScreenX, ScreenY);
-            //testOUTPUT test = new testOUTPUT();
-           // test.Setup();
-            //put in test object
-          //  main.addGameObject(new LeftArrow());
+                //testOUTPUT test = new testOUTPUT();
+                // test.Setup();
+                //put in test object
+                //  main.addGameObject(new LeftArrow());
+            }
         }
     }
 }
