@@ -4,8 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RhythmThing", "RhythmThing\RhythmThing.csproj", "{9B5DB554-BCC1-442C-8E44-71A5D4609640}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D5DE201B-0226-469F-B461-E65E7BD13E37} = {D5DE201B-0226-469F-B461-E65E7BD13E37}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestScript", "TestScript\TestScript.csproj", "{D5DE201B-0226-469F-B461-E65E7BD13E37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestScript", "TestScript\TestScript.csproj", "{D5DE201B-0226-469F-B461-E65E7BD13E37}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

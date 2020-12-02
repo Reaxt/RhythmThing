@@ -19,7 +19,11 @@ namespace RhythmThing.Objects.SongScripts
         }
         public override void End()
         {
-
+            
+        }
+        public void songEnd()
+        {
+            script.endScript(chart, Game.mainInstance);
         }
         public void songStart()
         {

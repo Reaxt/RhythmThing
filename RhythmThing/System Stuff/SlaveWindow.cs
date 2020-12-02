@@ -71,6 +71,11 @@ namespace RhythmThing.System_Stuff
                             display.windowManager.moveWindow(float.Parse(args[1]), float.Parse(args[2]));
                             break;
                         case "SetWindowEase":
+                            if(easeGo)
+                            {
+                                display.windowManager.moveWindow(endX, endY);
+                                timepassed = 0;
+                            }
                             startX = float.Parse(args[1]);
                             startY = float.Parse(args[2]);
                             endX = float.Parse(args[3]);
@@ -82,7 +87,9 @@ namespace RhythmThing.System_Stuff
                             break;
                         case "StopEase":
                             timepassed = duration;
-
+                            break;
+                        case "SetTitle":
+                            Console.Title = args[1];
                             break;
                         default:
                             break;
@@ -127,6 +134,7 @@ namespace RhythmThing.System_Stuff
                     if(timepassed >= duration)
                     {
                         display.windowManager.moveWindow(endX, endY);
+                        easeGo = false;
                     } else
                     {
                         float x = (startX) + ((endX-startX) * Ease.byName[easing](timepassed / duration));

@@ -148,6 +148,7 @@ namespace TestScript.Visual_Gameobject_stuff
                 chart.chartEventHandler.setModPercent("bumpy", 3);
 
                 chart.chartEventHandler.setMovementAmount(50);
+                this.alive = false;
             }
             if (chart.beat >= 91.5 && !hits[5])
             {

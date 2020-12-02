@@ -6,6 +6,8 @@ using System.Text;
 using System.IO.MemoryMappedFiles;
 using System.IO.Pipes;
 using System.IO;
+using System.Threading.Tasks;
+
 namespace RhythmThing.System_Stuff
 {
     public class SlaveManager
@@ -28,33 +30,70 @@ namespace RhythmThing.System_Stuff
         long length;
         private int x;
         private int y;
+        bool youcanupdate = true;
+        bool youcandraw = true;
         public List<Visual> visuals;
+        
         public static long getLength(int x, int y)
         {
             return ((x * y) * 4) * 3;
         }
-        public void UpdateVisuals()
+        public void UpdateVisualsAsync()
         {
-            displayData.foreColors = new ConsoleColor[x, y];
-            displayData.backColors = new ConsoleColor[x, y];
-            displayData.characters = new char[x, y];
-            visuals.Sort((x, y) => x.z.CompareTo(y.z));
-            visuals.ForEach(visual =>
+            if (youcanupdate)
             {
-                visual.localPositions.ForEach(coord =>
-                {
-                    int locX = visual.x + coord.x;
-                    int locY = visual.y + coord.y;
-                    if(!((locX >= x) ||(locX < 0 ) || (locY >= y) || (locY < 0)))
+                Task.Run(() => {
+                    youcanupdate = false;
+                    displayData.foreColors = new ConsoleColor[x, y];
+                    displayData.backColors = new ConsoleColor[x, y];
+                    displayData.characters = new char[x, y];
+                    visuals.Sort((x, y) => x.z.CompareTo(y.z));
+                    Visual[] h = visuals.ToArray();
+                    for (int i = 0; i < h.Length; i++)
                     {
-                        displayData.foreColors[locX, locY] = coord.foreColor;
-                        displayData.backColors[locX, locY] = coord.backColor;
-                        displayData.characters[locX, locY] = coord.character;
+                        Visual visual = h[i];
+                        if (visual.active)
+                        {
+                            Coords[] coordArray = visual.localPositions.ToArray();
+                            for (int z = 0; z < coordArray.Length; z++)
+                            {
+                                Coords coord = coordArray[z];
+                                int locX = visual.x + coord.x;
+                                int locY = visual.y + coord.y;
+                                if (!((locX >= x) || (locX < 0) || (locY >= y) || (locY < 0)))
+                                {
+                                    displayData.foreColors[locX, locY] = coord.foreColor;
+                                    displayData.backColors[locX, locY] = coord.backColor;
+                                    displayData.characters[locX, locY] = coord.character;
 
+                                }
+                            }
+
+
+                        }
                     }
+                    Draw();
+                    youcanupdate = true;
                 });
-            });
-            Draw();
+            }
+
+
+        }
+        public void DrawAsync()
+        {
+            int curWrite = 0;
+            for (int lX = 0; lX < x; lX += 1)
+            {
+                for (int lY = 0; lY < y; lY += 1)
+                {
+                    accessor.Write(curWrite, (int)displayData.foreColors[lX, lY]);
+                    curWrite += 4;
+                    accessor.Write(curWrite, (int)displayData.backColors[lX, lY]);
+                    curWrite += 4;
+                    accessor.Write(curWrite, displayData.characters[lX, lY]);
+                    curWrite += 2;
+                }
+            }
         }
         public void Draw()
         {
@@ -81,6 +120,7 @@ namespace RhythmThing.System_Stuff
                 writer.AutoFlush = true;
                 writer.WriteAsync("close");
                 pipe.Disconnect();
+                pipe.Dispose();
                 accessor.Dispose();
                 mappedFile.Dispose();
                 aliveWindows.Remove(this);
@@ -101,9 +141,17 @@ namespace RhythmThing.System_Stuff
         {
             x = (float)(x / 100) * 0.5f + 0.75f;
             y = (y / 100) * 0.5f + 0.75f;
-            writer.Write($"SetWindowPos|{x}|{y}|");
+            Task.Run(() =>
+            {
+                writer.Write($"SetWindowPos|{x}|{y}|");
+
+            });
             
             
+        }
+        public void SetWindowTitle(string title)
+        {
+            writer.Write($"SetTitle|{title}|");
         }
         public void MoveWindowEase(float startX, float startY, float endX, float endY, float duration, string easing)
         {
@@ -111,7 +159,11 @@ namespace RhythmThing.System_Stuff
             startY = (startY / 100) * 0.5f + 0.75f;
             endX = (float)(endX / 100) * 0.5f + 0.75f;
             endY = (endY / 100) * 0.5f + 0.75f;
-            writer.Write($"SetWindowEase|{startX}|{startY}|{endX}|{endY}|{duration}|{easing}|");
+            Task.Run(() =>
+            {
+                writer.Write($"SetWindowEase|{startX}|{startY}|{endX}|{endY}|{duration}|{easing}|");
+
+            });
         }
         //if for one reason or another the ease MUST end
         public void EndEase() {

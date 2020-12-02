@@ -204,7 +204,7 @@ namespace RhythmThing.Objects
 
 
 
-            //song.sampleSource.SetPosition(TimeSpan.FromMilliseconds(startBeat / ((float)(chartInfo.bpm) / 60000)));
+            //song.sampleSource.SetPosition(TimeSpan.FromMilliseconds(120 / ((float)(chartInfo.bpm) / 60000)));
 
         }
         public void changeBPM(float newBPM, float beatChanged)
@@ -239,6 +239,10 @@ namespace RhythmThing.Objects
                 game.songHash = this.hash;
                 game.audioManager.removeTrack(song);
                 game.sceneManager.loadScene(2);
+                if(scriptLoader!= null)
+                {
+                    scriptLoader.songEnd();
+                }
                 
             }
             if(game.input.ButtonStates[Input.ButtonKind.Cancel] == Input.ButtonState.Press)
@@ -250,6 +254,10 @@ namespace RhythmThing.Objects
                 game.songHash = this.hash;
                 game.audioManager.removeTrack(song);
                 game.sceneManager.loadScene(2);
+                if (scriptLoader != null)
+                {
+                    scriptLoader.songEnd();
+                }
 
             }
             

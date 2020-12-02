@@ -36,7 +36,7 @@ namespace TestScript.Visual_Gameobject_stuff
             textvisual.y = 25;
             textvisual.z = -2;
             components.Add(textvisual);
-            beep.LoadBMPPath("!Songs/Broadcast/broadcast.bmp");
+            beep.LoadBMPPath("!Songs/Broadcast/broadcast.bmp", new int[] {-1, -1 });
             beep.z = 0;
             beep.y = -1;
             beep.z = -1;

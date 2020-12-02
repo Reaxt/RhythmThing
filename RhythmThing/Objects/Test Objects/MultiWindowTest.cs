@@ -63,11 +63,11 @@ namespace RhythmThing.Objects.Test_Objects
             }
             if (manager.alive)
             {
-                manager.UpdateVisuals();
+                manager.UpdateVisualsAsync();
 
             }
-            manager2.UpdateVisuals();
-            manager3.UpdateVisuals();
+            manager2.UpdateVisualsAsync();
+            manager3.UpdateVisualsAsync();
             if(game.input.ButtonStates[Input.ButtonKind.Cancel] == Input.ButtonState.Press)
             {
                 manager.CloseWindow();

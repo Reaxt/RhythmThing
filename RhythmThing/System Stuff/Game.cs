@@ -77,10 +77,10 @@ namespace RhythmThing.System_Stuff
             sceneManager = new SceneManager(this);
             //entry point
 
-            //sceneManager.loadScene(0);
+            sceneManager.loadScene(0);
 
             //debug scene
-            sceneManager.loadScene(5);
+            //sceneManager.loadScene(5);
 
             while (gameLoopLives)
             {
@@ -132,7 +132,8 @@ namespace RhythmThing.System_Stuff
             }
             //get rid of any shaders
             display.DisableFilter();
-
+            //kill any slaves
+            SlaveManager.CloseAll();
             addBuffer = new List<GameObject>(sceneManager.initScene());
             //mainInstance.addGameObject(new Chart("Nisemono"));
             running = true;
