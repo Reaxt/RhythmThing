@@ -130,7 +130,6 @@ namespace RhythmThing.Objects
             
             
             instance = this;
-            Arrow.movementAmount = 75; //static amount
             this.components = new List<Component>();
             type = objType.nonvisual;
 
@@ -201,10 +200,10 @@ namespace RhythmThing.Objects
             VideoPlayer.LastBeat = (float)Math.Round(tempbeat, 2);
             //debug obj
             game.addGameObject(new ChartDebug(this));
+            game.display.windowManager.CenterWindow();
 
 
-
-            //song.sampleSource.SetPosition(TimeSpan.FromMilliseconds(120 / ((float)(chartInfo.bpm) / 60000)));
+            //song.sampleSource.SetPosition(TimeSpan.FromMilliseconds(220 / ((float)(chartInfo.bpm) / 60000)));
 
         }
         public void changeBPM(float newBPM, float beatChanged)

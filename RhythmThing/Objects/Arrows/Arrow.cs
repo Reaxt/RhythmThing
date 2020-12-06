@@ -33,7 +33,7 @@ namespace RhythmThing.Objects
         private int frozenY;
         private bool wealive = false;
         //static value thats nice
-        public static float movementAmount = 100;
+        public static float movementAmount = 75;
         private float rotation = 0;
         //this needs to be changed
         public enum direction

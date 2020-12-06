@@ -38,7 +38,9 @@ namespace RhythmThing
          
         static void Main(string[] args)
         {
-            if(args.Length > 0)
+            CultureInfo nonInvariantCulture = new CultureInfo("en-US");
+            Thread.CurrentThread.CurrentCulture = nonInvariantCulture;
+            if (args.Length > 0)
             {
                 SlaveWindow slave = new SlaveWindow(args);
                
@@ -51,8 +53,7 @@ namespace RhythmThing
 
             Logger.DebugLog("we're starting!");
             //needed for some locale I guess
-            CultureInfo nonInvariantCulture = new CultureInfo("en-US");
-            Thread.CurrentThread.CurrentCulture = nonInvariantCulture;
+
 
             //Console.ReadLine();
             //ConsoleHelper.SetConsoleFont();

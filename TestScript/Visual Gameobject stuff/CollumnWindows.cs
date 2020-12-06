@@ -15,7 +15,7 @@ namespace TestScript.Visual_Gameobject_stuff
         private Yoinkers yoinked;
         bool go = false;
         int[] xValues = new int[4];
-        bool[] hits = new bool[10];
+        bool[] hits = new bool[20];
         int[,] positions = new int[4, 2];
         bool tog = false;
         float num = 200;
@@ -45,16 +45,16 @@ namespace TestScript.Visual_Gameobject_stuff
         }
         public override void Start(Game game)
         {
-            positions[0, 0] = xValues[0] + (int)num;
-            positions[0, 1] = 50;
-            positions[1, 0] = xValues[1] + (int)num/2;
-            positions[1, 1] = 50;
-            positions[2, 0] = xValues[2] - (int)num/2;
-            positions[2, 1] = 50;
-            positions[3, 0] = xValues[3] - (int)num;
-            positions[3, 1] = 50;
+            positions[0, 0] = (int)((xValues[0] + (int)num)*1.5);
+            positions[0, 1] = 0;
+            positions[1, 0] = (int)((xValues[1] + (int)num/2)*1.5);
+            positions[1, 1] = 0;
+            positions[2, 0] = (int)((xValues[2] - (int)num/2)*1.5);
+            positions[2, 1] = 0;
+            positions[3, 0] = (int)((xValues[3] - (int)num)*1.5);
+            positions[3, 1] = 0;
 
-
+            
         }
 
         public override void Update(double time, Game game)
@@ -114,11 +114,11 @@ namespace TestScript.Visual_Gameobject_stuff
             if (chart.beat >= 162 && !hits[7])
             {
 
-                slaveWindows[0].MoveWindowEase(xValues[0], 50, xValues[0] + (num), 50, 0.5f, "easeOutExpo");
-                slaveWindows[1].MoveWindowEase(xValues[1], 50, xValues[1] + (num/2), 100, 0.5f, "easeOutExpo");
-                slaveWindows[2].MoveWindowEase(xValues[2], 50, xValues[2] - (num/2), 0, 0.5f, "easeOutExpo");
-                slaveWindows[3].MoveWindowEase(xValues[3], 50, xValues[3] - (num), 50, 0.5f, "easeOutExpo");
-                //chart.chartEventHandler.moveWindowEase(50, 50, 50, -500, chart.beat, 3, "easeInBack");
+                slaveWindows[0].MoveWindowEase(xValues[0], 50, positions[0,0], positions[0, 1], 0.5f, "easeOutExpo");
+                slaveWindows[1].MoveWindowEase(xValues[1], 50, positions[1, 0], positions[1, 1], 0.5f, "easeOutExpo");
+                slaveWindows[2].MoveWindowEase(xValues[2], 50, positions[2, 0], positions[2, 1], 0.5f, "easeOutExpo");
+                slaveWindows[3].MoveWindowEase(xValues[3], 50, positions[3, 0], positions[3, 1], 0.5f, "easeOutExpo");
+                chart.chartEventHandler.moveWindowEase(50, 50, 50, 100, chart.beat, 3, "easeOutExpo");
                 //Arrow.movementAmount = 100;
                 chart.chartEventHandler.setModPercent("bumpy", 0);
                 hits[7] = true;
@@ -126,16 +126,22 @@ namespace TestScript.Visual_Gameobject_stuff
             }
             if (chart.beat >= 163 && !hits[8])
             {
-
-                slaveWindows[1].MoveWindowEase(xValues[1] + (num / 2), 50, xValues[1]+(num/2), 50, 0.5f, "easeOutExpo");
-                slaveWindows[2].MoveWindowEase(xValues[2] - (250), 50, xValues[2]-(num/2), 50, 0.5f, "easeOutExpo");
+                float dur = 0.5f;
+                string easing = "easeOutExpo";
+                slaveWindows[0].MoveWindowEase(positions[3, 0], positions[3, 1], positions[0, 0], positions[0, 1], 0.5f, "easeOutExpo");
+                slaveWindows[1].MoveWindowEase(positions[2, 0], positions[2, 1], positions[1, 0], positions[1, 1], 0.5f, "easeOutExpo");
+                slaveWindows[2].MoveWindowEase(positions[1, 0], positions[1, 1], positions[2, 0], positions[2, 1], 0.5f, "easeOutExpo");
+                slaveWindows[3].MoveWindowEase(positions[0, 0], positions[0, 1], positions[3, 0], positions[3, 1], 0.5f, "easeOutExpo");
                 yoinked.Yoink = true;
-
-
+                //game.display.windowManager.wwidth1 = 400;
+                chart.chartEventHandler.moveCollumnEase(0, 42, 0, 0, 0, chart.beat, dur, easing);
+                chart.chartEventHandler.moveCollumnEase(1, 15, 0, 0, 0, chart.beat, dur, easing);
+                chart.chartEventHandler.moveCollumnEase(2, -15, 0, 0, 0, chart.beat, dur, easing);
+                chart.chartEventHandler.moveCollumnEase(3, -44, 0, 0, 0, chart.beat, dur, easing);
                 hits[8] = true;
 
             }
-            if(chart.beat >= 164)
+            if(chart.beat >= 164 && chart.beat <=191)
             {
                 if(chart.beat > lastBeat)
                 {
@@ -158,19 +164,81 @@ namespace TestScript.Visual_Gameobject_stuff
                         slaveWindows[1].MoveWindowEase(positions[1, 0], positions[1, 1], positions[2, 0], positions[2, 1], dur, easing);
                         slaveWindows[2].MoveWindowEase(positions[2, 0], positions[2, 1], positions[1, 0], positions[1, 1], dur, easing);
                         slaveWindows[3].MoveWindowEase(positions[3, 0], positions[3, 1], positions[0, 0], positions[0, 1], dur, easing);
-                    } else
+                        chart.chartEventHandler.moveCollumnEase(0, 0, 0, 42, 0, chart.beat, dur, easing);
+                        chart.chartEventHandler.moveCollumnEase(1, 0, 0, 15, 0, chart.beat, dur, easing);
+                        chart.chartEventHandler.moveCollumnEase(2, 0, 0, -15, 0, chart.beat, dur, easing);
+                        chart.chartEventHandler.moveCollumnEase(3, 0, 0, -44, 0, chart.beat, dur, easing);
+
+
+                    }
+                    else
                     {
                         slaveWindows[3].MoveWindowEase(positions[0, 0], positions[0, 1], positions[3, 0], positions[3, 1], dur, easing);
                         slaveWindows[2].MoveWindowEase(positions[1, 0], positions[1, 1], positions[2, 0], positions[2, 1], dur, easing);
                         slaveWindows[1].MoveWindowEase(positions[2, 0], positions[2, 1], positions[1, 0], positions[1, 1], dur, easing);
                         slaveWindows[0].MoveWindowEase(positions[3, 0], positions[3, 1], positions[0, 0], positions[0, 1], dur, easing);
+                        chart.chartEventHandler.moveCollumnEase(0, 42, 0, 0, 0, chart.beat, dur, easing);
+                        chart.chartEventHandler.moveCollumnEase(1, 15, 0, 0, 0, chart.beat, dur, easing);
+                        chart.chartEventHandler.moveCollumnEase(2, -15, 0, 0, 0, chart.beat, dur, easing);
+                        chart.chartEventHandler.moveCollumnEase(3, -44, 0, 0, 0, chart.beat, dur, easing);
                     }
                     tog = !tog;
                     circStep++;
                     lastBeat = (int)Math.Ceiling(chart.beat);
                 }
             }
+            if(chart.beat >= 191 && !hits[9])
+            {
+                float dur = 0.125f;
+                string easing = "easeInOutExpo";
+                slaveWindows[3].MoveWindowEase(positions[0, 0], positions[0, 1], positions[3, 0], positions[3, 1], dur, easing);
+                slaveWindows[2].MoveWindowEase(positions[1, 0], positions[1, 1], positions[2, 0], positions[2, 1], dur, easing);
+                slaveWindows[1].MoveWindowEase(positions[2, 0], positions[2, 1], positions[1, 0], positions[1, 1], dur, easing);
+                slaveWindows[0].MoveWindowEase(positions[3, 0], positions[3, 1], positions[0, 0], positions[0, 1], dur, easing);
+                chart.chartEventHandler.moveCollumnEase(0, 42, 0, 0, 0, chart.beat, dur, easing);
+                chart.chartEventHandler.moveCollumnEase(1, 15, 0, 0, 0, chart.beat, dur, easing);
+                chart.chartEventHandler.moveCollumnEase(2, -15, 0, 0, 0, chart.beat, dur, easing);
+                chart.chartEventHandler.moveCollumnEase(3, -44, 0, 0, 0, chart.beat, dur, easing);
+                hits[9] = true;
 
+            }
+            if (chart.beat >= 192 && !hits[10])
+            {
+                float dur = 0.25f;
+                string easing = "easeOutSine";
+                slaveWindows[0].MoveWindowEase(positions[0, 0], positions[0, 1], positions[0, 0], -500, dur, easing);
+                chart.chartEventHandler.moveWindowEase(50, 100, 50, 50, chart.beat, 1f, "easeInOutExpo");
+                hits[10] = true;
+
+            }
+            if (chart.beat >= 192.5 && !hits[11])
+            {
+                float dur = 0.25f;
+                string easing = "easeOutSine";
+                slaveWindows[1].MoveWindowEase(positions[1, 0], positions[1, 1], positions[1, 0], -500, dur, easing);
+
+                hits[11] = true;
+
+            }
+            if (chart.beat >= 193 && !hits[12])
+            {
+                float dur = 0.25f;
+                string easing = "easeOutSine";
+                slaveWindows[2].MoveWindowEase(positions[2, 0], positions[2, 1], positions[2, 0], -500, dur, easing);
+
+                hits[12] = true;
+
+            }
+            if (chart.beat >= 193.5 && !hits[13])
+            {
+                float dur = 0.25f;
+                string easing = "easeOutSine";
+                slaveWindows[3].MoveWindowEase(positions[3, 0], positions[3, 1], positions[3, 0], -500, dur, easing);
+
+                hits[13] = true;
+                this.alive = false;
+
+            }
             /*
             if(chart.beat >= 15 && !go)
             {

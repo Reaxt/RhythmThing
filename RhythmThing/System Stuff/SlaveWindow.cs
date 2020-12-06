@@ -56,7 +56,6 @@ namespace RhythmThing.System_Stuff
                     {
                         alive = false;
                     }
-                    Console.WriteLine("a");
                     byte[] messageBuffer = new byte[520];
                     pipe.Read(messageBuffer, 0, 520);
                     string input = Encoding.UTF8.GetString(messageBuffer);

@@ -14,7 +14,7 @@ namespace TestScript
         public SlaveManager[] colWindows;
         public static int colX = 15;
         public static int colY = 50;
-        private bool[] activates = new bool[2];
+        private bool[] activates = new bool[5];
         public string Name => "neatoo";
 
         public string Description => "this sure is a cool testing thing";
@@ -32,11 +32,31 @@ namespace TestScript
                 activates[0] = true;
                 game.addGameObject(new Visual_Gameobject_stuff.FirstNotes(chart));
             }
-            if(chart.beat >= 132.25 && !activates[1])
+            if(chart.beat >= 132.25 && !activates[1] && chart.beat<=195)
             {
                 activates[1] = true;
                 game.addGameObject(new Visual_Gameobject_stuff.CollumnWindows(colWindows, chart));
 
+            }
+            if(chart.beat >= 195 && !activates[2] && chart.beat <= 220)
+            {
+                game.display.DisableFilter();   
+                activates[2] = true;
+                SlaveManager.CloseAll();
+                Arrow.movementAmount = 75;
+
+            }
+            if(chart.beat >= 220 && !activates[3])
+            {
+                //just for debug this line here
+                game.display.DisableFilter();
+                activates[3] = true;
+                game.addGameObject(new Visual_Gameobject_stuff.LastNotes(chart));
+            }
+            if(chart.beat >= 292 && !activates[4])
+            {
+                game.addGameObject(new Visual_Gameobject_stuff.Finale(chart));
+                activates[4] = true;
             }
 
         }

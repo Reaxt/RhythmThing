@@ -4,14 +4,14 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /y /d &quot;$(TargetDir)$(TargetFileName)&quot; &quot;$(SolutionDir)RhythmThing\bin\Debug\netcoreapp3.1\!Content\!Songs\Broadcast&quot;" />
+  </Target>
+
   <ItemGroup>
     <Reference Include="RhythmThing">
       <HintPath>..\RhythmThing\bin\Debug\netcoreapp3.1\RhythmThing.dll</HintPath>
     </Reference>
   </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /y /d &quot;$(TargetDir)$(TargetFileName)&quot; &quot;$(SolutionDir)RhythmThing\bin\Debug\netcoreapp3.1\!Content\!Songs\Broadcast&quot;" />
-  </Target>
 
 </Project>
