@@ -10,38 +10,38 @@ namespace RhythmThing.System_Stuff
 {
     public class SceneManager
     {
-        private Game game;
+        private Game _game;
         private Scene currentScene;
-        public int nextScene = 0;
-        public IEnumerable<Scene> scenes;
+        public int NextScene = 0;
+        private IEnumerable<Scene> _scenes;
 
-        public SceneManager(Game gamee)
+        public SceneManager(Game game)
         {
-            this.game = gamee;
-            IEnumerable<Scene> test = ReflectiveEnumerator.GetEnumerableOfType<Scene>();
-            foreach (Scene testt in test)
+            this._game = game;
+            IEnumerable<Scene> scenes = ReflectiveEnumerator.GetEnumerableOfType<Scene>();
+            foreach (Scene testt in scenes)
             {
                 Console.WriteLine(testt.name);
             }
-            scenes = test;
+            this._scenes = scenes;
         }
 
-        public void loadScene(int index)
+        public void LoadScene(int index)
         {
-            nextScene = index;
-            game.running = false;
+            NextScene = index;
+            _game.Running = false;
 
         }
 
         public List<GameObject> initScene()
         {
-            Console.WriteLine(this.nextScene);
+            Console.WriteLine(this.NextScene);
             if (this.currentScene != null)
             {
                 //end the scene
 
             }
-            currentScene = scenes.Where(x => x.index == this.nextScene).First();
+            currentScene = _scenes.Where(x => x.index == this.NextScene).First();
             //Console.WriteLine($"{currentScene.index} is the current index and {nextScene} is the goal");
             currentScene.Start();
             return currentScene.initialObjs;

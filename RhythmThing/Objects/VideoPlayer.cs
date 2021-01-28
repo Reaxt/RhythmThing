@@ -56,15 +56,15 @@ namespace RhythmThing.Objects
         public override void Start(Game game)
         {
             frames = new List<Bitmap>();
-            this.components = new List<Component>();
+            this.Components = new List<Component>();
             visual = new Visual();
-            visual.active = true;
+            visual.Active = true;
             visual.x = 0;
             visual.z = -5;
             //visual.y = -25;
             visual.localPositions.Add(new Coords(0, 0, ' ', ConsoleColor.Red, ConsoleColor.Red));
 
-            components.Add(visual);
+            Components.Add(visual);
             _playing = true;
             _timePerFrame = LastBeat / _frames;
         }

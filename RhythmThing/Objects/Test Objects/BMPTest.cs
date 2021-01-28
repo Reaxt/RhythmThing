@@ -26,12 +26,12 @@ namespace RhythmThing.Objects.Test_Objects
         public override void Start(Game game)
         {
             frames = new List<Bitmap>();
-            this.components = new List<Component>();
+            this.Components = new List<Component>();
             visual = new Visual();
-            visual.active = true;
+            visual.Active = true;
             visual.y = -1;
-            visual.LoadBMP(Path.Combine(Program.contentPath, "MenuMusic", "MainMenu", "MainMenuConceptExport.bmp"), new int[] { 0,0});
-            components.Add(visual);
+            visual.LoadBMP(Path.Combine(Program.ContentPath, "MenuMusic", "MainMenu", "MainMenuConceptExport.bmp"), new int[] { 0,0});
+            Components.Add(visual);
         }
 
         public override void Update(double time, Game game)

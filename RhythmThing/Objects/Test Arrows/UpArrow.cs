@@ -18,10 +18,10 @@ namespace RhythmThing.Objects
         public override void Start(Game game)
         {
             //this block defines it as visual
-            this.components = new List<Component>();
-            this.type = objType.visual;
+            this.Components = new List<Component>();
+            this.GameObjectType = objType.visual;
             this.visual = new Visual();
-            visual.active = true;
+            visual.Active = true;
             visual.x = 110;
             visual.y = 40;
             visual.z = 0;
@@ -43,7 +43,7 @@ namespace RhythmThing.Objects
                     visual.localPositions.Add(new Coords(x, i, 'h', ConsoleColor.Red, ConsoleColor.Red));
                 }
             }
-            components.Add(visual);
+            Components.Add(visual);
 
         }
 

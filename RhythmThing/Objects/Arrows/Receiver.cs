@@ -55,11 +55,11 @@ namespace RhythmThing.Objects
         public override void Start(Game game)
         {
             //this block defines it as visual
-            this.components = new List<Component>();
-            this.type = objType.visual;
+            this.Components = new List<Component>();
+            this.GameObjectType = objType.visual;
             this.visual = new Visual();
             this.pressedVisual = new Visual();
-            visual.active = true;
+            visual.Active = true;
             visual.x = 30;
             visual.y = 42;
             visual.z = 0;
@@ -71,23 +71,23 @@ namespace RhythmThing.Objects
             switch (collumn)
             {
                 case Chart.collumn.Left:
-                    visual.LoadBMP(Path.Combine(Program.contentPath, "Sprites", "LeftReceiver.bmp"), new int[] { -7,-6});
+                    visual.LoadBMP(Path.Combine(Program.ContentPath, "Sprites", "LeftReceiver.bmp"), new int[] { -7,-6});
                     break;
                 case Chart.collumn.Down:
                     visual.x = 42;
                     visual.y = 44;
-                    visual.LoadBMP(Path.Combine(Program.contentPath, "Sprites", "DownReceiver.bmp"), new int[] { -5, -8 });
+                    visual.LoadBMP(Path.Combine(Program.ContentPath, "Sprites", "DownReceiver.bmp"), new int[] { -5, -8 });
 
                     break;
                 case Chart.collumn.Up:
                     visual.x = 56;
                     visual.y = 40;
-                    visual.LoadBMP(Path.Combine(Program.contentPath, "Sprites", "UpReceiver.bmp"), new int[] { -5, -3 });
+                    visual.LoadBMP(Path.Combine(Program.ContentPath, "Sprites", "UpReceiver.bmp"), new int[] { -5, -3 });
 
                     break;
                 case Chart.collumn.Right:
                     visual.x = 68;
-                    visual.LoadBMP(Path.Combine(Program.contentPath, "Sprites", "RightReceiver.bmp"), new int[] { -2, -6 });
+                    visual.LoadBMP(Path.Combine(Program.ContentPath, "Sprites", "RightReceiver.bmp"), new int[] { -2, -6 });
 
                     break;
                 default:
@@ -98,9 +98,9 @@ namespace RhythmThing.Objects
             {
                 pressedVisual.localPositions.Add(new Coords(item.x, item.y, item.character, ConsoleColor.DarkGray, ConsoleColor.DarkGray));
             }
-            components.Add(visual);
-            components.Add(pressedVisual);
-            pressedVisual.active = true;
+            Components.Add(visual);
+            Components.Add(pressedVisual);
+            pressedVisual.Active = true;
             pressedVisual.x = visual.x;
             pressedVisual.y = visual.y;
             pressedVisual.z = 1;
@@ -160,20 +160,20 @@ namespace RhythmThing.Objects
                     switch (collumn)
                     {
                         case Chart.collumn.Left:
-                            if (game.input.ButtonStates[Input.ButtonKind.Left] == Input.ButtonState.Press)
+                            if (game.InputInstance.ButtonStates[Input.ButtonKind.Left] == Input.ButtonState.Press)
                                 hit = true;
                             
                             break;
                         case Chart.collumn.Down:
-                            if (game.input.ButtonStates[Input.ButtonKind.Down] == Input.ButtonState.Press)
+                            if (game.InputInstance.ButtonStates[Input.ButtonKind.Down] == Input.ButtonState.Press)
                                 hit = true;
                             break;
                         case Chart.collumn.Up:
-                            if (game.input.ButtonStates[Input.ButtonKind.Up] == Input.ButtonState.Press)
+                            if (game.InputInstance.ButtonStates[Input.ButtonKind.Up] == Input.ButtonState.Press)
                                 hit = true;
                             break;
                         case Chart.collumn.Right:
-                            if (game.input.ButtonStates[Input.ButtonKind.Right] == Input.ButtonState.Press)
+                            if (game.InputInstance.ButtonStates[Input.ButtonKind.Right] == Input.ButtonState.Press)
                                 hit = true;
                             break;
                         default:
@@ -192,20 +192,20 @@ namespace RhythmThing.Objects
                     switch (collumn)
                     {
                         case Chart.collumn.Left:
-                            if (game.input.ButtonStates[Input.ButtonKind.Left] == Input.ButtonState.Press)
+                            if (game.InputInstance.ButtonStates[Input.ButtonKind.Left] == Input.ButtonState.Press)
                                 miss = true;
 
                             break;
                         case Chart.collumn.Down:
-                            if (game.input.ButtonStates[Input.ButtonKind.Down] == Input.ButtonState.Press)
+                            if (game.InputInstance.ButtonStates[Input.ButtonKind.Down] == Input.ButtonState.Press)
                                 miss = true;
                             break;
                         case Chart.collumn.Up:
-                            if (game.input.ButtonStates[Input.ButtonKind.Up] == Input.ButtonState.Press)
+                            if (game.InputInstance.ButtonStates[Input.ButtonKind.Up] == Input.ButtonState.Press)
                                 miss = true;
                             break;
                         case Chart.collumn.Right:
-                            if (game.input.ButtonStates[Input.ButtonKind.Right] == Input.ButtonState.Press)
+                            if (game.InputInstance.ButtonStates[Input.ButtonKind.Right] == Input.ButtonState.Press)
                                 miss = true;
                             break;
                         default:
@@ -239,20 +239,20 @@ namespace RhythmThing.Objects
             switch (collumn)
             {
                 case Chart.collumn.Left:
-                    if (game.input.ButtonStates[Input.ButtonKind.Left] == Input.ButtonState.Held)
+                    if (game.InputInstance.ButtonStates[Input.ButtonKind.Left] == Input.ButtonState.Held)
                         pressed = true;
 
                     break;
                 case Chart.collumn.Down:
-                    if (game.input.ButtonStates[Input.ButtonKind.Down] == Input.ButtonState.Held)
+                    if (game.InputInstance.ButtonStates[Input.ButtonKind.Down] == Input.ButtonState.Held)
                         pressed = true;
                     break;
                 case Chart.collumn.Up:
-                    if (game.input.ButtonStates[Input.ButtonKind.Up] == Input.ButtonState.Held)
+                    if (game.InputInstance.ButtonStates[Input.ButtonKind.Up] == Input.ButtonState.Held)
                         pressed = true;
                     break;
                 case Chart.collumn.Right:
-                    if (game.input.ButtonStates[Input.ButtonKind.Right] == Input.ButtonState.Held)
+                    if (game.InputInstance.ButtonStates[Input.ButtonKind.Right] == Input.ButtonState.Held)
                         pressed = true;
                     break;
                 default:

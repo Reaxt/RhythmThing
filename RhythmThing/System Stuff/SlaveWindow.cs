@@ -12,23 +12,23 @@ namespace RhythmThing.System_Stuff
     public class SlaveWindow
     {
         private SlaveDisplay display;
-        public bool alive = true;
-        MemoryMappedFile file;
-        private NamedPipeClientStream pipe;
-        private SlaveManager.SlaveData data;
-        Stopwatch stopwatch = new Stopwatch();
+        private bool _alive = true;
+        private MemoryMappedFile _file;
+        private NamedPipeClientStream _pipe;
+        private SlaveManager.SlaveData _data;
+        private Stopwatch _stopwatch = new Stopwatch();
         public double deltaTime;
 
 
         //ease variables
-        float timepassed;
-        float duration;
-        float startX;
-        float startY;
-        float endX;
-        float endY;
-        string easing;
-        bool easeGo;
+        private float _timepassed;
+        private float _duration;
+        private float _startX;
+        private float _startY;
+        private float _endX;
+        private float _endY;
+        private string _easing;
+        private bool _easeGo;
         //
 
         public SlaveWindow(string[] arg)
@@ -38,30 +38,30 @@ namespace RhythmThing.System_Stuff
             //just dont die for now
             Program.ScreenX = int.Parse(arg[1]);
             Program.ScreenY = int.Parse(arg[2]);
-            file = MemoryMappedFile.OpenExisting(arg[0]);
-            pipe = new NamedPipeClientStream(arg[0]);
-            pipe.Connect();
+            _file = MemoryMappedFile.OpenExisting(arg[0]);
+            _pipe = new NamedPipeClientStream(arg[0]);
+            _pipe.Connect();
             
-            data = new SlaveManager.SlaveData();
-            data.foreColors = new ConsoleColor[Program.ScreenX, Program.ScreenY];
-            data.backColors = new ConsoleColor[Program.ScreenX, Program.ScreenY];
-            data.characters = new char[Program.ScreenX, Program.ScreenY];
+            _data = new SlaveManager.SlaveData();
+            _data.foreColors = new ConsoleColor[Program.ScreenX, Program.ScreenY];
+            _data.backColors = new ConsoleColor[Program.ScreenX, Program.ScreenY];
+            _data.characters = new char[Program.ScreenX, Program.ScreenY];
 
             display = new SlaveDisplay();
             new Thread(() =>
             {
-                while (alive)
+                while (_alive)
                 {
-                    if(!pipe.IsConnected)
+                    if(!_pipe.IsConnected)
                     {
-                        alive = false;
+                        _alive = false;
                     }
                     byte[] messageBuffer = new byte[520];
-                    pipe.Read(messageBuffer, 0, 520);
+                    _pipe.Read(messageBuffer, 0, 520);
                     string input = Encoding.UTF8.GetString(messageBuffer);
                     if (input.StartsWith("close"))
                     {
-                        this.alive = false;
+                        this._alive = false;
                     }
                     string[] args = input.Split("|");
                     switch (args[0])
@@ -70,22 +70,22 @@ namespace RhythmThing.System_Stuff
                             display.windowManager.moveWindow(float.Parse(args[1]), float.Parse(args[2]));
                             break;
                         case "SetWindowEase":
-                            if(easeGo)
+                            if(_easeGo)
                             {
-                                display.windowManager.moveWindow(endX, endY);
-                                timepassed = 0;
+                                display.windowManager.moveWindow(_endX, _endY);
+                                _timepassed = 0;
                             }
-                            startX = float.Parse(args[1]);
-                            startY = float.Parse(args[2]);
-                            endX = float.Parse(args[3]);
-                            endY = float.Parse(args[4]);
-                            duration = float.Parse(args[5]);
-                            easing = args[6];
-                            timepassed = 0;
-                            easeGo = true;
+                            _startX = float.Parse(args[1]);
+                            _startY = float.Parse(args[2]);
+                            _endX = float.Parse(args[3]);
+                            _endY = float.Parse(args[4]);
+                            _duration = float.Parse(args[5]);
+                            _easing = args[6];
+                            _timepassed = 0;
+                            _easeGo = true;
                             break;
                         case "StopEase":
-                            timepassed = duration;
+                            _timepassed = _duration;
                             break;
                         case "SetTitle":
                             Console.Title = args[1];
@@ -96,14 +96,14 @@ namespace RhythmThing.System_Stuff
 
                 }
             }).Start();
-            while (alive)
+            while (_alive)
             {
 
                 
-                stopwatch.Start();
+                _stopwatch.Start();
 
 
-                var stream = file.CreateViewStream();
+                var stream = _file.CreateViewStream();
                 int curOffset = 0;
                 for (int x = 0; x < Program.ScreenX; x++)
                 {
@@ -111,42 +111,40 @@ namespace RhythmThing.System_Stuff
                     {
                         byte[] buffer = new byte[4];
                         stream.Read(buffer, 0, 4);
-                        data.foreColors[x, y] = (ConsoleColor)BitConverter.ToInt32(buffer);
+                        _data.foreColors[x, y] = (ConsoleColor)BitConverter.ToInt32(buffer);
                         curOffset += 4;
                         
                         stream.Read(buffer, 0, 4);
-                        data.backColors[x, y] = (ConsoleColor)BitConverter.ToInt32(buffer);
+                        _data.backColors[x, y] = (ConsoleColor)BitConverter.ToInt32(buffer);
                         curOffset += 4;
 
                         buffer = new byte[2];
                         stream.Read(buffer, 0, 2);
-                        data.characters[x, y] = BitConverter.ToChar(buffer);
+                        _data.characters[x, y] = BitConverter.ToChar(buffer);
                         curOffset += 2;
                     }
                 }
-                string temp;
-                //read.ReadLine();
-                display.DrawFrame(data);
+                display.DrawFrame(_data);
                 //
-                if (easeGo)
+                if (_easeGo)
                 {
-                    if(timepassed >= duration)
+                    if(_timepassed >= _duration)
                     {
-                        display.windowManager.moveWindow(endX, endY);
-                        easeGo = false;
+                        display.windowManager.moveWindow(_endX, _endY);
+                        _easeGo = false;
                     } else
                     {
-                        float x = (startX) + ((endX-startX) * Ease.byName[easing](timepassed / duration));
-                        float y = (startY) + ((endY - startY) * Ease.byName[easing](timepassed / duration));
+                        float x = (_startX) + ((_endX-_startX) * Ease.byName[_easing](_timepassed / _duration));
+                        float y = (_startY) + ((_endY - _startY) * Ease.byName[_easing](_timepassed / _duration));
                         display.windowManager.moveWindow(x, y);
                     }
-                    timepassed += (float)deltaTime;
+                    _timepassed += (float)deltaTime;
                 }
 
                 Thread.Sleep(1); //just in case
-                stopwatch.Stop();
-                deltaTime = stopwatch.ElapsedMilliseconds * 0.001;
-                stopwatch.Reset();
+                _stopwatch.Stop();
+                deltaTime = _stopwatch.ElapsedMilliseconds * 0.001;
+                _stopwatch.Reset();
             }
 
 

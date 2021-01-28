@@ -29,7 +29,7 @@ namespace RhythmThing.System_Stuff
         private int _escCode = 1;
         */
 
-        public static bool focusInput = true;
+        public static bool FocusInput = true;
         private static Input _instance;
         public static Input Instance {
             get {
@@ -76,10 +76,10 @@ namespace RhythmThing.System_Stuff
         private Dictionary<int, ButtonKind> _buttonBindings;
 
 
-        public bool anythingIsHeld = false;
+        public bool AnythingIsHeld = false;
 
 
-        private InputWindow window;
+        private InputWindow _window;
 
         struct RawInputState
         {
@@ -121,9 +121,9 @@ namespace RhythmThing.System_Stuff
             new Thread(() =>
             {
                 //create input window
-                window = new InputWindow();
+                _window = new InputWindow();
                 //subscribe to it
-                window.Input += (object sender, RawInputEventArgs e) =>
+                _window.Input += (object sender, RawInputEventArgs e) =>
                 {
                     switch(e.Data){
                         case RawInputKeyboardData kb_data:
@@ -148,7 +148,7 @@ namespace RhythmThing.System_Stuff
 
                 //inputReceiver;
                 //run the thing,,,heck
-                RawInputDevice.RegisterDevice(HidUsageAndPage.Keyboard, RawInputDeviceFlags.ExInputSink | RawInputDeviceFlags.NoLegacy, window.Handle);
+                RawInputDevice.RegisterDevice(HidUsageAndPage.Keyboard, RawInputDeviceFlags.ExInputSink | RawInputDeviceFlags.NoLegacy, _window.Handle);
                 Application.Run();
             }).Start();
             RebindStatus = false;
@@ -196,7 +196,7 @@ namespace RhythmThing.System_Stuff
 
 
             
-            if (!WindowManager.isFocused() && focusInput)
+            if (!WindowManager.isFocused() && FocusInput)
             {
                 return;
             }

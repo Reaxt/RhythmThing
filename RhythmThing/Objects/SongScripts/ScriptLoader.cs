@@ -23,11 +23,11 @@ namespace RhythmThing.Objects.SongScripts
         }
         public void songEnd()
         {
-            script.endScript(chart, Game.mainInstance);
+            script.EndScript(chart, Game.MainInstance);
         }
         public void songStart()
         {
-            script.runScript(chart, Game.mainInstance);
+            script.RunScript(chart, Game.MainInstance);
             songStarted = true;
 
         }
@@ -40,7 +40,7 @@ namespace RhythmThing.Objects.SongScripts
         {
             if (songStarted)
             {
-                script.mainScript(chart, game, time);
+                script.MainScript(chart, game, time);
             }
         }
     }

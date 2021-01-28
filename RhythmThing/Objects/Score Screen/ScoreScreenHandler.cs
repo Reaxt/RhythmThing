@@ -41,7 +41,7 @@ namespace RhythmThing.Objects.ScoreScreen
         private float percent;
         private float timePassed = 0;
         private float _lastScore;
-        private string _assetPath = Path.Combine(Program.contentPath, "MenuMusic", "ScoreScreen");
+        private string _assetPath = Path.Combine(Program.ContentPath, "MenuMusic", "ScoreScreen");
         private string grade;
         private float slideInTime = 0.5f;
         private float time1 = 0f;
@@ -63,10 +63,10 @@ namespace RhythmThing.Objects.ScoreScreen
         AudioTrack cheer;
         public override void End()
         {
-            Game.mainInstance.audioManager.removeTrack(bgmMusic);
+            Game.MainInstance.AudioManagerInstance.removeTrack(bgmMusic);
             if(cheer != null)
             {
-                Game.mainInstance.audioManager.removeTrack(cheer);
+                Game.MainInstance.AudioManagerInstance.removeTrack(cheer);
             }
         }
 
@@ -128,20 +128,20 @@ namespace RhythmThing.Objects.ScoreScreen
         public override void Start(Game game)
         {
             //a fix to a bug
-            game.display.windowManager.CenterWindow();
+            game.DisplayInstance.windowManager.CenterWindow();
 
-            components = new List<Component>();
-            savePercent = (((float)game.notesHit / (float)game.totalNotes)*100);
+            Components = new List<Component>();
+            savePercent = (((float)game.NotesHit / (float)game.TotalNotes)*100);
             percent = (float)Math.Floor(savePercent);
             grade = "NA";
             grade = getGrade(savePercent);
 
 
             
-            _lastScore = PlayerSettings.Instance.chartScores[game.songHash].percent;
-            if (savePercent > PlayerSettings.Instance.chartScores[game.songHash].percent)
+            _lastScore = PlayerSettings.Instance.chartScores[game.SongHash].percent;
+            if (savePercent > PlayerSettings.Instance.chartScores[game.SongHash].percent)
             {
-                PlayerSettings.Instance.SaveScore(game.songHash, grade, percent);
+                PlayerSettings.Instance.SaveScore(game.SongHash, grade, percent);
 
             }
 
@@ -151,32 +151,32 @@ namespace RhythmThing.Objects.ScoreScreen
             //songTitle
             songTitle = new Visual();
             songTitle.LoadBMP(Path.Combine(_assetPath, "songTitle.bmp"));
-            songTitle.active = true;
-            songTitle.writeText(50-(game.songName.Length/2), 47, game.songName, ConsoleColor.Black, ConsoleColor.White);
-            components.Add(songTitle);
+            songTitle.Active = true;
+            songTitle.writeText(50-(game.SongName.Length/2), 47, game.SongName, ConsoleColor.Black, ConsoleColor.White);
+            Components.Add(songTitle);
             //grade bar
             gradeBar = new Visual();
             gradeBar.LoadBMP(Path.Combine(_assetPath, "gradeBar.bmp"));
-            components.Add(gradeBar);
+            Components.Add(gradeBar);
             //grade letter (may merge)
             gradeletter = new Visual();
             gradeletter.z = 1;
             gradeletter.LoadBMP(Path.Combine(_assetPath, $"gradeF.bmp"));
-            components.Add(gradeletter);
+            Components.Add(gradeletter);
             //percent bar
             percentBar = new Visual();
             percentBar.LoadBMP(Path.Combine(_assetPath, "percentBar.bmp"));
-            components.Add(percentBar);
+            Components.Add(percentBar);
             //guage (god help me)
             gaugeOutline = new Visual();
             gaugeOutline.z = 1;
             gaugeOutline.LoadBMP(Path.Combine(_assetPath, "gaugeOutline.bmp"));
-            components.Add(gaugeOutline);
+            Components.Add(gaugeOutline);
             
             gauge = new Visual();
-            gauge.active = false;
+            gauge.Active = false;
             gauge.LoadBMP(Path.Combine(_assetPath, "gauge.bmp"));
-            components.Add(gauge);
+            Components.Add(gauge);
             gauge.overrideColor = true;
             gauge.overridefront = ConsoleColor.Red;
             //numbers
@@ -186,26 +186,26 @@ namespace RhythmThing.Objects.ScoreScreen
                 numVisuals[i] = new Visual();
                 numVisuals[i].z = 1;
                 numVisuals[i].x = numOff * i;
-                numVisuals[i].active = true;//fornow
+                numVisuals[i].Active = true;//fornow
                 numVisuals[i].LoadBMP(Path.Combine(_assetPath, "0.bmp"));
-                components.Add(numVisuals[i]);
+                Components.Add(numVisuals[i]);
             }
             //last best
             lastBest = new Visual();
-            lastBest.active = false;
+            lastBest.Active = false;
             lastBest.z = -1;
             lastBest.LoadBMP(Path.Combine(_assetPath, "gauge.bmp"), new int[] {-100+(int)Math.Ceiling(_lastScore), 0 });
-            components.Add(lastBest);
+            Components.Add(lastBest);
             lastBest.overrideColor = true;
             lastBest.overridefront = ConsoleColor.Gray;
             //easter egg for doing really badly
             yousuck = new Visual();
-            yousuck.active = false;
+            yousuck.Active = false;
             yousuck.z = 10;
             yousuck.LoadBMP(Path.Combine(_assetPath, "yousuck.bmp"));
-            components.Add(yousuck);
+            Components.Add(yousuck);
             scoreDing = CodecFactory.Instance.GetCodec(Path.Combine(_assetPath, "exp.wav")).ChangeSampleRate(AudioManager.sampleRate).ToStereo().ToSampleSource();
-            bgmMusic = game.audioManager.addTrack(Path.Combine(_assetPath, bgmName));
+            bgmMusic = game.AudioManagerInstance.addTrack(Path.Combine(_assetPath, bgmName));
 
         }
 
@@ -217,22 +217,22 @@ namespace RhythmThing.Objects.ScoreScreen
             timePassed = timePassed + (float)time;
             if(timePassed >= time1)
             {
-                songTitle.active = true;
+                songTitle.Active = true;
                 time1 = float.MaxValue;
                 songTitle.Animate(new int[] { -100, 0 }, new int[] { 0, 0 }, "easeOutExpo", slideInTime);
 
             }
             if (timePassed >= time2)
             {
-                gaugeOutline.active = true;
-                lastBest.active = true;
+                gaugeOutline.Active = true;
+                lastBest.Active = true;
                 time2 = float.MaxValue;
                 gaugeOutline.Animate(new int[] { -100, 0 }, new int[] { 0, 0 }, "easeOutExpo", slideInTime);
                 lastBest.Animate(new int[] { -100, 0 }, new int[] { 0, 0 }, "easeOutExpo", slideInTime);
             }
             if (timePassed >= time3)
             {
-                percentBar.active = true;
+                percentBar.Active = true;
                 time3 = float.MaxValue;
                 percentBar.Animate(new int[] { -100, 0 }, new int[] { 0, 0 }, "easeOutExpo", slideInTime);
                 for (int i = 0; i < numVisuals.Length; i++)
@@ -243,10 +243,10 @@ namespace RhythmThing.Objects.ScoreScreen
             }
             if(timePassed >= time4)
             {
-                gradeBar.active = true;
+                gradeBar.Active = true;
                 time4 = float.MaxValue;
                 gradeBar.Animate(new int[] { -100, 0 }, new int[] { 0, 0 }, "easeOutExpo", slideInTime);
-                gradeletter.active = true;
+                gradeletter.Active = true;
                 gradeletter.Animate(new int[] { -100, 0 }, new int[] { 0, 0 }, "easeOutExpo", slideInTime+0.5f);
 
             }
@@ -258,18 +258,18 @@ namespace RhythmThing.Objects.ScoreScreen
                 {
                     gaugeFinished = true;
                     percentVal = (int)percent;
-                    if (percent == 0 && !game.exitViaEsc)
+                    if (percent == 0 && !game.ExitViaEsc)
                     {
-                        yousuck.active = true;
+                        yousuck.Active = true;
                         yousuck.Animate(new int[] { 0, 100 }, new int[] { 0, 0 }, "easeOutBounce", 1f);
-                        cheer = game.audioManager.addTrack(Path.Combine(_assetPath, "failsound.wav"));
+                        cheer = game.AudioManagerInstance.addTrack(Path.Combine(_assetPath, "failsound.wav"));
                         cheer.volumeSource.Volume = 1.0f;
                     }
                 }
                 if(percentVal > lastPercent)
                 {
                     scoreDing.Position = 0;
-                    game.audioManager.playForget(scoreDing);
+                    game.AudioManagerInstance.playForget(scoreDing);
                     for (int i = 0; i < numVisuals.Length; i++)
                     {
                         numVisuals[i].localPositions.Clear();
@@ -280,14 +280,14 @@ namespace RhythmThing.Objects.ScoreScreen
                     numVisuals[0].LoadBMP(Path.Combine(_assetPath, $"{first}.bmp"));
                     numVisuals[1].LoadBMP(Path.Combine(_assetPath, $"{second}.bmp"));
                     numVisuals[2].LoadBMP(Path.Combine(_assetPath, $"{third}.bmp"));
-                    gauge.active = true;
+                    gauge.Active = true;
                     gauge.x = (-100) + percentVal;
 
                     if (percentVal > 60 && !over60)
                     {
                         //ya PASSED bud
                         gauge.overridefront = ConsoleColor.Green;
-                        game.audioManager.playForget(Path.Combine(_assetPath, "res.wav"));
+                        game.AudioManagerInstance.playForget(Path.Combine(_assetPath, "res.wav"));
                         over60 = true;
 
                         //idk play a cheer
@@ -300,13 +300,13 @@ namespace RhythmThing.Objects.ScoreScreen
                         int sExtra = 0;
                         if(lastGrade != "D")
                         {
-                            game.audioManager.playForget(Path.Combine(_assetPath,"touch.wav"));
+                            game.AudioManagerInstance.playForget(Path.Combine(_assetPath,"touch.wav"));
 
                         }
                         if(lastGrade == "SSS")
                         {
                             sExtra = 20;
-                            cheer = game.audioManager.addTrack(Path.Combine(_assetPath, "cheer.wav"));
+                            cheer = game.AudioManagerInstance.addTrack(Path.Combine(_assetPath, "cheer.wav"));
                         }
 
                         gradeletter.LoadBMP(Path.Combine(_assetPath, $"grade{lastGrade}.bmp"), new int[] { (lastTick * amount)+sExtra, 0 });
@@ -327,14 +327,14 @@ namespace RhythmThing.Objects.ScoreScreen
 
             #endregion
 
-            if (game.input.ButtonStates[Input.ButtonKind.Confirm] == Input.ButtonState.Press || game.input.ButtonStates[Input.ButtonKind.Cancel] == Input.ButtonState.Press)
+            if (game.InputInstance.ButtonStates[Input.ButtonKind.Confirm] == Input.ButtonState.Press || game.InputInstance.ButtonStates[Input.ButtonKind.Cancel] == Input.ButtonState.Press)
             {
                 if (!gaugeFinished)
                 {
                     timePassed = 2000f;
                 } else
                 {
-                    game.sceneManager.loadScene(0);
+                    game.SceneManagerInstance.LoadScene(0);
 
                 }
             }

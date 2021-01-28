@@ -19,11 +19,11 @@ namespace RhythmThing.Objects.Menu
             this.chartName = chartName;
             chart = new Chart(chartName);
             this.pos = pos;
-            this.type = objType.visual;
+            this.GameObjectType = objType.visual;
 
             //sorry for moving this here "('w')
 
-            components = new List<Component>();
+            Components = new List<Component>();
 
         }
         public override void End()

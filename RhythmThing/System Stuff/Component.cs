@@ -8,9 +8,9 @@ namespace RhythmThing.System_Stuff
     //simplified implementatino of my engine
     public abstract class GameObject
     {
-        public objType type;
+        public objType GameObjectType;
         public bool alive = true;
-        public List<Component> components = new List<Component>();
+        public List<Component> Components = new List<Component>();
         public abstract void Update(double time, Game game);
         public abstract void Start(Game game);
         public abstract void End();
@@ -18,8 +18,8 @@ namespace RhythmThing.System_Stuff
     public abstract class Component
     {
         //component is used to interface with system stuff with the exception of input
-        public string type;
-        public bool active;
+        public string ComponentType;
+        public bool Active;
 
 
         public abstract void Update(double time);

@@ -64,7 +64,7 @@ namespace RhythmThing.Utils
                 Color color = Color.FromName(coord.backColor.ToString());
                 bitmap.SetPixel(coord.x - smallestX, (bitmap.Height-1) - (coord.y - smallestY), color);
             });
-            bitmap.Save(Path.Combine(Program.contentPath, path));
+            bitmap.Save(Path.Combine(Program.ContentPath, path));
         }
         public static void visualToCframe(Visual visual, string path)
         {
@@ -78,7 +78,7 @@ namespace RhythmThing.Utils
             int biggestX = int.MinValue;
             int smallestY = int.MaxValue;
             int biggestY = int.MinValue;
-            FileStream fileStream = new FileStream(Path.Combine(Program.contentPath, path), FileMode.Create);
+            FileStream fileStream = new FileStream(Path.Combine(Program.ContentPath, path), FileMode.Create);
             visual.renderPositions.ForEach(coord =>
             {
                 if (smallestX > coord.x) smallestX = coord.x;

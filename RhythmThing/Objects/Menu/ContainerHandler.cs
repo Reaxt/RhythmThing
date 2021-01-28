@@ -66,7 +66,7 @@ namespace RhythmThing.Objects.Menu
                 {
                     visuals[i].x -= (count - i);
                 }
-                visuals[i].active = true;
+                visuals[i].Active = true;
                 for (int x = 0; x < 31; x++)
                 {
                     visuals[i].localPositions.Add(new Coords(x, 1, ' ', _normalFront, _normalBack));
@@ -162,7 +162,7 @@ namespace RhythmThing.Objects.Menu
             DrawAll(MenuObject.selected);
             for (int i = 0; i < visuals.Length; i++)
             {
-                components.Add(visuals[i]);
+                Components.Add(visuals[i]);
                 visuals[i].Animate(new int[] { visuals[i].x - 20, visuals[i].y }, new int[] { visuals[i].x, visuals[i].y }, "easeOutBack", 0.125f + (i * 0.05f));
             }
 

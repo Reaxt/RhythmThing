@@ -13,7 +13,7 @@ namespace RhythmThing.Objects.Menu.MenuMusic
 {
     class HVMusic : MenuMusic
     {
-        string pathToMusic = Path.Combine(Program.contentPath, "MenuMusic", "HVMusic", "bgmPhase2.wav");
+        string pathToMusic = Path.Combine(Program.ContentPath, "MenuMusic", "HVMusic", "bgmPhase2.wav");
         AudioTrack mainMusic;
         ISampleSource ding;
         float timeToPreview = 1f;
@@ -25,13 +25,13 @@ namespace RhythmThing.Objects.Menu.MenuMusic
         AudioTrack previewAudio;
         private SongContainer songContainer;
         private TimeSpanConverter spanConverter;
-        string pathToSelectDing = Path.Combine(Program.contentPath, "MenuMusic", "HVMusic", "ding.wav");
+        string pathToSelectDing = Path.Combine(Program.ContentPath, "MenuMusic", "HVMusic", "ding.wav");
         //ref may be relevant?
         private HVVideo video;
         public override void End()
         {
-            Game.mainInstance.audioManager.removeTrack(mainMusic);
-            Game.mainInstance.audioManager.removeTrack(previewAudio);
+            Game.MainInstance.AudioManagerInstance.removeTrack(mainMusic);
+            Game.MainInstance.AudioManagerInstance.removeTrack(previewAudio);
 
         }
         public HVMusic()
@@ -53,7 +53,7 @@ namespace RhythmThing.Objects.Menu.MenuMusic
             previewVol.Volume = 0;
 
 
-            Game.mainInstance.audioManager.addTrack(previewAudio);
+            Game.MainInstance.AudioManagerInstance.addTrack(previewAudio);
         }
 
         public override void SongSelected(SongContainer container)
@@ -65,8 +65,8 @@ namespace RhythmThing.Objects.Menu.MenuMusic
             mainMusic.volumeSource.Volume = 1;
             previewDur = container.chart.chartInfo.previewLength;
             ding.Position = 0;
-            Game.mainInstance.audioManager.playForget(ding);
-            Game.mainInstance.audioManager.removeTrack(previewAudio);
+            Game.MainInstance.AudioManagerInstance.playForget(ding);
+            Game.MainInstance.AudioManagerInstance.removeTrack(previewAudio);
         }
 
 
@@ -82,7 +82,7 @@ namespace RhythmThing.Objects.Menu.MenuMusic
 
         public override void StartMenuMusic()
         {
-            mainMusic = Game.mainInstance.audioManager.addTrack(pathToMusic);
+            mainMusic = Game.MainInstance.AudioManagerInstance.addTrack(pathToMusic);
         }
 
         public override void Update(double time, Game game)

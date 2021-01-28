@@ -23,7 +23,7 @@ namespace RhythmThing.Objects.Test_Objects
             manager2 = new SlaveManager("B", 30, 30);
             manager3 = new SlaveManager("C", 20, 50);
             
-            Input.focusInput = false;
+            Input.FocusInput = false;
             visualTest = new Visual();
             visualTest.LoadBMP("RightReceiver.bmp");
             manager.visuals.Add(visualTest);
@@ -33,42 +33,42 @@ namespace RhythmThing.Objects.Test_Objects
 
         public override void Update(double time, Game game)
         {
-            if(game.input.ButtonStates[Input.ButtonKind.Right] == Input.ButtonState.Press)
+            if(game.InputInstance.ButtonStates[Input.ButtonKind.Right] == Input.ButtonState.Press)
             {
                 manager.MoveWindowEase(-100, -100, 100, 100, 5, "easeInOutExpo");
                 
 
                 visualTest.x++;
             }
-            if (game.input.ButtonStates[Input.ButtonKind.Left] == Input.ButtonState.Press)
+            if (game.InputInstance.ButtonStates[Input.ButtonKind.Left] == Input.ButtonState.Press)
             {
                 manager.MoveWindow(100, 0);
                 manager2.MoveWindow(100, 0);
 
                 visualTest.x--;
             }
-            if (game.input.ButtonStates[Input.ButtonKind.Up] == Input.ButtonState.Press)
+            if (game.InputInstance.ButtonStates[Input.ButtonKind.Up] == Input.ButtonState.Press)
             {
                 manager.MoveWindow(0, 100);
                 manager2.MoveWindow(0, 100);
 
                 visualTest.y++;
             }
-            if (game.input.ButtonStates[Input.ButtonKind.Down] == Input.ButtonState.Press)
+            if (game.InputInstance.ButtonStates[Input.ButtonKind.Down] == Input.ButtonState.Press)
             {
                 manager.MoveWindow(100, 100);
                 manager2.MoveWindow(100, 100);
 
                 visualTest.y--;
             }
-            if (manager.alive)
+            if (manager.Alive)
             {
                 manager.UpdateVisualsAsync();
 
             }
             manager2.UpdateVisualsAsync();
             manager3.UpdateVisualsAsync();
-            if(game.input.ButtonStates[Input.ButtonKind.Cancel] == Input.ButtonState.Press)
+            if(game.InputInstance.ButtonStates[Input.ButtonKind.Cancel] == Input.ButtonState.Press)
             {
                 manager.CloseWindow();
             }

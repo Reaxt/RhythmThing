@@ -56,9 +56,9 @@ namespace RhythmThing.Objects
 
         public override void Start(Game game)
         {
-            type = objType.nonvisual;
-            components = new List<Component>();
-            windowManager = game.display.windowManager;
+            GameObjectType = objType.nonvisual;
+            Components = new List<Component>();
+            windowManager = game.DisplayInstance.windowManager;
             easings = new List<easing>();
         }
         #region event voids

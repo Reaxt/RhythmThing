@@ -79,7 +79,7 @@ namespace RhythmThing.System_Stuff
         }
         private void LoadSums()
         {
-            string[] songPaths = Directory.GetDirectories(Path.Combine(Program.contentPath, "!Songs"));
+            string[] songPaths = Directory.GetDirectories(Path.Combine(Program.ContentPath, "!Songs"));
             bool anyNew = false;
             for (int i = 0; i < songPaths.Length; i++)
             {

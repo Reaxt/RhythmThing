@@ -28,17 +28,17 @@ namespace RhythmThing.Objects.Test_Objects
         public override void Start(Game game)
         {
             frames = new List<Bitmap>();
-            this.components = new List<Component>();
+            this.Components = new List<Component>();
             visual = new Visual();
-            visual.active = true;
+            visual.Active = true;
             visual.x = 50;
             visual.y = 25;
-            visual.LoadBMP(Path.Combine(Program.contentPath, "Sprites", "RightReceiver.bmp"), new int[] { -5, -6 });
-            components.Add(visual);
+            visual.LoadBMP(Path.Combine(Program.ContentPath, "Sprites", "RightReceiver.bmp"), new int[] { -5, -6 });
+            Components.Add(visual);
             debugText = new Visual();
-            debugText.active = true;
+            debugText.Active = true;
             debugText.writeText(0, 0, "TEST STRING", ConsoleColor.White, ConsoleColor.Black);
-            components.Add(debugText);
+            Components.Add(debugText);
         }
 
         public override void Update(double time, Game game)

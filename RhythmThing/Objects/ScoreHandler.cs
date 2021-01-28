@@ -34,12 +34,12 @@ namespace RhythmThing.Objects
 
         public override void Start(Game game)
         {
-            this.type= objType.visual;
-            components = new List<Component>();
+            this.GameObjectType= objType.visual;
+            Components = new List<Component>();
             visual = new Visual();
             visual.x = 48;
             visual.y = 20;
-            visual.active = true;
+            visual.Active = true;
             hit = new Coords[3];
             hit[0] = new Coords(0, 0, 'H', ConsoleColor.Green, ConsoleColor.Black);
             hit[1] = new Coords(1, 0, 'I', ConsoleColor.Green, ConsoleColor.Black);
@@ -60,7 +60,7 @@ namespace RhythmThing.Objects
             late[1] = new Coords(1, 1, 'a', ConsoleColor.Yellow, ConsoleColor.Black);
             late[2] = new Coords(2, 1, 't', ConsoleColor.Yellow, ConsoleColor.Black);
             late[3] = new Coords(3, 1, 'e', ConsoleColor.Yellow, ConsoleColor.Black);
-            components.Add(visual);
+            Components.Add(visual);
             
             combo = 0;
             hits = 0;

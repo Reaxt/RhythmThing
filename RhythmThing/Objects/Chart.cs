@@ -130,12 +130,12 @@ namespace RhythmThing.Objects
             
             
             instance = this;
-            this.components = new List<Component>();
-            type = objType.nonvisual;
+            this.Components = new List<Component>();
+            GameObjectType = objType.nonvisual;
 
-            approachBeat = (float)Game.approachSpeed * ((float)(chartInfo.bpm) / 60000);
-            scoreTime = (float)Game.scoringTime * ((float)(chartInfo.bpm) / 60000);
-            missTime = (float)Game.missTime * ((float)(chartInfo.bpm) / 60000);
+            approachBeat = (float)Game.ApproachSpeed * ((float)(chartInfo.bpm) / 60000);
+            scoreTime = (float)Game.ScoringTime * ((float)(chartInfo.bpm) / 60000);
+            missTime = (float)Game.MissTime * ((float)(chartInfo.bpm) / 60000);
             //Console.WriteLine(Path.Combine(chartPath, chartInfo.songPath));
             List<NoteInfo> tempL = new List<NoteInfo>();
             List<NoteInfo> tempR = new List<NoteInfo>();
@@ -195,12 +195,12 @@ namespace RhythmThing.Objects
             {
                 scriptLoader.songStart();
             }
-            song = game.audioManager.addTrack(Path.Combine(chartPath, chartInfo.songPath));
+            song = game.AudioManagerInstance.addTrack(Path.Combine(chartPath, chartInfo.songPath));
             double tempbeat = beatstoADD + (((TimeConverterFactory.Instance.GetTimeConverterForSource(song.sampleSource).ToTimeSpan(song.sampleSource.WaveFormat, song.sampleSource.Length).TotalMilliseconds) * ((float)(firstBPM) / 60000)));
             VideoPlayer.LastBeat = (float)Math.Round(tempbeat, 2);
             //debug obj
             game.addGameObject(new ChartDebug(this));
-            game.display.windowManager.CenterWindow();
+            game.DisplayInstance.windowManager.CenterWindow();
 
 
             //song.sampleSource.SetPosition(TimeSpan.FromMilliseconds(220 / ((float)(chartInfo.bpm) / 60000)));
@@ -215,9 +215,9 @@ namespace RhythmThing.Objects
             chartInfo.bpm = newBPM;
             //beatstoSUB = (float)Math.Round(newBeatsPassed, 2);
             mstoSUB += oldMillisecondsPassed;
-            approachBeat = (float)Game.approachSpeed * ((float)(chartInfo.bpm) / 60000);
-            scoreTime = (float)Game.scoringTime * ((float)(chartInfo.bpm) / 60000);
-            missTime = (float)Game.missTime * ((float)(chartInfo.bpm) / 60000);
+            approachBeat = (float)Game.ApproachSpeed * ((float)(chartInfo.bpm) / 60000);
+            scoreTime = (float)Game.ScoringTime * ((float)(chartInfo.bpm) / 60000);
+            missTime = (float)Game.MissTime * ((float)(chartInfo.bpm) / 60000);
         }
         public override void Update(double time, Game game)
         {
@@ -231,28 +231,28 @@ namespace RhythmThing.Objects
             if (song.sampleSource.GetLength().TotalMilliseconds <= song.sampleSource.GetPosition().TotalMilliseconds)
             {
                 //we are done.
-                game.exitViaEsc = false;
-                game.notesHit = scoreHandler.hits;
-                game.totalNotes = scoreHandler.notes;
-                game.songName = this.chartInfo.songName;
-                game.songHash = this.hash;
-                game.audioManager.removeTrack(song);
-                game.sceneManager.loadScene(2);
+                game.ExitViaEsc = false;
+                game.NotesHit = scoreHandler.hits;
+                game.TotalNotes = scoreHandler.notes;
+                game.SongName = this.chartInfo.songName;
+                game.SongHash = this.hash;
+                game.AudioManagerInstance.removeTrack(song);
+                game.SceneManagerInstance.LoadScene(2);
                 if(scriptLoader!= null)
                 {
                     scriptLoader.songEnd();
                 }
                 
             }
-            if(game.input.ButtonStates[Input.ButtonKind.Cancel] == Input.ButtonState.Press)
+            if(game.InputInstance.ButtonStates[Input.ButtonKind.Cancel] == Input.ButtonState.Press)
             {
-                game.exitViaEsc = true;
-                game.notesHit = scoreHandler.hits;
-                game.totalNotes = scoreHandler.notes;
-                game.songName = this.chartInfo.songName;
-                game.songHash = this.hash;
-                game.audioManager.removeTrack(song);
-                game.sceneManager.loadScene(2);
+                game.ExitViaEsc = true;
+                game.NotesHit = scoreHandler.hits;
+                game.TotalNotes = scoreHandler.notes;
+                game.SongName = this.chartInfo.songName;
+                game.SongHash = this.hash;
+                game.AudioManagerInstance.removeTrack(song);
+                game.SceneManagerInstance.LoadScene(2);
                 if (scriptLoader != null)
                 {
                     scriptLoader.songEnd();

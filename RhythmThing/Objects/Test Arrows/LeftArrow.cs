@@ -17,10 +17,10 @@ namespace RhythmThing.Objects
         public override void Start(Game game)
         {
             //this block defines it as visual
-            this.components = new List<Component>();
-            this.type = objType.visual;
+            this.Components = new List<Component>();
+            this.GameObjectType = objType.visual;
             this.visual = new Visual();
-            visual.active = true;
+            visual.Active = true;
             visual.x = 0;
             visual.y = 0;
             visual.z = 0;
@@ -42,7 +42,7 @@ namespace RhythmThing.Objects
                 }
             } */
             visual.localPositions.Add(new Coords(0, 0, 'h', ConsoleColor.Green, ConsoleColor.Green));
-            components.Add(visual);
+            Components.Add(visual);
         }
 
         public override void Update(double time, Game game)

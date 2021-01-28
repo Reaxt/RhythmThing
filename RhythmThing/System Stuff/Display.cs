@@ -58,9 +58,9 @@ namespace RhythmThing.System_Stuff
         public void AddObject(GameObject obj)
         {
             //TODO: TURN THIS INTO A ENUM oh hey I did
-            if (obj.type == objType.visual)
+            if (obj.GameObjectType == objType.visual)
             {
-                foreach (Component component in obj.components)
+                foreach (Component component in obj.Components)
                 {
                     if (component is Visual)
                     {
@@ -78,9 +78,9 @@ namespace RhythmThing.System_Stuff
 
         public void RemoveObject(GameObject obj)
         {
-            if (obj.type == objType.visual)
+            if (obj.GameObjectType == objType.visual)
             {
-                foreach (Component component in obj.components)
+                foreach (Component component in obj.Components)
                 {
                     if (component != null)
                     {
@@ -166,7 +166,7 @@ namespace RhythmThing.System_Stuff
             Objects.Sort((x, y) => x.z.CompareTo(y.z));
             for (int i = 0; i < Objects.Count; i++)
             {
-                if(Objects[i].active)
+                if(Objects[i].Active)
                 {
 
                     //I should already be going in order I think..

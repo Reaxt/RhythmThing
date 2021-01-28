@@ -15,7 +15,7 @@ namespace RhythmThing.Objects.Menu.MenuMusic
         private Visual videoPlayer;
         private IFormatter formatter = new BinaryFormatter();
         private FileStream readStream;
-        private string _path = Path.Combine(Program.contentPath, "MenuMusic", "HVMusic", "vidR.cvid");
+        private string _path = Path.Combine(Program.ContentPath, "MenuMusic", "HVMusic", "vidR.cvid");
         private double timePassed = 0;
         private double timePerFrame;
         private int[] _startPoint = new int[] { 0, 0 };
@@ -26,13 +26,13 @@ namespace RhythmThing.Objects.Menu.MenuMusic
 
         public override void Start(Game game)
         {
-            type = objType.visual;
+            GameObjectType = objType.visual;
             videoPlayer = new Visual();
             videoPlayer.z = -10;
-            videoPlayer.active = true;
+            videoPlayer.Active = true;
             readStream = new FileStream(_path, FileMode.Open);
             timePerFrame = (double)1 / (double)30;
-            components.Add(videoPlayer);
+            Components.Add(videoPlayer);
 
         }
 

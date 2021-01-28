@@ -28,7 +28,7 @@ namespace RhythmThing.Objects.Menu
         private int[] xyPoint1 = new int[] { 0, 0 };
         private int[] xyPoint2 = new int[] { 0, 0 };
         private Random random;
-        private string resourcePath = Path.Combine(Program.contentPath, "MenuMusic", "MainMenu");
+        private string resourcePath = Path.Combine(Program.ContentPath, "MenuMusic", "MainMenu");
         public ChartInfoVisual(Chart chart)
         {
             this.chart = chart;
@@ -41,24 +41,24 @@ namespace RhythmThing.Objects.Menu
 
         public override void Start(Game game)
         {
-            components = new List<Component>();
+            Components = new List<Component>();
             infoVisual = new Visual();
-            infoVisual.active = true;
+            infoVisual.Active = true;
             //visual.x = 60;
             //visual.y = 45;
             infoVisual.x += 8;
-            components.Add(infoVisual);
+            Components.Add(infoVisual);
 
             scoreVisual = new Visual();
-            scoreVisual.active = true;
+            scoreVisual.Active = true;
 
 
             scoreVisual.x += 8;
             scoreVisual.y -= 1;
-            components.Add(scoreVisual);
+            Components.Add(scoreVisual);
 
             barVisual = new Visual();
-            barVisual.active = true;
+            barVisual.Active = true;
 
 
             barVisual.x += 8;
@@ -67,16 +67,16 @@ namespace RhythmThing.Objects.Menu
             barVisual.overrideColor = true;
             barVisual.overrideback = ConsoleColor.Green;
             barVisual.overridefront = ConsoleColor.Green;
-            components.Add(barVisual);
+            Components.Add(barVisual);
 
             letterVisual = new Visual();
-            letterVisual.active = true;
+            letterVisual.Active = true;
 
 
             letterVisual.x += 8;
             letterVisual.y -= 1;
             letterVisual.z = 2;
-            components.Add(letterVisual);
+            Components.Add(letterVisual);
 
             Draw();
             AnimateIn();
@@ -97,7 +97,7 @@ namespace RhythmThing.Objects.Menu
             scoreVisual.localPositions.Clear();
             barVisual.localPositions.Clear();
             letterVisual.localPositions.Clear();
-            infoVisual.LoadBMP(Path.Combine(Program.contentPath, "MenuMusic", "MainMenu", "InfoBar.bmp"), new int[] {20,-1 });
+            infoVisual.LoadBMP(Path.Combine(Program.ContentPath, "MenuMusic", "MainMenu", "InfoBar.bmp"), new int[] {20,-1 });
 
             //visual.x = 60;
             //visual.y = 45;

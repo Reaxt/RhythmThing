@@ -23,9 +23,9 @@ namespace RhythmThing.Objects.Menu.Options_Menu
 
         public override void Start(Game game)
         {
-            this.components = new List<Component>();
+            this.Components = new List<Component>();
             visual = new Visual();
-            visual.active = true;
+            visual.Active = true;
             visual.x = 5;
             visual.y = 40;
             char[] offsetText = "Set to defaults".ToCharArray(); ;
@@ -40,7 +40,7 @@ namespace RhythmThing.Objects.Menu.Options_Menu
                 visual.localPositions.Add(new Coords(i, 0, offsetText[i], frontColor, backColor));
             }
 
-            components.Add(visual);
+            Components.Add(visual);
         }
 
         public override void Update(double time, Game game)

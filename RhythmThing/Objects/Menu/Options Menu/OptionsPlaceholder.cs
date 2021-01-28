@@ -19,9 +19,9 @@ namespace RhythmThing.Objects.Menu.Options_Menu
 
         public override void Start(Game game)
         {
-            components = new List<Component>();
+            Components = new List<Component>();
             visual = new Visual();
-            visual.active = true;
+            visual.Active = true;
             //temp thing
             char[] tempMessage = "Sorry! No options implemented yet! :(".ToCharArray();
             char[] enterMessage = "Please press enter to return to the menu".ToCharArray();
@@ -35,14 +35,14 @@ namespace RhythmThing.Objects.Menu.Options_Menu
 
             }
 
-            components.Add(visual);
+            Components.Add(visual);
         }
 
         public override void Update(double time, Game game)
         {
-            if(game.input.ButtonStates[Input.ButtonKind.Confirm] == Input.ButtonState.Press)
+            if(game.InputInstance.ButtonStates[Input.ButtonKind.Confirm] == Input.ButtonState.Press)
             {
-                game.sceneManager.loadScene(0);
+                game.SceneManagerInstance.LoadScene(0);
             }
         }
     }

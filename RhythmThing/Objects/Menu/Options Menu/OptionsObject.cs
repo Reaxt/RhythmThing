@@ -30,9 +30,9 @@ namespace RhythmThing.Objects.Menu.Options_Menu
         public override void Start(Game game)
         {
             //forwearning, lots of lazy code throughout all of the options tbh.
-            this.components = new List<Component>();
+            this.Components = new List<Component>();
             selector = new Visual();
-            selector.active = true;
+            selector.Active = true;
 
             selector.x = 3;
             selector.y = 45;
@@ -47,13 +47,13 @@ namespace RhythmThing.Objects.Menu.Options_Menu
                 selector.localPositions.Add(new Coords(i, 2, ' ', ConsoleColor.Cyan, ConsoleColor.Cyan));
                 selector.localPositions.Add(new Coords(i, -2, ' ', ConsoleColor.Cyan, ConsoleColor.Cyan));
             }
-            components.Add(selector);
+            Components.Add(selector);
 
             //quit button. 
             quit = new Visual();
             quit.x = 5;
             quit.y = (45 - (maxOption * 5)); //will make it easier if I wanna add more buttons.
-            quit.active = true;
+            quit.Active = true;
             char[] quitText = "quit".ToCharArray();
             //tempted to add a button drawing thing into utils tbh
             for (int i = -1; i < 30; i++)
@@ -66,7 +66,7 @@ namespace RhythmThing.Objects.Menu.Options_Menu
             {
                 quit.localPositions.Add(new Coords(i, 0, quitText[i], quitFront, quitBack));
             }
-            components.Add(quit);
+            Components.Add(quit);
 
             //spawn buttons
             rebindButton = new RebindButton(this);
@@ -84,7 +84,7 @@ namespace RhythmThing.Objects.Menu.Options_Menu
             if(selectorFocused)
             {
                 //these two lines are responsible for selecting
-                if(game.input.ButtonStates[Input.ButtonKind.Down] == Input.ButtonState.Press)
+                if(game.InputInstance.ButtonStates[Input.ButtonKind.Down] == Input.ButtonState.Press)
                 {
                     if (selectedOption >= maxOption)
                     {
@@ -96,7 +96,7 @@ namespace RhythmThing.Objects.Menu.Options_Menu
                         selector.y = selector.y - 5;
                     }
 
-                } else  if(game.input.ButtonStates[Input.ButtonKind.Up] == Input.ButtonState.Press)
+                } else  if(game.InputInstance.ButtonStates[Input.ButtonKind.Up] == Input.ButtonState.Press)
                 {
                     if(selectedOption <= 0)
                     {
@@ -109,18 +109,18 @@ namespace RhythmThing.Objects.Menu.Options_Menu
                         selector.y = selector.y + 5;
                     }
                 }
-                if(game.input.ButtonStates[Input.ButtonKind.Cancel] == Input.ButtonState.Press)
+                if(game.InputInstance.ButtonStates[Input.ButtonKind.Cancel] == Input.ButtonState.Press)
                 {
-                    game.sceneManager.loadScene(0);
+                    game.SceneManagerInstance.LoadScene(0);
                 }
 
                 //handle enter/select
-                if(game.input.ButtonStates[Input.ButtonKind.Confirm] == Input.ButtonState.Press)
+                if(game.InputInstance.ButtonStates[Input.ButtonKind.Confirm] == Input.ButtonState.Press)
                 {
                     //quit first, just in case I add more, this makes it easier
                     if(selectedOption == maxOption)
                     {
-                        game.sceneManager.loadScene(0);//return to menu
+                        game.SceneManagerInstance.LoadScene(0);//return to menu
                     }
                     //switch case for the rest of the options
                     switch (selectedOption)

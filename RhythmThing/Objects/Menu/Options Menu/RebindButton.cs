@@ -37,9 +37,9 @@ namespace RhythmThing.Objects.Menu.Options_Menu
         {
             //populate key array
             allKeys = Enum.GetValues(typeof(Key)).Cast<Key>().ToArray<Key>();
-            this.components = new List<Component>();
+            this.Components = new List<Component>();
             visual = new Visual();
-            visual.active = true;
+            visual.Active = true;
             visual.x = 5;
             visual.y = 45;
 
@@ -55,20 +55,20 @@ namespace RhythmThing.Objects.Menu.Options_Menu
                 visual.localPositions.Add(new Coords(i, 0, rebindText[i], frontColor, backColor));
             }
 
-            components.Add(visual);
+            Components.Add(visual);
 
             rebindVisual = new Visual();
-            rebindVisual.active = false;
+            rebindVisual.Active = false;
             rebindVisual.x = 20;
             rebindVisual.y = 30;
-            components.Add(rebindVisual);
+            Components.Add(rebindVisual);
 
         }
 
         public void rebind()
         {
             activated = true;
-            rebindVisual.active = true;
+            rebindVisual.Active = true;
             rebindVisual.writeText(0, 0, "Please press the key you wish to assign to LEFT", visualFront, visualBack);
             keyToRebind = Input.ButtonKind.Left;
             Input.Instance.RebindKey(Input.ButtonKind.Left);
@@ -106,7 +106,7 @@ namespace RhythmThing.Objects.Menu.Options_Menu
                     break;
                 case Input.ButtonKind.Cancel:
                     rebindVisual.localPositions.Clear();
-                    rebindVisual.active = false;
+                    rebindVisual.Active = false;
                     activated = false;
                     optionsObject.returnFocus();
                     Input.Instance.SaveCurrentBindings();

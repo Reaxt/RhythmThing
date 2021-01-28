@@ -26,13 +26,13 @@ namespace RhythmThing.Objects
 
         public override void Start(Game game)
         {
-            components = new List<Component>();
+            Components = new List<Component>();
             visual = new Visual();
 
             visual.y = 49;
             visual.z = 5;
-            visual.active = true;
-            components.Add(visual);
+            visual.Active = true;
+            Components.Add(visual);
             //throw new NotImplementedException();
         }
 

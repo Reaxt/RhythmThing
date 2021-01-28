@@ -31,7 +31,7 @@ namespace RhythmThing
         //STATICS
         public static int ScreenX = 100;
         public static int ScreenY = 50;
-        public static string contentPath;
+        public static string ContentPath;
         public static MD5 mD5 = MD5.Create();
         //this feels wrong but it works!
         [STAThread]
@@ -47,7 +47,7 @@ namespace RhythmThing
             } else
             {
             
-            contentPath = Path.Combine(Directory.GetCurrentDirectory(), "!Content");
+            ContentPath = Path.Combine(Directory.GetCurrentDirectory(), "!Content");
             //backup last log
             Logger.NewLog();
 

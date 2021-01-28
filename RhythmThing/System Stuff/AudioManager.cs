@@ -20,17 +20,17 @@ namespace RhythmThing.System_Stuff
     public class AudioManager
     {
         public const int sampleRate = 44100;
-        const int latency = 1;
-        Mixer mixer;
-        public List<AudioTrack> tracks;
+        const int LATENCY = 1;
+        private Mixer _mixer;
+        public List<AudioTrack> Tracks;
         WasapiOut soundOut;
         public AudioManager()
         {
-            mixer = new Mixer(2, sampleRate) { FillWithZeros = true, DivideResult = false };
-            tracks = new List<AudioTrack>();
-            soundOut = new WasapiOut() { Latency = latency };
-
-            soundOut.Initialize(mixer.ToWaveSource());
+            _mixer = new Mixer(2, sampleRate) { FillWithZeros = true, DivideResult = false };
+            Tracks = new List<AudioTrack>();
+            soundOut = new WasapiOut() { Latency = LATENCY };
+            soundOut.Initialize(_mixer.ToWaveSource());
+            soundOut.Volume = 0.45f;
             soundOut.Play();
         }
 
@@ -44,23 +44,23 @@ namespace RhythmThing.System_Stuff
             AudioTrack track = new AudioTrack(path, temp, tempvol);
 
 
-            mixer.AddSource(track.sampleSource);
-            tracks.Add(track);
+            _mixer.AddSource(track.sampleSource);
+            Tracks.Add(track);
             return track;
 
         }
         public void addTrack(AudioTrack track)
         {
-            mixer.AddSource(track.sampleSource);
-            tracks.Add(track);
+            _mixer.AddSource(track.sampleSource);
+            Tracks.Add(track);
         }
 
         public void removeTrack(AudioTrack track)
         {
             if(track != null)
             {
-                mixer.RemoveSource(track.sampleSource);
-                tracks.Remove(track);
+                _mixer.RemoveSource(track.sampleSource);
+                Tracks.Remove(track);
 
             }
 
@@ -70,9 +70,9 @@ namespace RhythmThing.System_Stuff
         {
             try
             {
-                AudioTrack temp = tracks.Find(x => x.name == name);
-                mixer.RemoveSource(temp.sampleSource);
-                tracks.Remove(temp);
+                AudioTrack temp = Tracks.Find(x => x.name == name);
+                _mixer.RemoveSource(temp.sampleSource);
+                Tracks.Remove(temp);
 
             }
             catch
@@ -88,7 +88,7 @@ namespace RhythmThing.System_Stuff
             VolumeSource tempvol;
             ISampleSource temp = CodecFactory.Instance.GetCodec(dir).ChangeSampleRate(sampleRate).ToStereo().ToSampleSource().AppendSource(x => new VolumeSource(x), out tempvol);
             tempvol.Volume = vol;
-            mixer.AddSource(temp);
+            _mixer.AddSource(temp);
         }
 
         public void playForget(string path, float vol, float pitch)
@@ -100,7 +100,7 @@ namespace RhythmThing.System_Stuff
             ISampleSource temp = CodecFactory.Instance.GetCodec(dir).ChangeSampleRate(sampleRate).ToStereo().ToSampleSource().AppendSource(x => new VolumeSource(x), out tempvol);
             tempvol.Volume = vol;
             //temppitch.PitchShiftFactor = pitch;
-            mixer.AddSource(temp);
+            _mixer.AddSource(temp);
 
 
         }
@@ -111,13 +111,13 @@ namespace RhythmThing.System_Stuff
 
             ISampleSource temp = CodecFactory.Instance.GetCodec(dir).ChangeSampleRate(sampleRate).ToStereo().ToSampleSource();
 
-            mixer.AddSource(temp);
+            _mixer.AddSource(temp);
         }
 
         public void playForget(ISampleSource source)
         {
 
-            mixer.AddSource(source);
+            _mixer.AddSource(source);
         }
 
     }

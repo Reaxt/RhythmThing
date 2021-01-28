@@ -1,66 +1,64 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Diagnostics;
 using System.Threading;
-using RhythmThing.Objects;
 
 namespace RhythmThing.System_Stuff
 {
     public class Game
     {
         //these three variables are for various scoring elements
-        public static float approachSpeed = 5300;
-        public static float scoringTime = 100;
-        public static float missTime = 250;
-        private int frames = 0;
-        private float timePassed = 0;
+        public static float ApproachSpeed = 5300;
+        public static float ScoringTime = 100;
+        public static float MissTime = 250;
+        private int _frames = 0;
+        private float _timePassed = 0;
         //a ref to the game instance JUST in case
-        public static Game mainInstance;
+        public static Game MainInstance;
         //the current "State" of the game loop
-        public bool running = true;
+        public bool Running = true;
         //whether or not the game loop is running
-        public static bool gameLoopLives = true;
+        public static bool GameLoopLives = true;
         //the dimensions of the console window. Used to be for setting, now just for various calculations
-        public int screenX, screenY;
+        public int ScreenX, ScreenY;
         //a variable that represents the time since the last update, used for making frame independant things
-        public double deltaTime;
+        private double _deltaTime;
         //the display class, calculates objects into coords
-        public Display display;
+        public Display DisplayInstance;
         //the class to manage "scenes"
-        public SceneManager sceneManager;
+        public SceneManager SceneManagerInstance;
         //object to handle input. This will make it easy for rebinds and the likes.
-        public Input input;
+        public Input InputInstance;
         //various game object lists for the loop
-        private List<GameObject> gameObjects;
-        private List<GameObject> gameObjectsToAdd;
-        private List<GameObject> addBuffer;
-        private List<GameObject> toRemove;
+        private List<GameObject> _gameObjects;
+        private List<GameObject> _gameObjectsToAdd;
+        private List<GameObject> _addBuffer;
+        private List<GameObject> _toRemove;
 
         //audio manager
-        public AudioManager audioManager;
-        public bool exitViaEsc = false;
+        public AudioManager AudioManagerInstance;
+        public bool ExitViaEsc = false;
         //these are for storing information between scenes.
         public string ChartToLoad;
-        public int totalNotes = 100;
-        public int notesHit = 100;
-        public string songHash = "1tb56k0XFKSw49gL2xm0lA==";
-        public string songName = "Test song name";
+        public int TotalNotes = 100;
+        public int NotesHit = 100;
+        public string SongHash = "1tb56k0XFKSw49gL2xm0lA==";
+        public string SongName = "Test song name";
         //private List<GameObject> toRemove;
         //for our good ol friend deltatime
-        Stopwatch stopwatch = new Stopwatch();
+        private Stopwatch _stopwatch = new Stopwatch();
 
         
 
         public Game(int screenX, int screenY)
         {
-            this.screenX = screenX;
-            this.screenY = screenY;
-            mainInstance = this;
-            gameObjects = new List<GameObject>();
-            gameObjectsToAdd = new List<GameObject>();
-            toRemove = new List<GameObject>();
-            audioManager = new AudioManager();
+            this.ScreenX = screenX;
+            this.ScreenY = screenY;
+            MainInstance = this;
+            _gameObjects = new List<GameObject>();
+            _gameObjectsToAdd = new List<GameObject>();
+            _toRemove = new List<GameObject>();
+            AudioManagerInstance = new AudioManager();
             /*
             Console.WriteLine("Loading console handle thingy");
             Console.WriteLine("Totally a real loading message and not just me taking time to seem cool");
@@ -70,19 +68,19 @@ namespace RhythmThing.System_Stuff
             Console.WriteLine("This bit is just for the assignment build. Please enjoy!! Press any key to load the actual game.");
             Console.ReadKey();
             */
-            display = new Display();
-            addBuffer = new List<GameObject>();
-            input = Input.Instance;
-            deltaTime = 0;
-            sceneManager = new SceneManager(this);
+            DisplayInstance = new Display();
+            _addBuffer = new List<GameObject>();
+            InputInstance = Input.Instance;
+            _deltaTime = 0;
+            SceneManagerInstance = new SceneManager(this);
             //entry point
 
-            sceneManager.loadScene(0);
+            SceneManagerInstance.LoadScene(0);
 
             //debug scene
             //sceneManager.loadScene(5);
 
-            while (gameLoopLives)
+            while (GameLoopLives)
             {
 
 
@@ -97,7 +95,7 @@ namespace RhythmThing.System_Stuff
 
         public void addGameObject(GameObject gameObject)
         {
-            addBuffer.Add(gameObject);
+            _addBuffer.Add(gameObject);
         }
         public void removeGameObject(GameObject gameObject)
         {
@@ -125,83 +123,83 @@ namespace RhythmThing.System_Stuff
             //kinda nothing yet
 
             //changing scene stuff
-            foreach (GameObject obj in gameObjects)
+            foreach (GameObject obj in _gameObjects)
             {
                 obj.alive = false;
                 obj.End();
             }
             //get rid of any shaders
-            display.DisableFilter();
+            DisplayInstance.DisableFilter();
             //kill any slaves
             SlaveManager.CloseAll();
-            addBuffer = new List<GameObject>(sceneManager.initScene());
+            _addBuffer = new List<GameObject>(SceneManagerInstance.initScene());
             //mainInstance.addGameObject(new Chart("Nisemono"));
-            running = true;
-            while (running)
+            Running = true;
+            while (Running)
             {
-                stopwatch.Start();
-                gameObjectsToAdd = new List<GameObject>(addBuffer);
-                addBuffer.Clear();
-                foreach (GameObject obj in gameObjectsToAdd)
+                _stopwatch.Start();
+                _gameObjectsToAdd = new List<GameObject>(_addBuffer);
+                _addBuffer.Clear();
+                foreach (GameObject obj in _gameObjectsToAdd)
                 {
                     obj.Start(this);
-                    gameObjects.Add(obj);
+                    _gameObjects.Add(obj);
 
-                    if (obj.type == objType.visual)
+                    if (obj.GameObjectType == objType.visual)
                     {
-                        display.AddObject(obj);
+                        DisplayInstance.AddObject(obj);
                     }
                 }
-                gameObjectsToAdd.Clear();
+                _gameObjectsToAdd.Clear();
                 //calculate objects that exist
-                toRemove.Clear();
-                foreach (GameObject obj in gameObjects)
+                _toRemove.Clear();
+                foreach (GameObject obj in _gameObjects)
                 {
                     if (obj.alive)
                     {
                         //run the components first or last?
-                        foreach (Component comp in obj.components)
+                        foreach (Component comp in obj.Components)
                         {
-                            if (comp.active) comp.Update(deltaTime);
+                            if (comp.Active) comp.Update(_deltaTime);
                         }
 
-                        obj.Update(deltaTime, this);
+                        obj.Update(_deltaTime, this);
                     }
                     else
                     {
-                        toRemove.Add(obj);
+                        _toRemove.Add(obj);
                         obj.End();
                     }
                 }
-                foreach (GameObject obj in toRemove)
+                foreach (GameObject obj in _toRemove)
                 {
-                    gameObjects.Remove(obj);
-                    display.RemoveObject(obj);
+                    _gameObjects.Remove(obj);
+                    DisplayInstance.RemoveObject(obj);
                 }
 
 
-                display.DrawFrame(deltaTime);
+                DisplayInstance.DrawFrame(_deltaTime);
 
 
 
-                input.UpdateInput();
+                InputInstance.UpdateInput();
                 // your code
 
                 Thread.Sleep(1); //just in case
-                stopwatch.Stop();
-                deltaTime = stopwatch.ElapsedMilliseconds * 0.001;
+                _stopwatch.Stop();
+                _deltaTime = _stopwatch.ElapsedMilliseconds * 0.001;
 
                 //calculate framerate
-                frames++;
-                if (timePassed > 1000)
+                _frames++;
+                if (_timePassed > 1000)
                 {
-                    Console.Title = $"FPS: {frames}";
-                    frames = 0;
-                    timePassed = 0;
+                    Console.Title = $"FPS: {_frames}";
+                    _frames = 0;
+                    _timePassed = 0;
                 }
-                timePassed += stopwatch.ElapsedMilliseconds;
+                _timePassed += _stopwatch.ElapsedMilliseconds;
 
-                stopwatch.Reset();
+                _stopwatch.Reset();
                 //Console.WriteLine("frame");
             }
         }

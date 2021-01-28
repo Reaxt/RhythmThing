@@ -22,7 +22,7 @@ namespace RhythmThing.Scenes
         {
             initialObjs = new List<GameObject>();
 
-            initialObjs.Add(new Chart(Game.mainInstance.ChartToLoad));
+            initialObjs.Add(new Chart(Game.MainInstance.ChartToLoad));
         }
 
         public override void Update()

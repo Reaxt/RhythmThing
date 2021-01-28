@@ -49,7 +49,7 @@ namespace RhythmThing.Objects.Menu
 
         private MenuSection menuSection = MenuSection.songSelect;
         private optSelections optionSelected = optSelections.options;
-        private string assetPath = Path.Combine(Program.contentPath, "MenuMusic", "MainMenu");
+        private string assetPath = Path.Combine(Program.ContentPath, "MenuMusic", "MainMenu");
         private Visual ringVisual;
 
         private int selectorAnim = 0;
@@ -68,7 +68,7 @@ namespace RhythmThing.Objects.Menu
         public override void Start(Game game)
         {
             
-            components = new List<Component>();
+            Components = new List<Component>();
             menuMusic = new MenuMusicHandler();
             string[] chartNames = Directory.GetDirectories(Path.Combine(Directory.GetCurrentDirectory(), "!Content/!Songs"));
             
@@ -92,7 +92,7 @@ namespace RhythmThing.Objects.Menu
             }
 
             selector = new Visual();
-            selector.active = true;
+            selector.Active = true;
 
             selector.x = 3+5;
             selector.y = 25;
@@ -108,14 +108,14 @@ namespace RhythmThing.Objects.Menu
                 selector.localPositions.Add(new Coords(i, 2, ' ', ConsoleColor.Cyan, ConsoleColor.Cyan));
                 selector.localPositions.Add(new Coords(i, -2, ' ', ConsoleColor.Cyan, ConsoleColor.Cyan));
             }
-            components.Add(selector);
+            Components.Add(selector);
             chartInfoVisual = new ChartInfoVisual(songs[selected].chart);
             game.addGameObject(chartInfoVisual);
 
 
             //draw the option visual
             optButton = new Visual();
-            optButton.active = true;
+            optButton.Active = true;
             char[] optText = "Options".ToCharArray();
             optButton.x = 50;
             optButton.y = 3;
@@ -124,11 +124,11 @@ namespace RhythmThing.Objects.Menu
             optButton.overrideColor = true;
             optButton.overridefront = optBack;
             optButton.overrideback = optFront;
-            components.Add(optButton);
+            Components.Add(optButton);
 
             //draw the quit visual
             quitButton = new Visual();
-            quitButton.active = true;
+            quitButton.Active = true;
             quitButton.x = 75;
             quitButton.y = 3;
 
@@ -139,21 +139,21 @@ namespace RhythmThing.Objects.Menu
             quitButton.overrideback = quitFront;
             //selector
             buttonSelector = new Visual();
-            buttonSelector.active = true;
+            buttonSelector.Active = true;
             buttonSelector.x = 75;
             buttonSelector.y = 3-10;
             buttonSelector.z = 10;
             buttonSelector.LoadBMP(Path.Combine(assetPath, "buttonSelector.bmp"));
-            components.Add(buttonSelector);
+            Components.Add(buttonSelector);
             //draw the rings!
             ringVisual = new Visual();
             ringVisual.LoadBMP(Path.Combine(assetPath, "WheelGrey.bmp"), new int[] { 0, -1 });
             ringVisual.LoadBMP(Path.Combine(assetPath, "WheelBlack.bmp"), new int[] {0,-1 });
             ringVisual.z = -1;
             ringVisual.y = -1;
-            ringVisual.active = true;
-            components.Add(ringVisual);
-            components.Add(quitButton);
+            ringVisual.Active = true;
+            Components.Add(ringVisual);
+            Components.Add(quitButton);
 
             containerHandler = new ContainerHandler(songs);
             game.addGameObject(containerHandler);
@@ -217,7 +217,7 @@ namespace RhythmThing.Objects.Menu
 
             if (menuSection == MenuSection.songSelect)
             {
-                if (game.input.ButtonStates[Input.ButtonKind.Down] == Input.ButtonState.Press)
+                if (game.InputInstance.ButtonStates[Input.ButtonKind.Down] == Input.ButtonState.Press)
                 {
                     if (selected < count)
                     {
@@ -236,7 +236,7 @@ namespace RhythmThing.Objects.Menu
                     speedupTimePassed = 0;
 
                 }
-                if (game.input.ButtonStates[Input.ButtonKind.Up] == Input.ButtonState.Press)
+                if (game.InputInstance.ButtonStates[Input.ButtonKind.Up] == Input.ButtonState.Press)
                 {
                     if (selected > 0)
                     {
@@ -259,12 +259,12 @@ namespace RhythmThing.Objects.Menu
                 //a little out animation!
                 
 
-                if (game.input.ButtonStates[Input.ButtonKind.Confirm] == Input.ButtonState.Press)
+                if (game.InputInstance.ButtonStates[Input.ButtonKind.Confirm] == Input.ButtonState.Press)
                 {
                     game.ChartToLoad = songs[selected].chartName;
-                    game.sceneManager.loadScene(6);
+                    game.SceneManagerInstance.LoadScene(6);
                 }
-                if (game.input.ButtonStates[Input.ButtonKind.Left] == Input.ButtonState.Press || game.input.ButtonStates[Input.ButtonKind.Right] == Input.ButtonState.Press)
+                if (game.InputInstance.ButtonStates[Input.ButtonKind.Left] == Input.ButtonState.Press || game.InputInstance.ButtonStates[Input.ButtonKind.Right] == Input.ButtonState.Press)
                 {
                     menuSection = MenuSection.optSelect;
                     hideSelector();
@@ -274,7 +274,7 @@ namespace RhythmThing.Objects.Menu
             } else if (menuSection == MenuSection.optSelect)
             {
                 //else if is so juuuust in case, switching cant be at the same time as trying to press one of these
-                if (game.input.ButtonStates[Input.ButtonKind.Left] == Input.ButtonState.Press )
+                if (game.InputInstance.ButtonStates[Input.ButtonKind.Left] == Input.ButtonState.Press )
                 {
                     if(optionSelected == optSelections.quit)
                     {
@@ -290,7 +290,7 @@ namespace RhythmThing.Objects.Menu
                     
 
                     //this line can check for either right now as there is only two options. I dont see any case where there would be more.
-                } else if (game.input.ButtonStates[Input.ButtonKind.Right] == Input.ButtonState.Press)
+                } else if (game.InputInstance.ButtonStates[Input.ButtonKind.Right] == Input.ButtonState.Press)
                 {
                     if (optionSelected == optSelections.options)
                     {
@@ -303,17 +303,17 @@ namespace RhythmThing.Objects.Menu
                         showSelector();
                         menuSection = MenuSection.songSelect;
                     }
-                } else if(game.input.ButtonStates[Input.ButtonKind.Confirm] == Input.ButtonState.Press)
+                } else if(game.InputInstance.ButtonStates[Input.ButtonKind.Confirm] == Input.ButtonState.Press)
                 {
                     //follow through with the selectiooooon
                     if(optionSelected == optSelections.quit)
                     {
                         //THIS SHOULD BE THE ONLY PLACE IN THE CODE WHERE THIS LINE IS EVER WRITTEN. IF ITS ANYWHERE ELSE BAD THINGS COULD HAPPEN
-                        Game.gameLoopLives = false;
-                        game.running = false;
+                        Game.GameLoopLives = false;
+                        game.Running = false;
                     } else if(optionSelected == optSelections.options)
                     {
-                        game.sceneManager.loadScene(4);
+                        game.SceneManagerInstance.LoadScene(4);
                     }
                 }
                 

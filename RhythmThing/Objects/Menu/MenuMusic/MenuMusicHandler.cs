@@ -23,11 +23,11 @@ namespace RhythmThing.Objects.Menu.MenuMusic
         }
         public MenuMusicHandler()
         {
-            this.type = objType.nonvisual;
+            this.GameObjectType = objType.nonvisual;
             //manual for now
             menuMusic = new HVMusic();
 
-            Game.mainInstance.addGameObject(menuMusic);
+            Game.MainInstance.addGameObject(menuMusic);
         }
         public override void Start(Game game)
         {

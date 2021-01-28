@@ -12,7 +12,7 @@ namespace RhythmThing.System_Stuff
 {
     public class SlaveManager
     {
-        public static List<SlaveManager> aliveWindows = new List<SlaveManager>();
+        private static List<SlaveManager> _aliveWindows = new List<SlaveManager>();
         public struct SlaveData
         {
             public ConsoleColor[,] foreColors;
@@ -20,18 +20,17 @@ namespace RhythmThing.System_Stuff
             public char[,] characters;
 
         }
-        public bool alive = true;
-        Process slaveProcess;
+        public bool Alive = true;
+        Process _slaveProcess;
         public SlaveData displayData;
         MemoryMappedFile mappedFile;
         private NamedPipeServerStream pipe;
-        private StreamWriter writer;
-        MemoryMappedViewAccessor accessor;
+        private StreamWriter _writer;
+        private MemoryMappedViewAccessor _accessor;
         long length;
-        private int x;
-        private int y;
-        bool youcanupdate = true;
-        bool youcandraw = true;
+        private int _x;
+        private int _y;
+        private bool _youCanUpdate = true;
         public List<Visual> visuals;
         
         public static long getLength(int x, int y)
@@ -40,19 +39,19 @@ namespace RhythmThing.System_Stuff
         }
         public void UpdateVisualsAsync()
         {
-            if (youcanupdate)
+            if (_youCanUpdate)
             {
                 Task.Run(() => {
-                    youcanupdate = false;
-                    displayData.foreColors = new ConsoleColor[x, y];
-                    displayData.backColors = new ConsoleColor[x, y];
-                    displayData.characters = new char[x, y];
+                    _youCanUpdate = false;
+                    displayData.foreColors = new ConsoleColor[_x, _y];
+                    displayData.backColors = new ConsoleColor[_x, _y];
+                    displayData.characters = new char[_x, _y];
                     visuals.Sort((x, y) => x.z.CompareTo(y.z));
                     Visual[] h = visuals.ToArray();
                     for (int i = 0; i < h.Length; i++)
                     {
                         Visual visual = h[i];
-                        if (visual.active)
+                        if (visual.Active)
                         {
                             Coords[] coordArray = visual.localPositions.ToArray();
                             for (int z = 0; z < coordArray.Length; z++)
@@ -60,7 +59,7 @@ namespace RhythmThing.System_Stuff
                                 Coords coord = coordArray[z];
                                 int locX = visual.x + coord.x;
                                 int locY = visual.y + coord.y;
-                                if (!((locX >= x) || (locX < 0) || (locY >= y) || (locY < 0)))
+                                if (!((locX >= _x) || (locX < 0) || (locY >= _y) || (locY < 0)))
                                 {
                                     displayData.foreColors[locX, locY] = coord.foreColor;
                                     displayData.backColors[locX, locY] = coord.backColor;
@@ -73,7 +72,7 @@ namespace RhythmThing.System_Stuff
                         }
                     }
                     Draw();
-                    youcanupdate = true;
+                    _youCanUpdate = true;
                 });
             }
 
@@ -82,15 +81,15 @@ namespace RhythmThing.System_Stuff
         public void DrawAsync()
         {
             int curWrite = 0;
-            for (int lX = 0; lX < x; lX += 1)
+            for (int lX = 0; lX < _x; lX += 1)
             {
-                for (int lY = 0; lY < y; lY += 1)
+                for (int lY = 0; lY < _y; lY += 1)
                 {
-                    accessor.Write(curWrite, (int)displayData.foreColors[lX, lY]);
+                    _accessor.Write(curWrite, (int)displayData.foreColors[lX, lY]);
                     curWrite += 4;
-                    accessor.Write(curWrite, (int)displayData.backColors[lX, lY]);
+                    _accessor.Write(curWrite, (int)displayData.backColors[lX, lY]);
                     curWrite += 4;
-                    accessor.Write(curWrite, displayData.characters[lX, lY]);
+                    _accessor.Write(curWrite, displayData.characters[lX, lY]);
                     curWrite += 2;
                 }
             }
@@ -98,15 +97,15 @@ namespace RhythmThing.System_Stuff
         public void Draw()
         {
             int curWrite = 0;
-            for (int lX = 0; lX < x; lX += 1)
+            for (int lX = 0; lX < _x; lX += 1)
             {
-                for (int lY = 0; lY < y; lY += 1)
+                for (int lY = 0; lY < _y; lY += 1)
                 {
-                    accessor.Write(curWrite, (int)displayData.foreColors[lX, lY]);
+                    _accessor.Write(curWrite, (int)displayData.foreColors[lX, lY]);
                     curWrite += 4;
-                    accessor.Write(curWrite, (int)displayData.backColors[lX, lY]);
+                    _accessor.Write(curWrite, (int)displayData.backColors[lX, lY]);
                     curWrite += 4;
-                    accessor.Write(curWrite, displayData.characters[lX, lY]);
+                    _accessor.Write(curWrite, displayData.characters[lX, lY]);
                     curWrite += 2;
                 }
             }
@@ -117,20 +116,20 @@ namespace RhythmThing.System_Stuff
             {
                 
 
-                writer.AutoFlush = true;
-                writer.WriteAsync("close");
+                _writer.AutoFlush = true;
+                _writer.WriteAsync("close");
                 pipe.Disconnect();
                 pipe.Dispose();
-                accessor.Dispose();
+                _accessor.Dispose();
                 mappedFile.Dispose();
-                aliveWindows.Remove(this);
-                this.alive = false;
+                _aliveWindows.Remove(this);
+                this.Alive = false;
                 
             }
         }
         public static void CloseAll()
         {
-            SlaveManager[] alive = aliveWindows.ToArray();
+            SlaveManager[] alive = _aliveWindows.ToArray();
             for (int i = 0; i < alive.Length; i++)
             {
                 alive[i].CloseWindow();
@@ -143,7 +142,7 @@ namespace RhythmThing.System_Stuff
             y = (y / 100) * 0.5f + 0.75f;
             Task.Run(() =>
             {
-                writer.Write($"SetWindowPos|{x}|{y}|");
+                _writer.Write($"SetWindowPos|{x}|{y}|");
 
             });
             
@@ -151,7 +150,7 @@ namespace RhythmThing.System_Stuff
         }
         public void SetWindowTitle(string title)
         {
-            writer.Write($"SetTitle|{title}|");
+            _writer.Write($"SetTitle|{title}|");
         }
         public void MoveWindowEase(float startX, float startY, float endX, float endY, float duration, string easing)
         {
@@ -161,19 +160,19 @@ namespace RhythmThing.System_Stuff
             endY = (endY / 100) * 0.5f + 0.75f;
             Task.Run(() =>
             {
-                writer.Write($"SetWindowEase|{startX}|{startY}|{endX}|{endY}|{duration}|{easing}|");
+                _writer.Write($"SetWindowEase|{startX}|{startY}|{endX}|{endY}|{duration}|{easing}|");
 
             });
         }
         //if for one reason or another the ease MUST end
         public void EndEase() {
-            writer.Write($"StopEase|");
+            _writer.Write($"StopEase|");
         }
         public SlaveManager(string arg, int x, int y)
         {
             visuals = new List<Visual>();
-            this.x = x;
-            this.y = y;
+            this._x = x;
+            this._y = y;
             length = getLength(x, y);
             mappedFile = MemoryMappedFile.CreateNew(arg, length);
             displayData = new SlaveData();
@@ -199,15 +198,15 @@ namespace RhythmThing.System_Stuff
                 Arguments = $"{arg} {x} {y}"
 
             };
-            accessor = mappedFile.CreateViewAccessor();
+            _accessor = mappedFile.CreateViewAccessor();
 
             pipe = new NamedPipeServerStream(arg);
 
-            slaveProcess = Process.Start(processStartInfo);
+            _slaveProcess = Process.Start(processStartInfo);
             pipe.WaitForConnection();
-            writer = new StreamWriter(pipe);
-            writer.AutoFlush = true;
-            aliveWindows.Add(this);
+            _writer = new StreamWriter(pipe);
+            _writer.AutoFlush = true;
+            _aliveWindows.Add(this);
         }
 
     }
