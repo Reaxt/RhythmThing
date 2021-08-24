@@ -29,6 +29,11 @@ namespace RhythmThing
 
         short pwidth = 15;
         short pheight = 15;
+        //constants
+        public const int DISPLAY_CALIBRATED_WIDTH = 1920;
+        public const int DISPLAY_CALIBRATED_HEIGHT = 1040;
+        short awidth;
+        short aheight;
 
         string wtitle = "Rhythm Thing";
 
@@ -117,6 +122,16 @@ namespace RhythmThing
         #endregion
 
         #region native methods
+        [DllImport("Kernel32.dll", SetLastError =true)]
+        static extern IntPtr CreateConsoleScreenBuffer(
+        uint dwDesiredAccess,
+        uint dwShareMode,
+        IntPtr secutiryAttributes,
+        uint dwFlags,
+        IntPtr screenBufferData
+        );
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern bool SetConsoleActiveScreenBuffer(IntPtr hConsoleOutput); 
         [DllImport("user32.dll", SetLastError = true)]
         static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int width, int height, bool repaint);
 
@@ -201,11 +216,16 @@ namespace RhythmThing
             IntPtr hwnd = GetConsoleWindow();
             int value = GetWindowLong(hwnd, GWL_STYLE);
             SetWindowLong(hwnd, GWL_STYLE, value & ~WS_MAXIMIZEBOX & ~WS_SIZEBOX);
+            GetMonitorInfo(MonitorFromWindow(hwnd, MONITOR_DEFAULTTOPRIMARY), ref _launchedMonitor);
+
+            //create font size
+            awidth = (short)Math.Round(((double)pwidth / (double)DISPLAY_CALIBRATED_WIDTH) * (double)_launchedMonitor.rcWork.Right);
+            aheight = (short)Math.Round(((double)pheight / (double)DISPLAY_CALIBRATED_HEIGHT) * (double)_launchedMonitor.rcWork.Bottom);
 
             CONSOLE_FONT_INFOEX cfi = new CONSOLE_FONT_INFOEX
             {
                 nFont = 0,
-                dwFontSize = new COORD(pwidth, pheight),
+                dwFontSize = new COORD(awidth, aheight),
                 FontFamily = (1 << 4),
                 FontWeight = 400,
                 FaceName = "Consolas"
@@ -224,7 +244,6 @@ namespace RhythmThing
 
             RECT existingRect;
             var mi = MONITORINFO.Default;
-            GetMonitorInfo(MonitorFromWindow(hwnd, MONITOR_DEFAULTTOPRIMARY), ref _launchedMonitor);
             Console.Write("");
             //RenderBuffer(buffer);
         }

@@ -29,7 +29,7 @@ namespace TestScript.Visual_Gameobject_stuff
             {
                 Visual newVis = new Visual();
                 newVis.LoadBMPPath("Sprites/UpReceiver.bmp", new int[] { -5, -6 });
-                newVis.active = true;
+                newVis.Active = true;
                 newVis.z = -(i + 3);
                 int xbase = 50;
                 int ybase = 25;
@@ -54,14 +54,14 @@ namespace TestScript.Visual_Gameobject_stuff
                 
                 newVis.Animate(new int[] { newVis.x, newVis.y }, new int[] { point[0], point[1] }, "easeOutExpo", 10f);
                 arrowVisuals.Add(newVis);
-                this.components.Add(newVis);
+                this.Components.Add(newVis);
             }
             textVisual = new Visual();
             textVisual.z = 10000;
             textVisual.x = 40;
             textVisual.y = 25;
-            textVisual.active = true;
-            components.Add(textVisual);
+            textVisual.Active = true;
+            Components.Add(textVisual);
         }
         public override void End()
         {

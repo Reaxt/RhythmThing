@@ -19,13 +19,13 @@ namespace TestScript
 
         public string Description => "this sure is a cool testing thing";
 
-        public void endScript(Chart chart, Game game)
+        public void EndScript(Chart chart, Game game)
         {
-            Input.focusInput = true;
+            Input.FocusInput = true;
         }
 
 
-        public void mainScript(Chart chart, Game game, double time)
+        public void MainScript(Chart chart, Game game, double time)
         {
             if (chart.beat >= 60 && !activates[0])
             {
@@ -40,7 +40,7 @@ namespace TestScript
             }
             if(chart.beat >= 195 && !activates[2] && chart.beat <= 220)
             {
-                game.display.DisableFilter();   
+                game.DisplayInstance.DisableFilter();   
                 activates[2] = true;
                 SlaveManager.CloseAll();
                 Arrow.movementAmount = 75;
@@ -49,7 +49,7 @@ namespace TestScript
             if(chart.beat >= 220 && !activates[3])
             {
                 //just for debug this line here
-                game.display.DisableFilter();
+                game.DisplayInstance.DisableFilter();
                 activates[3] = true;
                 game.addGameObject(new Visual_Gameobject_stuff.LastNotes(chart));
             }
@@ -62,9 +62,9 @@ namespace TestScript
         }
 
 
-        public void runScript(Chart chart, Game game)
+        public void RunScript(Chart chart, Game game)
         {
-            Input.focusInput = false;
+            Input.FocusInput = false;
             colWindows = new SlaveManager[4];
 
             

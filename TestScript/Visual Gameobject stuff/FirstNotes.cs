@@ -50,9 +50,9 @@ namespace TestScript.Visual_Gameobject_stuff
                     flash.localPositions.Add(new Coords(x, y, ' ', ConsoleColor.Black, ConsoleColor.Black));
                 }
             }
-            flash.active = false;
+            flash.Active = false;
             flash.z = 5;
-            components.Add(flash);
+            Components.Add(flash);
             boxBuffer.boxPoint = new int[] { 23, 0 };
             boxBuffer.boxDimensions = new int[] { 53, 20 };
         }
@@ -66,46 +66,46 @@ namespace TestScript.Visual_Gameobject_stuff
                 float interval = 1f / 8f;
                 if ((stat >= interval) && !hits99[0])
                 {
-                    flash.active = true;
+                    flash.Active = true;
                     chart.chartEventHandler.moveCollumn(0, 0, 0);
                     hits99[0] = true;
                 }
                 if (stat >= interval *2 && !hits99[1])
                 {
-                    flash.active = false;
+                    flash.Active = false;
                     hits99[1] = true;
                 }
                 if ((stat >= interval*3) && !hits99[2])
                 {
-                    flash.active = true;
+                    flash.Active = true;
                     chart.chartEventHandler.moveCollumn(3, 0, 0);
                     hits99[2] = true;
                 }
                 if (stat >= interval * 4 && !hits99[3])
                 {
-                    flash.active = false;
+                    flash.Active = false;
                     hits99[3] = true;
                 }
                 if ((stat >= interval * 5) && !hits99[4])
                 {
-                    flash.active = true;
+                    flash.Active = true;
                     chart.chartEventHandler.moveCollumn(2, 0, 0);
                     hits99[4] = true;
                 }
                 if (stat >= interval * 6 && !hits99[5])
                 {
-                    flash.active = false;
+                    flash.Active = false;
                     hits99[5] = true;
                 }
                 if ((stat >= interval * 7) && !hits99[6])
                 {
-                    flash.active = true;
+                    flash.Active = true;
                     chart.chartEventHandler.moveCollumn(1, 0, 0);
                     hits99[6] = true;
                 }
                 if (stat >= interval * 8 && !hits99[7])
                 {
-                    flash.active = false;
+                    flash.Active = false;
                     hits99[7] = true;
                 }
             }
@@ -143,7 +143,7 @@ namespace TestScript.Visual_Gameobject_stuff
             }
             if(chart.beat >= 132.25 && hits[5])
             {
-                flash.active = false;
+                flash.Active = false;
                 chart.chartEventHandler.setModPercent("beat", 0);
                 chart.chartEventHandler.setModPercent("bumpy", 3);
 
@@ -155,12 +155,12 @@ namespace TestScript.Visual_Gameobject_stuff
                 if (chart.beat >= 132)
                 {
                     hits[5] = true;
-                    game.display.DisableFilter();
+                    game.DisplayInstance.DisableFilter();
                     flash.overrideColor = true;
                     flash.overrideback = ConsoleColor.White;
                     flash.overridefront = ConsoleColor.White;
 
-                    flash.active = true;
+                    flash.Active = true;
                 }
                 if (!hits[2] && chart.beat >= 100)
                 {
@@ -169,7 +169,7 @@ namespace TestScript.Visual_Gameobject_stuff
                     chart.chartEventHandler.setModPercent("bumpy", 0);
                     chart.chartEventHandler.setModPercent("beat", 2);
 
-                    game.display.ActivateFilter(boxBuffer);
+                    game.DisplayInstance.ActivateFilter(boxBuffer);
                 }
                 passed += time;
                 /*if(passed>= timetopass)

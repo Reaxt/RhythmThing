@@ -39,9 +39,9 @@ namespace TestScript.Visual_Gameobject_stuff
                     flash.localPositions.Add(new Coords(x, y, ' ', ConsoleColor.White, ConsoleColor.White));
                 }
             }
-            flash.active = false;
+            flash.Active = false;
             flash.z = 5;
-            components.Add(flash);
+            Components.Add(flash);
             boxBuffer.boxPoint = new int[] { 23, 0 };
             boxBuffer.boxDimensions = new int[] { 53, 60 };
         }
@@ -52,7 +52,7 @@ namespace TestScript.Visual_Gameobject_stuff
             {
                 hits[0] = true;
                 boxBuffer.boxPoint = new int[] { 23, -60 };
-                game.display.ActivateFilter(boxBuffer);
+                game.DisplayInstance.ActivateFilter(boxBuffer);
             }
             if(chart.beat >= 225 && hits[0] && !hits[1])
             {
@@ -70,14 +70,14 @@ namespace TestScript.Visual_Gameobject_stuff
             {
                 if (chart.beat >= lastFlashBeat + (0.25/2))
                 {
-                    flash.active = !flash.active;
-                    flashStatus = flash.active;
+                    flash.Active = !flash.Active;
+                    flashStatus = flash.Active;
                     lastFlashBeat = chart.beat;
                 }
                 if (chart.beat >= 260)
                 {
-                    flash.active = false;
-                    flashStatus = flash.active;
+                    flash.Active = false;
+                    flashStatus = flash.Active;
                     hits[3] = true;
                 }
                 //flash.active = true;
@@ -144,7 +144,7 @@ namespace TestScript.Visual_Gameobject_stuff
             {
                 chart.chartEventHandler.setModPercent("bumpy", 0);
                 chart.chartEventHandler.setModPercent("beat", 0);
-                game.display.DisableFilter();
+                game.DisplayInstance.DisableFilter();
                 this.alive = false;
             }
         }

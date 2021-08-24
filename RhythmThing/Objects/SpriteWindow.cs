@@ -24,16 +24,17 @@ namespace RhythmThing.Objects
         }
         public SpriteWindow(float startX, float startY, float width, float height)
         {
+            //consider for 16:9??
             screen = Screen.PrimaryScreen;
             int realX = (int)Math.Round((startX/100)* screen.WorkingArea.Width);
             int realY = (int)Math.Round(((100-startY) / 100) * screen.WorkingArea.Height);
-            int realWidth = (int)Math.Round((width / 100) * screen.WorkingArea.Width);
-            int realHeight = (int)Math.Round((height / 100) * screen.WorkingArea.Height);
+            int realWidth = (int)Math.Round((width) * ((double)screen.WorkingArea.Width/(double)WindowManager.DISPLAY_CALIBRATED_WIDTH));
+            int realHeight = (int)Math.Round((height) * ((double)screen.WorkingArea.Height/(double)WindowManager.DISPLAY_CALIBRATED_HEIGHT));
             _form.AllowTransparency = true;
             _form.BackColor = Color.Black;
             
             _form.FormBorderStyle = FormBorderStyle.None;
-            _form.Bounds = new Rectangle(realX,realY,realWidth,realHeight);
+            _form.Bounds = new Rectangle(realX,realY,(int)realWidth,(int)realHeight);
             _form.TopLevel = true;
             _form.TopMost = true;
             _form.TransparencyKey = Color.Black;
@@ -45,6 +46,14 @@ namespace RhythmThing.Objects
         public void ShowWindow()
         {
             _form.Show();
+        }
+        public void MoveWindow(float x, float y)
+        {
+            screen = Screen.PrimaryScreen;
+            int realX = (int)Math.Round((x / 100) * screen.WorkingArea.Width);
+            int realY = (int)Math.Round(((100 - y) / 100) * screen.WorkingArea.Height);
+            _form.Bounds = new Rectangle(realX, realY, _form.Bounds.Width, _form.Bounds.Height);
+
         }
         public void HideWindow()
         {

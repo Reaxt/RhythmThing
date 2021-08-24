@@ -41,7 +41,7 @@ namespace TestScript.Visual_Gameobject_stuff
                 slaveWindows[i].visuals.Add(yoinked.cols[i]);
 
             }
-            Game.mainInstance.display.ActivateFilter(yoinked);
+            Game.MainInstance.DisplayInstance.ActivateFilter(yoinked);
         }
         public override void Start(Game game)
         {
