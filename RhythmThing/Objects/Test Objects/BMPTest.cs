@@ -30,7 +30,8 @@ namespace RhythmThing.Objects.Test_Objects
             visual = new Visual();
             visual.Active = true;
             visual.y = -1;
-            visual.LoadBMP(Path.Combine(Program.ContentPath, "MenuMusic", "MainMenu", "MainMenuConceptExport.bmp"), new int[] { 0,0});
+            
+            visual.LoadBMP(Path.Combine("Untitled.bmp"), new int[] { 0,0});
             Components.Add(visual);
         }
 

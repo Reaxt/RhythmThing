@@ -32,6 +32,7 @@ namespace RhythmThing
 
         string wtitle = "Rhythm Thing";
 
+        private static MONITORINFO _launchedMonitor = MONITORINFO.Default;
 
         #region native consts
         const int STD_INPUT_HANDLE = -10;
@@ -192,6 +193,7 @@ namespace RhythmThing
                     //buffer[x, y] = new CHAR_INFO { UnicodeChar = 'A', Attributes = (ushort)(BACKGROUND_BLUE | FOREGROUND_GREEN | BACKGROUND_INTENSITY) };
                 }
             }
+
         }
 
         public void InitWindow()
@@ -220,7 +222,10 @@ namespace RhythmThing
             Console.Title = wtitle;
             Console.CursorVisible = false;
 
-
+            RECT existingRect;
+            var mi = MONITORINFO.Default;
+            GetMonitorInfo(MonitorFromWindow(hwnd, MONITOR_DEFAULTTOPRIMARY), ref _launchedMonitor);
+            Console.Write("");
             //RenderBuffer(buffer);
         }
 
@@ -230,7 +235,7 @@ namespace RhythmThing
             WriteConsoleOutput(wHnd, buffer, new COORD { X = (short)wwidth1, Y = (short)wheight1 }, new COORD { X = 0, Y = 0 }, ref writeArea);
         }
         //move relative to window or something
-        public void moveWindow(float x, float y)
+        public void MoveWindowLegacy(float x, float y)
         {
             //OK BOYS HERES THE PLAN
             //-1 = left window all the way left
@@ -239,7 +244,7 @@ namespace RhythmThing
             IntPtr hwnd = GetConsoleWindow();
             var mi = MONITORINFO.Default;
             GetMonitorInfo(MonitorFromWindow(hwnd, MONITOR_DEFAULTTOPRIMARY), ref mi);
-
+            
             GetWindowRect(new HandleRef(this, hwnd), out existingRect);
             //-1 = mi.rcWork.Left
             int resx = 0;
@@ -255,6 +260,22 @@ namespace RhythmThing
             MoveWindow(hwnd, resx, resy, existingRect.Right - existingRect.Left, existingRect.Bottom - existingRect.Top, false);
 
         }
+        
+        //move relative to screen
+        public void MoveWindowRelativeToMonitor(float x, float y)
+        {
+
+            IntPtr hwnd = GetConsoleWindow();
+            RECT existingRect;
+            y = 100 - y;
+            GetWindowRect(new HandleRef(this, hwnd), out existingRect);
+            RECT monitorRect = _launchedMonitor.rcWork;
+            int targetX = (int)Math.Round((x / 100) * (float)(monitorRect.Right-(existingRect.Right-existingRect.Left)));
+            int targetY = (int)Math.Round((y / 100) * (float)(monitorRect.Bottom-(existingRect.Bottom-existingRect.Top)));
+            MoveWindow(hwnd, targetX, targetY, existingRect.Right - existingRect.Left, existingRect.Bottom-existingRect.Top, false);
+
+        }
+        
         public void CenterWindow()
         {
             RECT existingRect;

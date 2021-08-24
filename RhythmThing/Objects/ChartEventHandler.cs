@@ -69,7 +69,7 @@ namespace RhythmThing.Objects
 
 
             windowManager.CenterWindow();
-            windowManager.moveWindow(x, y);
+            windowManager.MoveWindowLegacy(x, y);
         }
         public void moveWindowEase(float startX, float startY, float targetX, float targetY, float startTime, float dur, string easing)
         {
@@ -427,14 +427,14 @@ namespace RhythmThing.Objects
                 {
                     if(chart.beat >= item.endTime)
                     {
-                        windowManager.moveWindow(item.endValueX, item.endValueY);
+                        windowManager.MoveWindowLegacy(item.endValueX, item.endValueY);
                         //float hm = Ease.byName[item.easingType](chart.beat - item.startTime, item.endTime - item.startTime, item.startValueX, item.endValueX)/1.6f;
                         toDie.Add(item);
                     } else
                     {
                         //ease basically takes a percent
                         float temptest = (chart.beat - item.startTime) / (item.endTime - item.startTime);
-                        windowManager.moveWindow(Ease.Lerp(item.startValueX, item.endValueX, Ease.byName[item.easingType]((chart.beat- item.startTime) /(item.endTime - item.startTime))), Ease.Lerp(item.startValueY, item.endValueY, Ease.byName[item.easingType]((chart.beat - item.startTime) / (item.endTime - item.startTime))));
+                        windowManager.MoveWindowLegacy(Ease.Lerp(item.startValueX, item.endValueX, Ease.byName[item.easingType]((chart.beat- item.startTime) /(item.endTime - item.startTime))), Ease.Lerp(item.startValueY, item.endValueY, Ease.byName[item.easingType]((chart.beat - item.startTime) / (item.endTime - item.startTime))));
                     }
 
                 } else if(item.objectType == easeType.collumn)

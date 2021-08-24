@@ -18,7 +18,7 @@ namespace RhythmThing.Scenes
         {
 
             initialObjs = new List<GameObject>();
-            initialObjs.Add(new MultiWindowTest());
+            initialObjs.Add(new WindowMovementTest());
 
         }
 

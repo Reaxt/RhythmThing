@@ -75,10 +75,10 @@ namespace RhythmThing.System_Stuff
             SceneManagerInstance = new SceneManager(this);
             //entry point
 
-            SceneManagerInstance.LoadScene(0);
+            //SceneManagerInstance.LoadScene(0);
 
             //debug scene
-            //sceneManager.loadScene(5);
+            SceneManagerInstance.LoadScene(5);
 
             while (GameLoopLives)
             {
