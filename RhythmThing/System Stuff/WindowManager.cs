@@ -5,7 +5,6 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace RhythmThing
 {
     public class WindowManager
@@ -122,6 +121,9 @@ namespace RhythmThing
         #endregion
 
         #region native methods
+        [DllImport("user32.dll")]
+        public static extern uint SetWindowDisplayAffinity(IntPtr hwnd, uint dwAffinity);
+
         [DllImport("Kernel32.dll", SetLastError =true)]
         static extern IntPtr CreateConsoleScreenBuffer(
         uint dwDesiredAccess,
