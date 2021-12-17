@@ -24,7 +24,7 @@ namespace RhythmThing.Scenes
             initialObjs = new List<GameObject>();
             initialObjs.Add(new MenuObject());
             initialObjs.Add(new MenuMusicHandler());
-            initialObjs.Add(new SpriteWindowTest());
+            //initialObjs.Add(new SpriteWindowTest());
         }
 
         public override void Update()

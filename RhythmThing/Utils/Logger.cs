@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RhythmThing.System_Stuff;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace RhythmThing.Utils
     public static class Logger
     {
         private static string logFile = "loge.txt";
-        private static string logPath = Path.Combine(Directory.GetCurrentDirectory(), "!Content", logFile);
+        private static string logPath = Path.Combine(PlayerSettings.GetExeDir(), "!Content", logFile);
         public static void DebugLog(string log)
         {
 #if DEBUG

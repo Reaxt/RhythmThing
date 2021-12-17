@@ -33,6 +33,9 @@ namespace RhythmThing
         public static int ScreenY = 50;
         public static string ContentPath;
         public static MD5 mD5 = MD5.Create();
+        public static bool hotload = false;
+        public static string hotloadPath;
+
         //this feels wrong but it works!
         [STAThread]
          
@@ -40,14 +43,14 @@ namespace RhythmThing
         {
             CultureInfo nonInvariantCulture = new CultureInfo("en-US");
             Thread.CurrentThread.CurrentCulture = nonInvariantCulture;
-            if (args.Length > 0)
+            if (args.Length == 3)
             {
                 SlaveWindow slave = new SlaveWindow(args);
                
             } else
             {
             
-            ContentPath = Path.Combine(Directory.GetCurrentDirectory(), "!Content");
+            ContentPath = Path.Combine(PlayerSettings.GetExeDir(), "!Content");
             //backup last log
             Logger.NewLog();
 
@@ -63,7 +66,11 @@ namespace RhythmThing
             Console.OutputEncoding = Encoding.Unicode;
             //load player settings
             PlayerSettings.Instance.ReadSettings();
-
+            if(args.Length == 1)
+            {
+                    hotload = true;
+                    hotloadPath = args[0];
+            }
             Game main = new Game(ScreenX, ScreenY);
                 //testOUTPUT test = new testOUTPUT();
                 // test.Setup();

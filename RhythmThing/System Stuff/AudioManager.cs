@@ -36,7 +36,7 @@ namespace RhythmThing.System_Stuff
 
         public AudioTrack addTrack(string path)
         {
-            string dir = Path.Combine(Directory.GetCurrentDirectory(), "!Content", path);
+            string dir = Path.Combine(PlayerSettings.GetExeDir(), "!Content", path);
             VolumeSource tempvol;
             //this class is no longer available to me :( no pitch down on fail.
             //PitchShifter shifer;
@@ -84,7 +84,7 @@ namespace RhythmThing.System_Stuff
 
         public void playForget(string path, float vol)
         {
-            string dir = Path.Combine(Directory.GetCurrentDirectory(), "!Content", path);
+            string dir = Path.Combine(PlayerSettings.GetExeDir(), "!Content", path);
             VolumeSource tempvol;
             ISampleSource temp = CodecFactory.Instance.GetCodec(dir).ChangeSampleRate(sampleRate).ToStereo().ToSampleSource().AppendSource(x => new VolumeSource(x), out tempvol);
             tempvol.Volume = vol;
@@ -93,7 +93,7 @@ namespace RhythmThing.System_Stuff
 
         public void playForget(string path, float vol, float pitch)
         {
-            string dir = Path.Combine(Directory.GetCurrentDirectory(), "!Content", path);
+            string dir = Path.Combine(PlayerSettings.GetExeDir(), "!Content", path);
             VolumeSource tempvol;
 
             //PitchShifter temppitch;
@@ -107,7 +107,7 @@ namespace RhythmThing.System_Stuff
 
         public void playForget(string path)
         {
-            string dir = Path.Combine(Directory.GetCurrentDirectory(), "!Content", path);
+            string dir = Path.Combine(PlayerSettings.GetExeDir(), "!Content", path);
 
             ISampleSource temp = CodecFactory.Instance.GetCodec(dir).ChangeSampleRate(sampleRate).ToStereo().ToSampleSource();
 

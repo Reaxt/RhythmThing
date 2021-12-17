@@ -23,11 +23,14 @@ namespace RhythmThing.Objects.Test_Objects
 
         float curTime = ((90 * 60) / 4)-1;
         float goalTime = (90*60)/4;
+        const int DIVISIONS = 10;
+
         int curI = 0;
         bool done = false;
         private float[][] positions = new float[4][];
-        
-        //Bitmap test = new Bitmap("./test.gif");
+        private SpriteWindow[,] windows = new SpriteWindow[DIVISIONS,DIVISIONS];
+        Bitmap test = new Bitmap("./test.png");
+        SpriteWindow hmm;
 
         public override void End()
         {
@@ -36,9 +39,25 @@ namespace RhythmThing.Objects.Test_Objects
 
         public override void Start(Game game)
         {
-
- 
+            for (int x = 0; x < DIVISIONS; x++)
+            {
+                for (int y = 0; y < DIVISIONS; y++)
+                {
+                    int xLength = 1920;
+                    int yLength = 1080;
+                    int xDivided = (xLength / DIVISIONS);
+                    int yDivided = (yLength / DIVISIONS);
+                    windows[x, y] = new SpriteWindow(0 , 0, 100, 100);
+                    Image image = CaptureDesktopArea(new Rectangle(x * (xDivided), y * yDivided, xDivided, yDivided));
+                    windows[x, y].ForceInit();
+                    windows[x, y].DrawSpriteToWindow(image, true);
+                    int a = (int)((((float)x * ((float)xDivided)) / (float)xLength)*(float)100);
+                    windows[x, y].MoveWindow(((x*(xDivided))/xLength), ((y * (yDivided)) / yLength));
+                    windows[x, y].TopLevel = true;
+                }
+            }
         }
+        
         private void OnFrameChanged(object o, EventArgs e)
         {
 

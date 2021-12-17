@@ -31,6 +31,7 @@ namespace TestScript
             {
                 activates[0] = true;
                 game.addGameObject(new Visual_Gameobject_stuff.FirstNotes(chart));
+                
             }
             if(chart.beat >= 132.25 && !activates[1] && chart.beat<=195)
             {

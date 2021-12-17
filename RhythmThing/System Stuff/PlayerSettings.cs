@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using RhythmThing.Utils;
+using System.Reflection;
 
 namespace RhythmThing.System_Stuff
 {
@@ -56,14 +57,14 @@ namespace RhythmThing.System_Stuff
         public void WriteSettings()
         {
             string json = JsonConvert.SerializeObject(Instance);
-            File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "!Content","PlayerSettings.json"), json);
+            File.WriteAllText(Path.Combine(PlayerSettings.GetExeDir(), "!Content","PlayerSettings.json"), json);
             ReadSettings();
         }
         public void ReadSettings()
         {
             
-            if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "!Content", "PlayerSettings.json"))) {
-                _instance = JsonConvert.DeserializeObject<PlayerSettings>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "!Content", "PlayerSettings.json")));
+            if (File.Exists(Path.Combine(PlayerSettings.GetExeDir(), "!Content", "PlayerSettings.json"))) {
+                _instance = JsonConvert.DeserializeObject<PlayerSettings>(File.ReadAllText(Path.Combine(PlayerSettings.GetExeDir(), "!Content", "PlayerSettings.json")));
 
             } else
             {
@@ -76,6 +77,16 @@ namespace RhythmThing.System_Stuff
         {
             Instance.chartScores[hash] = new ChartScore(hash, letter, percent);
             WriteSettings();
+        }
+
+        private static string _exeDir;
+        public static string GetExeDir()
+        {
+            if(_exeDir == null)
+            {
+                _exeDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            }
+            return _exeDir;
         }
         private void LoadSums()
         {
@@ -113,7 +124,7 @@ namespace RhythmThing.System_Stuff
             ButtonBindings = Input.Instance.GenDefaultBindings();
             offset = 0;
             string json = JsonConvert.SerializeObject(_instance);
-            File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "!Content", "PlayerSettings.json"), json);
+            File.WriteAllText(Path.Combine(PlayerSettings.GetExeDir(), "!Content", "PlayerSettings.json"), json);
             ReadSettings();
             Input.Instance.SetBindingsToConfig();
         }

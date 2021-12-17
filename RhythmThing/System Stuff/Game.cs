@@ -74,8 +74,16 @@ namespace RhythmThing.System_Stuff
             _deltaTime = 0;
             SceneManagerInstance = new SceneManager(this);
             //entry point
+            if(Program.hotload)
+            {
+                ChartToLoad = Program.hotloadPath;
+                SceneManagerInstance.LoadScene(6);
 
-            SceneManagerInstance.LoadScene(0);
+            } else
+            {
+
+                SceneManagerInstance.LoadScene(0);
+            }
 
             //debug scene
             //SceneManagerInstance.LoadScene(5);
