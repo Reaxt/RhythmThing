@@ -88,6 +88,24 @@ namespace RhythmThing.System_Stuff
             }
             return _exeDir;
         }
+
+        public void HotloadSum(string hash)
+        {
+            bool alreadyIn = false;
+            foreach (var item in Instance.chartScores)
+            {
+                if (item.Key == hash)
+                {
+                    alreadyIn = true;
+                }
+            }
+            if(!alreadyIn)
+            {
+                ChartScore newScore = new ChartScore(hash, "NA", 0);
+                Instance.chartScores.Add(hash, newScore);
+                WriteSettings();
+            }
+        }
         private void LoadSums()
         {
             string[] songPaths = Directory.GetDirectories(Path.Combine(Program.ContentPath, "!Songs"));

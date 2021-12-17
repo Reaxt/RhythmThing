@@ -34,6 +34,7 @@ namespace RhythmThing
         public static string ContentPath;
         public static MD5 mD5 = MD5.Create();
         public static bool hotload = false;
+        public static double hotloadTime;
         public static string hotloadPath;
 
         //this feels wrong but it works!
@@ -70,7 +71,13 @@ namespace RhythmThing
             {
                     hotload = true;
                     hotloadPath = args[0];
-            }
+                    hotloadTime = 0;
+            } else if(args.Length == 2)
+                {
+                    hotload = true;
+                    hotloadPath = args[0];
+                    hotloadTime = double.Parse(args[1]);
+                }
             Game main = new Game(ScreenX, ScreenY);
                 //testOUTPUT test = new testOUTPUT();
                 // test.Setup();

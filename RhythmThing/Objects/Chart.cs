@@ -206,7 +206,11 @@ namespace RhythmThing.Objects
             game.addGameObject(new ChartDebug(this));
             game.DisplayInstance.windowManager.CenterWindow();
 
-
+            //if hotload
+            if(Program.hotload)
+            {
+                song.sampleSource.SetPosition(TimeSpan.FromMilliseconds(Program.hotloadTime));
+            }
             //song.sampleSource.SetPosition(TimeSpan.FromMilliseconds(220 / ((float)(chartInfo.bpm) / 60000)));
 
         }
