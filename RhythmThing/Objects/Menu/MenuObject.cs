@@ -70,7 +70,7 @@ namespace RhythmThing.Objects.Menu
             
             Components = new List<Component>();
             menuMusic = new MenuMusicHandler();
-            string[] chartNames = Directory.GetDirectories(Path.Combine(Directory.GetCurrentDirectory(), "!Content/!Songs"));
+            string[] chartNames = Directory.GetDirectories(Path.Combine(PlayerSettings.GetExeDir(), "!Content/!Songs"));
             
             songs = new List<SongContainer>();
             for (int i = 0; i < chartNames.Length; i++)

@@ -27,6 +27,16 @@
     <Compile Remove="testOUTPUT.cs" />
   </ItemGroup>
   <ItemGroup>
+    <COMReference Include="InteropExtensionLib.dll">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>0</VersionMinor>
+      <VersionMajor>1</VersionMajor>
+      <Guid>c3d19104-7a67-4eb0-b459-d5b2e734d430</Guid>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System.Windows.Forms">
       <HintPath>..\..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Windows.Forms.dll</HintPath>
     </Reference>

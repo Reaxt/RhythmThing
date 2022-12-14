@@ -44,7 +44,7 @@ namespace RhythmThing.Objects
             
             _timePerFrame = 1 / (double)_fps;
             readStream = new FileStream(_path, FileMode.Open);
-            //ImageUtils.BMPToBinary(path, Path.Combine(Directory.GetCurrentDirectory(), "!Content", "testVid.cvid"));
+            //ImageUtils.BMPToBinary(path, Path.Combine(PlayerSettings.GetExeDir(), "!Content", "testVid.cvid"));
         }
 
         public override void End()

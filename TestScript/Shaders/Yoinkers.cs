@@ -32,7 +32,7 @@ namespace TestScript.Shaders
             for (int i = 0; i < 4; i++)
             {
                 cols[i] = new Visual();
-                cols[i].active = true;
+                cols[i].Active = true;
 
             }
         }

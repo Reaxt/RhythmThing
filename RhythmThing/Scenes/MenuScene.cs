@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RhythmThing.Objects.Menu;
 using RhythmThing.Objects.Menu.MenuMusic;
-
+using RhythmThing.Objects.Test_Objects;
 namespace RhythmThing.Scenes
 {
     class MenuScene : Scene
@@ -24,7 +24,7 @@ namespace RhythmThing.Scenes
             initialObjs = new List<GameObject>();
             initialObjs.Add(new MenuObject());
             initialObjs.Add(new MenuMusicHandler());
-
+            //initialObjs.Add(new SpriteWindowTest());
         }
 
         public override void Update()

@@ -15,6 +15,24 @@ namespace RhythmThing.Utils
         {
             return firstFloat * (1 - by) + secondFloat * by;
         }
+
+        /// <summary>
+        /// Given two parallel arrays, lerp
+        /// </summary>
+        /// <param name="firstPos">first parallel array</param>
+        /// <param name="secondPos">second parallel array</param>
+        /// <param name="by">amount to go 0-1</param>
+        /// <returns></returns>
+        public static float[] Lerp(float[] firstPos, float[] secondPos, float by)
+        {
+            if (firstPos.Length != secondPos.Length) throw new ArgumentException("The two given arrays are not parallel");
+            float[] result = new float[firstPos.Length];
+            for (int i = 0; i < firstPos.Length; i++)
+            {
+                result[i] = firstPos[i] * (1 - by) + secondPos[i] * by;
+            }
+            return result;
+        }
         /// <summary>
         /// Maps the names found at https://easings.net/en to the matching easing functions.
         /// Maps "easeLinear" to linear easing (x => x).

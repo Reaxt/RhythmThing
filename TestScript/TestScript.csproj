@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <Reference Include="RhythmThing">
-      <HintPath>..\RhythmThing\bin\Debug\netcoreapp3.1\RhythmThing.dll</HintPath>
+      <HintPath>..\RhythmThing\bin\Debug\net5.0-windows\RhythmThing.dll</HintPath>
     </Reference>
   </ItemGroup>
 

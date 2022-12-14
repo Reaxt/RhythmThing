@@ -92,7 +92,11 @@ namespace RhythmThing.Objects
         public Chart(string path)
         {
             folderName = path;
-            chartPath = Path.Combine(Directory.GetCurrentDirectory(), "!Content/!Songs", path);
+            chartPath = Path.Combine(PlayerSettings.GetExeDir(), "!Content/!Songs", path);
+            if(Program.hotload)
+            {
+                chartPath = Directory.GetParent(path).FullName;
+            }
            // Console.WriteLine(chartPath);
             chartInfo = JsonConvert.DeserializeObject<JsonChart>(File.ReadAllText(Path.Combine(chartPath, "ChartInfo.json")));
             if(chartInfo.previewLength == 0)
@@ -202,7 +206,11 @@ namespace RhythmThing.Objects
             game.addGameObject(new ChartDebug(this));
             game.DisplayInstance.windowManager.CenterWindow();
 
-
+            //if hotload
+            if(Program.hotload)
+            {
+                song.sampleSource.SetPosition(TimeSpan.FromMilliseconds(Program.hotloadTime));
+            }
             //song.sampleSource.SetPosition(TimeSpan.FromMilliseconds(220 / ((float)(chartInfo.bpm) / 60000)));
 
         }

@@ -74,11 +74,19 @@ namespace RhythmThing.System_Stuff
             _deltaTime = 0;
             SceneManagerInstance = new SceneManager(this);
             //entry point
+            if(Program.hotload)
+            {
+                ChartToLoad = Program.hotloadPath;
+                SceneManagerInstance.LoadScene(6);
 
-            SceneManagerInstance.LoadScene(0);
+            } else
+            {
+
+                SceneManagerInstance.LoadScene(0);
+            }
 
             //debug scene
-            //sceneManager.loadScene(5);
+            //SceneManagerInstance.LoadScene(5);
 
             while (GameLoopLives)
             {
@@ -102,22 +110,7 @@ namespace RhythmThing.System_Stuff
             //DEPRACATED: CHECK IF OBJ IS ALIVE
         }
 
-        private void Start()
-        {
-            //init shit goes here kind of
-            //Console.SetWindowSize(screenX, screenY);
 
-
-
-            //put in test object
-            //mainInstance.addGameObject(new LeftArrow());
-            // mainInstance.addGameObject(new RightArrow());
-            //mainInstance.addGameObject(new DownArrow());
-            //mainInstance.addGameObject(new UpArrow());
-            //mainInstance.addGameObject(new Chart("Metronome80"));
-
-            //Loop();
-        }
         void Loop()
         {
             //kinda nothing yet

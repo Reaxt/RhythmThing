@@ -31,22 +31,22 @@ namespace TestScript.Visual_Gameobject_stuff
         {
             this.chart = chart;
             textvisual = new Visual();
-            textvisual.active = true;
+            textvisual.Active = true;
             textvisual.x = 30;
             textvisual.y = 25;
             textvisual.z = -2;
-            components.Add(textvisual);
+            Components.Add(textvisual);
             beep.LoadBMPPath("!Songs/Broadcast/broadcast.bmp", new int[] {-1, -1 });
             beep.z = 0;
             beep.y = -1;
             beep.z = -1;
-            components.Add(beep);
+            Components.Add(beep);
             arrowVisuals = new List<Visual>();
             for (int i = 0; i < count; i++)
             {
                 Visual newVis = new Visual();
                 newVis.LoadBMPPath("Sprites/UpReceiver.bmp", new int[] { -5, -6 });
-                newVis.active = true;
+                newVis.Active = true;
                 newVis.z = -(i+3);
                 newVis.y = -20;
                 newVis.x = (int)(((float)i / (float)count) * 100f);
@@ -58,7 +58,7 @@ namespace TestScript.Visual_Gameobject_stuff
                 newVis.rotation = random.Next(0, 360);
                 newVis.Animate(new int[] { newVis.x, newVis.y }, new int[] { tx, ty }, "easeOutExpo", 5f);
                 arrowVisuals.Add(newVis);
-                this.components.Add(newVis);
+                this.Components.Add(newVis);
             }
         }
         public override void Start(Game game)
@@ -274,7 +274,7 @@ namespace TestScript.Visual_Gameobject_stuff
 
                     }
                     hits[7] = true;
-                    beep.active = true;
+                    beep.Active = true;
 
                 }
             }

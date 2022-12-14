@@ -56,7 +56,7 @@ namespace RhythmThing.Components
         public void LoadBMP(string path, int[] LBcorner)
         {
 
-            Bitmap bitmap = (Bitmap)Image.FromFile(Path.Combine(Directory.GetCurrentDirectory(), "!Content", path));
+            Bitmap bitmap = (Bitmap)Image.FromFile(Path.Combine(PlayerSettings.GetExeDir(), "!Content", path));
             for (int x = 0; x < bitmap.Width; x++)
             {
                 for (int y = 0; y < bitmap.Height; y++)
@@ -83,14 +83,14 @@ namespace RhythmThing.Components
         }
         public void LoadBMPPath(string path, int[] lbcorner)
         {
-            Bitmap bitmap = (Bitmap)Image.FromFile(Path.Combine(Directory.GetCurrentDirectory(), "!Content", path));
+            Bitmap bitmap = (Bitmap)Image.FromFile(Path.Combine(PlayerSettings.GetExeDir(), "!Content", path));
 
             LoadBMP(bitmap, lbcorner);
         }
         public void LoadBMP(string path)
         {
 
-            Bitmap bitmap = (Bitmap)Image.FromFile(Path.Combine(Directory.GetCurrentDirectory(), "!Content", path));
+            Bitmap bitmap = (Bitmap)Image.FromFile(Path.Combine(PlayerSettings.GetExeDir(), "!Content", path));
             for (int x = 0; x < bitmap.Width; x++)
             {
                 for (int y = 0; y < bitmap.Height; y++)

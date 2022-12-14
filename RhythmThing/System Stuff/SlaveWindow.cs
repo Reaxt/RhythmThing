@@ -67,12 +67,12 @@ namespace RhythmThing.System_Stuff
                     switch (args[0])
                     {
                         case "SetWindowPos":
-                            display.windowManager.moveWindow(float.Parse(args[1]), float.Parse(args[2]));
+                            display.windowManager.MoveWindowLegacy(float.Parse(args[1]), float.Parse(args[2]));
                             break;
                         case "SetWindowEase":
                             if(_easeGo)
                             {
-                                display.windowManager.moveWindow(_endX, _endY);
+                                display.windowManager.MoveWindowLegacy(_endX, _endY);
                                 _timepassed = 0;
                             }
                             _startX = float.Parse(args[1]);
@@ -130,13 +130,13 @@ namespace RhythmThing.System_Stuff
                 {
                     if(_timepassed >= _duration)
                     {
-                        display.windowManager.moveWindow(_endX, _endY);
+                        display.windowManager.MoveWindowLegacy(_endX, _endY);
                         _easeGo = false;
                     } else
                     {
                         float x = (_startX) + ((_endX-_startX) * Ease.byName[_easing](_timepassed / _duration));
                         float y = (_startY) + ((_endY - _startY) * Ease.byName[_easing](_timepassed / _duration));
-                        display.windowManager.moveWindow(x, y);
+                        display.windowManager.MoveWindowLegacy(x, y);
                     }
                     _timepassed += (float)deltaTime;
                 }

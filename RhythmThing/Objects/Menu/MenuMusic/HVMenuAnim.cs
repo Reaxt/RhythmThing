@@ -39,7 +39,10 @@ namespace RhythmThing.Objects.Menu.MenuMusic
         }
         public override void Start(Game game)
         {
-
+            if (Program.hotload)
+            {
+                PlayerSettings.Instance.HotloadSum(chart.hash);
+            }
             string grade = PlayerSettings.Instance.chartScores[chart.hash].letter;
             percent = PlayerSettings.Instance.chartScores[chart.hash].percent;
             GameObjectType = objType.visual;
